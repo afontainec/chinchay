@@ -228,45 +228,14 @@ class Table {
   }
 
   findIdIn(ids, columns, query, options) {
-    query = query || {};
-    if (Array.isArray(ids)) query.id = ['in', ids];
-    else { query.id = ids; }
-    return this.find(query, columns, options);
+    return this.findIn('id', ids, query, columns, options);
   }
 
-  // findIdIn(ids, columns, query) {
-  //   query = query || {};
-  //   const that = this;
-  //   return new Promise((resolve, reject) => {
-  //     that.filterColumns(columns).then((filteredColumns) => {
-  //       resolve(that.table().select(filteredColumns)
-  //           .whereIn('id', ids).andWhere(query)
-  //           .orderBy('id', 'asc'));
-  //     }).catch((err) => {
-  //       reject(err);
-  //     });
-  //   });
-  // }
-
-  // TODO: USE FIND TO MAKE THIS QUERY
-  findIn(target, validOptions, searchAttr, columns, options) {
-    options = options || {};
-    const that = this;
-    return new Promise((resolve, reject) => {
-      that.filterColumns(columns).then((filteredColumns) => {
-        const query = that.table().select(filteredColumns)
-          .whereIn(target, validOptions).andWhere(searchAttr);
-        if (options.groupBy) {
-          Table.addGroupBy(query, options.groupBy);
-        }
-        if (options.rawSelect) {
-          Table.addRawSelect(query, options.rawSelect);
-        }
-        resolve(query);
-      }).catch((err) => {
-        reject(err);
-      });
-    });
+  findIn(target, validOptions, query, columns, options) {
+    query = query || {};
+    if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
+    else { query[target] = validOptions; }
+    return this.find(query, columns, options);
   }
 
 
