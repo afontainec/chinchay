@@ -227,29 +227,35 @@ class Table {
     });
   }
 
-    // // TODO: USE FIND TO MAKE THIS QUERY
-  findIdIn(ids, columns, query) {
+  findIdIn(ids, columns, query, options) {
     query = query || {};
-    const that = this;
-    return new Promise((resolve, reject) => {
-      that.filterColumns(columns).then((filteredColumns) => {
-        resolve(that.table().select(filteredColumns)
-            .whereIn('id', ids).andWhere(query)
-            .orderBy('id', 'asc'));
-      }).catch((err) => {
-        reject(err);
-      });
-    });
+    if (Array.isArray(ids)) query.id = ['in', ids];
+    else { query.id = ids; }
+    return this.find(query, columns, options);
   }
 
-    // // TODO: USE FIND TO MAKE THIS QUERY
+  // findIdIn(ids, columns, query) {
+  //   query = query || {};
+  //   const that = this;
+  //   return new Promise((resolve, reject) => {
+  //     that.filterColumns(columns).then((filteredColumns) => {
+  //       resolve(that.table().select(filteredColumns)
+  //           .whereIn('id', ids).andWhere(query)
+  //           .orderBy('id', 'asc'));
+  //     }).catch((err) => {
+  //       reject(err);
+  //     });
+  //   });
+  // }
+
+  // TODO: USE FIND TO MAKE THIS QUERY
   findIn(target, validOptions, searchAttr, columns, options) {
     options = options || {};
     const that = this;
     return new Promise((resolve, reject) => {
       that.filterColumns(columns).then((filteredColumns) => {
         const query = that.table().select(filteredColumns)
-            .whereIn(target, validOptions).andWhere(searchAttr);
+          .whereIn(target, validOptions).andWhere(searchAttr);
         if (options.groupBy) {
           Table.addGroupBy(query, options.groupBy);
         }
@@ -264,23 +270,23 @@ class Table {
   }
 
 
-    // ################################################
-    // Miscelaneous
-    // ################################################
+  // ################################################
+  // Miscelaneous
+  // ################################################
 
-    // // TODO: USE FIND TO MAKE THIS QUERY
+  // // TODO: USE FIND TO MAKE THIS QUERY
   getFirstDate(attr) {
     return new Promise((resolve, reject) => {
       this.table().select('created_at').where(attr).orderBy('created_at', 'asc').first() // eslint-disable-line newline-per-chained-call
-          .then((results) => {
-            if (results && results.created_at) {
-              return resolve(results.created_at);
-            }
-            return resolve(undefined);
-          })
-          .catch((error) => {
-            reject(error);
-          });
+        .then((results) => {
+          if (results && results.created_at) {
+            return resolve(results.created_at);
+          }
+          return resolve(undefined);
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
   }
 
@@ -290,7 +296,7 @@ class Table {
       knex('information_schema.columns').select('column_name').where({
         table_name,
       }).then((results) => {
-            // check if results is an array
+          // check if results is an array
         if (!results || results.length === 0) {
           return reject(`Hubo un error creando un nuevo objeto: ${table_name}`);
         }
@@ -300,9 +306,9 @@ class Table {
         });
         resolve(attributes);
       })
-          .catch((err) => {
-            reject(err);
-          });
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 
@@ -326,26 +332,26 @@ class Table {
     });
   }
 
-    // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
+  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
   count(attr) {
     if (!attr) {
       attr = {};
     }
     return new Promise((resolve, reject) => {
       this.table().count('*').where(attr)
-          .then((results) => {
-            if (results[0].count) {
-              return resolve(results[0].count);
-            }
-            reject('No se encontró una respuesta válida');
-          })
-          .catch((error) => {
-            reject(error);
-          });
+        .then((results) => {
+          if (results[0].count) {
+            return resolve(results[0].count);
+          }
+          reject('No se encontró una respuesta válida');
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
   }
 
-    // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
+  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
   countGroupBy(groupBy, attr) {
     if (!attr) {
       attr = {};
@@ -360,13 +366,13 @@ class Table {
     return f(groupBy, attr);
   }
 
-    // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
+  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
   countIn(target, validOptions, searchAttr, options) {
     options = options || {};
     const that = this;
     return new Promise((resolve) => {
       const query = that.table().count('*')
-          .whereIn(target, validOptions).andWhere(searchAttr);
+        .whereIn(target, validOptions).andWhere(searchAttr);
       if (options.rawSelect) {
         Table.addRawSelect(query, options.rawSelect);
       }
@@ -376,17 +382,17 @@ class Table {
       resolve(query);
     });
   }
-    // ################################################
-    // 'Private' methods (static)
-    // ################################################
+  // ################################################
+  // 'Private' methods (static)
+  // ################################################
 
-    // eslint-disable-next-line
-    static addTimestamps(attr, isNew) {
-      if (isNew) {
-        attr.created_at = new Date();
-      }
-      attr.updated_at = new Date();
+  // eslint-disable-next-line
+  static addTimestamps(attr, isNew) {
+    if (isNew) {
+      attr.created_at = new Date();
     }
+    attr.updated_at = new Date();
+  }
 
   static hasColumnInSelect(query, column) {
     const str = query.toString();
@@ -455,7 +461,7 @@ class Table {
   }
 
 
-    // Makes sure not to go searching for wierd stuff
+  // Makes sure not to go searching for wierd stuff
   filterAttributes(attributes) {
     return new Promise((resolve, reject) => {
       if (!utils.isJSON(attributes)) {
@@ -468,11 +474,11 @@ class Table {
           const attributeName = attributeNames[i];
           if (attributeName in attributes) {
             filteredAttributes[attributeName] = attributes[attributeName];
-                // remove the key
+              // remove the key
             delete attributes[attributeName];
           }
         }
-            // if there are still keys left its because there where attributes that do not correspond
+          // if there are still keys left its because there where attributes that do not correspond
         if (Object.keys(attributes).length !== 0) {
           let attr = '';
           for (let i = 0; i < Object.keys(attributes).length; i++) {
@@ -482,9 +488,9 @@ class Table {
         }
         return resolve(filteredAttributes);
       })
-          .catch((err) => {
-            return reject(err);
-          });
+        .catch((err) => {
+          return reject(err);
+        });
     });
   }
 
@@ -507,9 +513,9 @@ class Table {
         Table.addTimestamps(filteredAttributes, isNew);
         resolve(filteredAttributes);
       })
-          .catch((err) => {
-            reject(err);
-          });
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 
@@ -521,7 +527,7 @@ class Table {
     return Message.new(500, 'Internal error', err);
   }
 
-  }
+}
 
 const ERROR_400 = {
   errorMissingColumn: 'Consulta invalida. Columna solicitada no existe',
