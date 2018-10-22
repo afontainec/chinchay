@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/afontainec/accionet_services.git"
+    "url": "https://github.com/afontainec/accionet_services.git"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/afontainec/accionet_services#readme",
   "dependencies": {
-    "knex": "^0.15.2"
+    "knex": "^0.15.2",
+    "pg": "^7.5.0"
   }
 }
