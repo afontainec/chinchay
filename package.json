@@ -18,6 +18,7 @@
   "homepage": "https://github.com/afontainec/accionet_services#readme",
   "dependencies": {
     "knex": "^0.15.2",
+    "mime": "^2.3.1",
     "pg": "^7.5.0"
   },
   "devDependencies": {
