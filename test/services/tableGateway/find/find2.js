@@ -3,8 +3,8 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');
-const knex = require('../../../db/knex');
-const Places = require('../../../services/models/tableGateway/example/places');
+const knex = require('../../../../db/knex');
+const Places = require('../../../../services/models/tableGateway/example/places');
 
 
 const assert = chai.assert; //eslint-disable-line

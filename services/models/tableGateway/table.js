@@ -138,8 +138,8 @@ class Table {
   // ################################################
   // Find (R from CRUD)
   // ################################################
-  all(columns) {
-    return this.find({}, columns);
+  all(columns, options) {
+    return this.find({}, columns, options);
   }
 
   parseToSend(entry) {
@@ -154,14 +154,59 @@ class Table {
   }
 
   findQuery(whereQuery, columns, options) {
+    return this.buildQuery('find', whereQuery, columns, options);
+  }
+
+  findById(id, columns, options) {
+    const whereQuery = {};
+    whereQuery.id = id;
+    return new Promise((resolve, reject) => {
+      this.find(whereQuery, columns, options).then((entries) => {
+        if (entries.length === 0) return reject(Table.makeError('unexistantID'));
+        return resolve(entries[0]);
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+  }
+
+  findIdIn(ids, columns, query, options) {
+    return this.findIn('id', ids, query, columns, options);
+  }
+
+  findIn(target, validOptions, query, columns, options) {
+    query = query || {};
+    if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
+    else { query[target] = validOptions; }
+    return this.find(query, columns, options);
+  }
+
+
+  // ################################################
+  // Miscelaneous
+  // ################################################
+
+
+  buildQuery(selectType, whereQuery, columns, options) {
     let query = this.table();
-    this.addSelect(query, columns, options);
+    this.addSelect(selectType, query, columns, options);
     query = this.addWhere(query, whereQuery);
     query = this.addAdvancedOptions(query, options);
     return query;
   }
 
-  addSelect(query, columns, options) {
+  addSelect(type, query, columns, options) {
+    switch (type) {
+    case 'find':
+      return this.addFindSelect(query, columns, options);
+    case 'count':
+      return this.addCountSelect(query, columns, options);
+    default:
+      return this.addFindSelect(query, columns, options);
+    }
+  }
+
+  addFindSelect(query, columns, options) {
     options = options || {};
     if (options.rawSelect) {
       query = Table.addRawSelect(query, options.rawSelect);
@@ -169,6 +214,10 @@ class Table {
     if (options.clearSelect || (!Array.isArray(columns) && columns !== 'all')) return query;
     if (!Array.isArray(columns)) columns = '*';
     return query.select(columns);
+  }
+
+  addCountSelect(query) {
+    return query.count();
   }
 
   addWhere(query, whereQuery) {
@@ -213,35 +262,6 @@ class Table {
     query = Table.addTimeInterval(query, options.startDate, options.endDate);
     return query;
   }
-
-  findById(id, columns, options) {
-    const whereQuery = {};
-    whereQuery.id = id;
-    return new Promise((resolve, reject) => {
-      this.find(whereQuery, columns, options).then((entries) => {
-        if (entries.length === 0) return reject(Table.makeError('unexistantID'));
-        return resolve(entries[0]);
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  }
-
-  findIdIn(ids, columns, query, options) {
-    return this.findIn('id', ids, query, columns, options);
-  }
-
-  findIn(target, validOptions, query, columns, options) {
-    query = query || {};
-    if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
-    else { query[target] = validOptions; }
-    return this.find(query, columns, options);
-  }
-
-
-  // ################################################
-  // Miscelaneous
-  // ################################################
 
   // // TODO: USE FIND TO MAKE THIS QUERY
   getFirstDate(attr) {
@@ -301,56 +321,38 @@ class Table {
     });
   }
 
-  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
-  count(attr) {
-    if (!attr) {
-      attr = {};
-    }
-    return new Promise((resolve, reject) => {
-      this.table().count('*').where(attr)
-        .then((results) => {
-          if (results[0].count) {
-            return resolve(results[0].count);
-          }
-          reject('No se encontró una respuesta válida');
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
+  // COUNT
 
-  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
-  countGroupBy(groupBy, attr) {
-    if (!attr) {
-      attr = {};
-    }
-    if (!groupBy || (typeof groupBy) !== 'string') { // if no groupBy is given
-      return this.count(attr);
-    }
-    const f = async (groupBy, attr) => {
-      const result = await this.table().select(groupBy, knex.raw('count(*)')).where(attr).groupBy(groupBy);
-      return result;
+  count(whereQuery, options) {
+    const columns = 'all';
+    const f = async () => {
+      const query = this.countQuery(whereQuery, columns, options);
+      const results = await Table.fetchQuery(query);
+      if (results.length === 1) { return results[0].count; }
+      return results;
     };
-    return f(groupBy, attr);
+    return f();
+  }
+
+  countQuery(whereQuery, columns, options) {
+    return this.buildQuery('count', whereQuery, columns, options);
   }
 
   // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
-  countIn(target, validOptions, searchAttr, options) {
+  countGroupBy(groupBy, whereQuery, columns, options) {
     options = options || {};
-    const that = this;
-    return new Promise((resolve) => {
-      const query = that.table().count('*')
-        .whereIn(target, validOptions).andWhere(searchAttr);
-      if (options.rawSelect) {
-        Table.addRawSelect(query, options.rawSelect);
-      }
-      if (options.groupBy) {
-        Table.addGroupBy(query, options.groupBy);
-      }
-      resolve(query);
-    });
+    options.groupBy = groupBy;
+    return this.count(whereQuery, columns, options);
   }
+
+  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
+  countIn(target, validOptions, query, options) {
+    query = query || {};
+    if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
+    else { query[target] = validOptions; }
+    return this.count(query, options);
+  }
+
   // ################################################
   // 'Private' methods (static)
   // ################################################
