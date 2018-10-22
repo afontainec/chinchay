@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 const program = require('commander');
 const intrepeter = require('../cliApp/intrepeter');
@@ -25,7 +26,7 @@ program
   .option('-r, --round [round]', 'round from which start to simulate the matches')
   .option('-p, --position [position]', 'position from to which it has to get to qualify')
   .option('-m, --mode [mode]', 'mode to select match to pull down')
-  .action((options) => {
+  .action(() => {
     console.log('qualify');
   });
 
@@ -35,8 +36,7 @@ program
     .description('get all the repositories of a particular organization')
     .option('-n, --number [n]', 'number of times to simulate')
     .option('-r, --round [round]', 'round from which start to simulate the matches')
-    .action((options) => {
-      interpreter.simulate(options.number, options.round);
+    .action(() => {
     });
 
 
