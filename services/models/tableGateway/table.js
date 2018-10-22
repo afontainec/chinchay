@@ -214,57 +214,28 @@ class Table {
     return query;
   }
 
-  findById(id, columns) {
-    const attributes = {
-      id,
-    };
+  findById(id, columns, options) {
+    const whereQuery = {};
+    whereQuery.id = id;
     return new Promise((resolve, reject) => {
-      this.find(attributes, columns).then((entries) => {
-        if (entries.length !== 0) {
-          return resolve(entries[0]);
-        }
-        reject(`No se encontró una entrada con id = ${id}`);
-      })
-        .catch((error) => {
-          reject(error);
-        });
+      this.find(whereQuery, columns, options).then((entries) => {
+        if (entries.length === 0) return reject(Table.makeError('unexistantID'));
+        return resolve(entries[0]);
+      }).catch((err) => {
+        reject(err);
+      });
     });
   }
 
-  // // TODO: USE FIND TO MAKE THIS QUERY
-  findIdIn(ids, columns, query) {
+  findIdIn(ids, columns, query, options) {
+    return this.findIn('id', ids, query, columns, options);
+  }
+
+  findIn(target, validOptions, query, columns, options) {
     query = query || {};
-    const that = this;
-    return new Promise((resolve, reject) => {
-      that.filterColumns(columns).then((filteredColumns) => {
-        resolve(that.table().select(filteredColumns)
-          .whereIn('id', ids).andWhere(query)
-          .orderBy('id', 'asc'));
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  }
-
-  // // TODO: USE FIND TO MAKE THIS QUERY
-  findIn(target, validOptions, searchAttr, columns, options) {
-    options = options || {};
-    const that = this;
-    return new Promise((resolve, reject) => {
-      that.filterColumns(columns).then((filteredColumns) => {
-        const query = that.table().select(filteredColumns)
-          .whereIn(target, validOptions).andWhere(searchAttr);
-        if (options.groupBy) {
-          Table.addGroupBy(query, options.groupBy);
-        }
-        if (options.rawSelect) {
-          Table.addRawSelect(query, options.rawSelect);
-        }
-        resolve(query);
-      }).catch((err) => {
-        reject(err);
-      });
-    });
+    if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
+    else { query[target] = validOptions; }
+    return this.find(query, columns, options);
   }
 
 
@@ -533,6 +504,9 @@ const ERROR_400 = {
   recompute_limits: 'Limite es invalido',
   scanner_yyerror: 'Select invalido',
   DateTimeParseError: 'Fecha ingresada no es válida',
+  unexistantID: 'Id solicitado no existe',
+  pg_atoi: 'Problema en tipo de variable',
+
 };
 
 
