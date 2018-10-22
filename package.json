@@ -1,0 +1,22 @@
+{
+  "name": "accionet_services",
+  "version": "1.0.0",
+  "description": "Foobar is a Python library for dealing with word pluralization.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afontainec/accionet_services.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/afontainec/accionet_services/issues"
+  },
+  "homepage": "https://github.com/afontainec/accionet_services#readme",
+  "dependencies": {
+    "knex": "^0.15.2"
+  }
+}
