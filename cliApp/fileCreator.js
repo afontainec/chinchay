@@ -1,37 +1,34 @@
 const path = require('path');
 const fs = require('fs');
-
 const {
   promisify,
 } = require('util');
-const config = require('../.chainfile');
-
-const samplePath = path.join(__dirname, '../', 'example', 'controller.js');
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-class iCreate {
-  constructor(samplePath) {
+class fileCreator {
+  constructor(samplePath, filePath) {
     this.samplePath = samplePath;
+    this.filePath = filePath;
   }
 
   getSample() {
-    return readFile(samplePath, 'utf8');
+    return readFile(this.samplePath, 'utf8');
   }
 
-  createFile(values) {
+  create(values) {
     const f = async () => {
       const string = await this.getSample();
       const file = this.compileString(string, values);
-      const filepath = this.filePath();
-      await this.makeFile(file, filepath);
+      console.log('compilo');
+      await this.makeFile(file, this.filePath);
     };
     return f();
   }
 
   makeFile(file, filePath) {
-    return await writeFile(filePath, file);
+    return writeFile(filePath, file);
   }
 
   compileString(string, values) {
@@ -46,4 +43,4 @@ class iCreate {
 }
 
 
-module.exports = iCreate;
+module.exports = fileCreator;

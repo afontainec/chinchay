@@ -12,8 +12,8 @@ const newMVC = (table_name) => {
     return Printer.error('Not valid model name');
   }
   const values = getValues(table_name);
-  Model.createFile(table_name);
-  Controller.createFile(table_name);
+  Model.createFile(table_name, values);
+  // Controller.createFile(table_name, values);
 };
 
 function getValues(table_name) {
