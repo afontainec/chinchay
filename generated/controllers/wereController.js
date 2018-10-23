@@ -1,47 +1,47 @@
 
-const Waba = require('../models/waba');
+const Were = require('../models/were');
 const path = require('path');
 const httpResponse = require('../../services/httpResponse');
 const Table = require('../../services/models/tableGateway/table');
 
-const viewPath = '$VIEWPATH$';
+const viewPath = '$CTRL2VIEWPATH$';
 
 const newElement = (req, res) => {
-  Waba.new().then((results) => {
+  Were.new().then((results) => {
     res.render(path.join(viewPath, 'create.ejs'), { results });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'create.ejs'), { error });
+    res.render(path.join(viewPath, 'create.ejs'), { error, results: [] });
   });
 };
 
 const show = (req, res) => {
-  Waba.findById(req.params.id).then((results) => {
+  Were.findById(req.params.id).then((results) => {
     res.render(path.join(viewPath, 'show.ejs'), { results });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'show.ejs'), { error });
+    res.render(path.join(viewPath, 'show.ejs'), { error, results: [] });
   });
 };
 
 const index = (req, res) => {
-  Waba.find().then((results) => {
+  Were.find().then((results) => {
     res.render(path.join(viewPath, 'index.ejs'), { results });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'index.ejs'), { error });
+    res.render(path.join(viewPath, 'index.ejs'), { error, results: [] });
   });
 };
 
 const edit = (req, res) => {
-  Waba.findById(req.params.id).then((results) => {
+  Were.findById(req.params.id).then((results) => {
     res.render(path.join(viewPath, 'show.ejs'), { results });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'show.ejs'), { error });
+    res.render(path.join(viewPath, 'show.ejs'), { error, results: [] });
   });
 };
 
 // //////////// API ///////////////
 
 const create = (req, res) => {
-  Waba.save(req.query).then((results) => {
+  Were.save(req.query).then((results) => {
     const json = httpResponse.success('Elemento guardado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
@@ -50,10 +50,43 @@ const create = (req, res) => {
   });
 };
 
+const update = (req, res) => {
+  Were.update(req.params.id, req.query).then((results) => {
+    const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const json = httpResponse.error(error.message, error.fullMessage);
+    return res.status(error.code).send(json);
+  });
+};
+
+const del = (req, res) => {
+  Were.del(req.params.id).then((results) => {
+    const json = httpResponse.success('Elemento eliminado exitosamente', 'data', results);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const json = httpResponse.error(error.message, error.fullMessage);
+    return res.status(error.code).send(json);
+  });
+};
+
+
 const find = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  Waba.find(req.query, columns, options).then((results) => {
+  Were.find(req.query, columns, options).then((results) => {
+    const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const json = httpResponse.error(error.message, error.fullMessage);
+    return res.status(error.code).send(json);
+  });
+};
+
+const findById = (req, res) => {
+  const options = Table.extractOptions(req.query);
+  const columns = Table.extractColumns(req.query);
+  Were.find(req.params.id, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
@@ -65,18 +98,8 @@ const find = (req, res) => {
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  Waba.find(req.query, columns, options).then((results) => {
+  Were.find(req.query, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
-    return res.status(200).send(json);
-  }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
-  });
-};
-
-const update = (req, res) => {
-  Waba.update(req.params.id, req.query).then((results) => {
-    const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -92,6 +115,8 @@ module.exports = {
   edit,
   create,
   find,
+  findById,
   count,
   update,
+  delete: del,
 };

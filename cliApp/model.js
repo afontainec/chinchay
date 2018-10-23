@@ -6,8 +6,7 @@ const samplePath = path.join(__dirname, '../', 'example', 'model.js');
 
 
 const createFile = async(table_name, values) => {
-  const filename = values.MODELNAME.charAt(0).toLowerCase() + values.MODELNAME.substr(1);
-  const filePath = path.join(config.models.directory, `${filename}.js`);
+  const filePath = path.join(config.models.directory, `${values.MODELFILENAME}.js`);
   const Model = new FileCreator(samplePath, filePath);
   await Model.create(values);
 };
@@ -23,7 +22,12 @@ function getName(table_name) {
   return name;
 }
 
+function getFileName(modelName) {
+  return modelName.charAt(0).toLowerCase() + modelName.substr(1);
+}
+
 module.exports = {
   createFile,
   getName,
+  getFileName,
 };

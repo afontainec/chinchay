@@ -1,15 +1,15 @@
 const Table = require('../../services/models/tableGateway/table'); // eslint-disabled-this-line no-unused-vars
 
 
-class Yes extends Table {
+class Were extends Table {
   constructor() {
-    const table_name = 'yes';
+    const table_name = 'were';
     super(table_name);
   }
 }
 
 
-const instance = new Yes();
+const instance = new Were();
 
 
 module.exports = instance;
