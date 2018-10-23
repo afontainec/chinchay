@@ -1,4 +1,4 @@
-const Table = require('$TABLEPATH$'); // eslint-disabled-this-line no-unused-vars
+const Table = require('$EXTENDPATH$'); // eslint-disabled-this-line no-unused-vars
 
 
 class $MODELNAME$ extends Table {

@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const configPath = require('./configPath');
 
 const {
   promisify,
@@ -21,16 +20,6 @@ const createFile = async (table_name) => {
   await writeFile(filePath, file);
   return;
 };
-
-function getValues(table_name) {
-  return {
-    MODELNAME: getModelName(table_name),
-    MODELPATH: path.relative(config.controllers.directory, path.join(config.models.directory, `${table_name}`)),
-    TABLEPATH: path.relative(config.controllers.directory, configPath.TABLEPATH),
-    HTTPRESPONSEPATH: path.relative(config.controllers.directory, configPath.HTTPRESPONSEPATH),
-
-  };
-}
 
 function getModelName(table_name) {
   const parts = table_name.split('_');

@@ -42,7 +42,12 @@ const edit = (req, res) => {
 
 const create = (req, res) => {
   Waba.save(req.query).then((results) => {
-  }).catch((error) => {});
+    const json = httpResponse.success('Elemento guardado exitosamente', 'data', results);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const json = httpResponse.error(error.message, error.fullMessage);
+    return res.status(error.code).send(json);
+  });
 };
 
 const find = (req, res) => {
@@ -59,8 +64,9 @@ const find = (req, res) => {
 
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
-  Waba.count(req.query, options).then((results) => {
-    const json = httpResponse.success('Elementos contados exitosamente', 'data', results);
+  const columns = Table.extractColumns(req.query);
+  Waba.find(req.query, columns, options).then((results) => {
+    const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -68,11 +74,9 @@ const count = (req, res) => {
   });
 };
 
-const find = (req, res) => {
-  const options = Table.extractOptions(req.query);
-  const columns = Table.extractColumns(req.query);
-  Waba.find(req.query, columns, options).then((results) => {
-    const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
+const update = (req, res) => {
+  Waba.update(req.params.id, req.query).then((results) => {
+    const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
