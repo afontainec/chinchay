@@ -1,12 +1,11 @@
 const FileCreator = require('./fileCreator');
 const path = require('path');
-const config = require('../.chainfile');
 const fs = require('fs');
 
 const baseSamplePath = path.join(__dirname, '../', 'example', 'views');
 const pages = ['index.ejs', 'show.ejs', 'edit.ejs', 'create.ejs'];
 
-const createFile = async(table_name, values) => {
+const createFile = async(table_name, values, config) => {
   const dir = path.join(config.views.directory, `${values.MODELFILENAME}`);
   fs.existsSync(dir) || fs.mkdirSync(dir); //eslint-disable-line
   const promises = [];

@@ -9,7 +9,7 @@ const $CONTROLLERNAME$ = require('$ROUTE2CTRL$');
 
 
 router.get('/$TABLE_NAME$/find', (req, res, next) => {
-  $CONTROLLERNAME$.index(req, res, next);
+  $CONTROLLERNAME$.find(req, res, next);
 });
 
 router.get('/$TABLE_NAME$/:id', (req, res, next) => {
