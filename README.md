@@ -243,17 +243,17 @@ Now its the simple part. But before we need to create a few last directories, fi
 Go ahead and create all this files.
 
 
-In the chainfile add the following:
+In the .chainfile.js add the following:
 ```javascript
 const path = require('path');
 
 module.exports = {
   models: {
     directory: path.join(__dirname, '/models'),
-    superclass: path.join(__dirname, '/services/models/tableGateway/table'),
+    superclass: path.join(__dirname, '/services/models/tableGateway/table')
   },
   controllers: {
-    directory: path.join(__dirname, '/generated/controllers')
+    directory: path.join(__dirname, '/controllers')
   },
   views: {
     directory: path.join(__dirname, '/views')
@@ -262,10 +262,19 @@ module.exports = {
     directory: path.join(__dirname, '/routes')
   }
 };
-
 ```
 
 Here we are defining which directories will hold the routes, the views, the models and the controllers.
+
+NOTE: for now, clone the chainsaw repository in another folder and run the following command:
+
+```
+$ git clone https://github.com/afontainec/chainsaw.git
+$ cd chainsaw
+$ npm install -g
+```
+This will allow you to run chainsaw from outside.
+Now copy the services directory into your working project: test_saw.
 
 Add now the chainsaw for the coffee:
 
