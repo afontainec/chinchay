@@ -282,8 +282,14 @@ Add now the chainsaw for the coffee:
 $ chainsaw new coffee
 ```
 
-Last, but not least, add the following line to the app.js
+Last, but not least, add the following lines to the app.js
 
+```javascript
+var coffee = require('./routes/coffee');
+var coffeeAPI = require('./routes/coffeeAPI');
+app.use('/', coffee);
+app.use('/api', coffeeAPI);
+```
 Now run the app
 ```
 $ npm start
