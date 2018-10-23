@@ -1,4 +1,3 @@
-
 const $MODELNAME$ = require('$CTRL2MODELPATH$');
 const path = require('path');
 const httpResponse = require('$HTTPRESPONSEPATH$');
@@ -7,41 +6,64 @@ const Table = require('$TABLEPATH$');
 const viewPath = '$CTRL2VIEWPATH$';
 
 const newElement = (req, res) => {
-  $MODELNAME$.new().then((results) => {
-    res.render(path.join(viewPath, 'create.ejs'), { results });
+  $MODELNAME$.new().then((result) => {
+    delete result.id;
+    delete result.created_at;
+    delete result.updated_at;
+    res.render(path.join(viewPath, 'create.ejs'), {
+      result,
+    });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'create.ejs'), { error, results: [] });
+    res.render(path.join(viewPath, 'create.ejs'), {
+      error,
+      result: [],
+    });
   });
 };
 
 const show = (req, res) => {
   $MODELNAME$.findById(req.params.id).then((results) => {
-    res.render(path.join(viewPath, 'show.ejs'), { results });
+    res.render(path.join(viewPath, 'show.ejs'), {
+      results,
+    });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'show.ejs'), { error, results: [] });
+    res.render(path.join(viewPath, 'show.ejs'), {
+      error,
+      results: [],
+    });
   });
 };
 
 const index = (req, res) => {
   $MODELNAME$.find().then((results) => {
-    res.render(path.join(viewPath, 'index.ejs'), { results });
+    res.render(path.join(viewPath, 'index.ejs'), {
+      results,
+    });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'index.ejs'), { error, results: [] });
+    res.render(path.join(viewPath, 'index.ejs'), {
+      error,
+      results: [],
+    });
   });
 };
 
 const edit = (req, res) => {
   $MODELNAME$.findById(req.params.id).then((results) => {
-    res.render(path.join(viewPath, 'show.ejs'), { results });
+    res.render(path.join(viewPath, 'show.ejs'), {
+      results,
+    });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'show.ejs'), { error, results: [] });
+    res.render(path.join(viewPath, 'show.ejs'), {
+      error,
+      results: [],
+    });
   });
 };
 
 // //////////// API ///////////////
 
 const create = (req, res) => {
-  $MODELNAME$.save(req.query).then((results) => {
+  $MODELNAME$.save(req.body).then((results) => {
     const json = httpResponse.success('Elemento guardado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
