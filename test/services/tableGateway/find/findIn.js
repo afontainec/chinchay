@@ -3,8 +3,8 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');
-const knex = require('../../../db/knex');
-const Places = require('../../../services/models/tableGateway/example/places');
+const knex = require('../../../../db/knex');
+const Places = require('../../../../services/models/tableGateway/example/places');
 
 
 const assert = chai.assert; //eslint-disable-line
@@ -18,7 +18,7 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
 
   it('Existing ids', async () => { // eslint-disable-line
     const ids = [1, 2];
-    const results = await Places.findIdIn(ids);
+    const results = await Places.findIn('id', ids);
     assert.equal(results.length, 2);
     for (let i = 0; i < results.length; i++) {
       assert.isTrue(ids.indexOf(results[i].id) > -1);
@@ -27,7 +27,7 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
 
   it('Existing ids with columns and query',  async () => { // eslint-disable-line
     const ids = [1, 2, 3, 4];
-    const results = await Places.findIdIn(ids, ['id', 'name', 'is_active'], { is_active: true });
+    const results = await Places.findIn('id', ids, { is_active: true }, ['id', 'name', 'is_active']);
     assert.equal(results.length, 3);
     for (let i = 0; i < results.length; i++) {
       assert.equal(results[i].is_active, true);
@@ -38,7 +38,7 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
 
   it('Malicious: a given id', async () => { // eslint-disable-line
     const ids = 1;
-    const results = await Places.findIdIn(ids);
+    const results = await Places.findIn('id', ids);
     assert.equal(results.length, 1);
     assert.equal(results[0].id, ids);
   });
