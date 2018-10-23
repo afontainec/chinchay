@@ -19,6 +19,7 @@ const newMVC = (table_name) => {
 function getValues(table_name) {
   table_name = table_name.toLowerCase();
   const MODELNAME = Model.getName(table_name);
+
   return {
     MODELNAME,
     CONTROLLERNAME: Controller.getName(MODELNAME),

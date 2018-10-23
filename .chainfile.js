@@ -11,7 +11,7 @@ module.exports = {
   views: {
     directory: path.join(__dirname, '/generated/controllers')
   },
-  views: {
+  routes: {
     directory: path.join(__dirname, '/generated/routes')
   }
 };

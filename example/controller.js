@@ -50,10 +50,43 @@ const create = (req, res) => {
   });
 };
 
+const update = (req, res) => {
+  $MODELNAME$.update(req.params.id, req.query).then((results) => {
+    const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const json = httpResponse.error(error.message, error.fullMessage);
+    return res.status(error.code).send(json);
+  });
+};
+
+const del = (req, res) => {
+  $MODELNAME$.del(req.params.id).then((results) => {
+    const json = httpResponse.success('Elemento eliminado exitosamente', 'data', results);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const json = httpResponse.error(error.message, error.fullMessage);
+    return res.status(error.code).send(json);
+  });
+};
+
+
 const find = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
   $MODELNAME$.find(req.query, columns, options).then((results) => {
+    const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const json = httpResponse.error(error.message, error.fullMessage);
+    return res.status(error.code).send(json);
+  });
+};
+
+const findById = (req, res) => {
+  const options = Table.extractOptions(req.query);
+  const columns = Table.extractColumns(req.query);
+  $MODELNAME$.find(req.params.id, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
@@ -74,16 +107,6 @@ const count = (req, res) => {
   });
 };
 
-const update = (req, res) => {
-  $MODELNAME$.update(req.params.id, req.query).then((results) => {
-    const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
-    return res.status(200).send(json);
-  }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
-  });
-};
-
 
 module.exports = {
   new: newElement,
@@ -92,6 +115,8 @@ module.exports = {
   edit,
   create,
   find,
+  findById,
   count,
   update,
+  delete: del,
 };
