@@ -3,12 +3,8 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');
-const knex = require('../../../db/knex');
-const Places = require('../../../services/models/tableGateway/example/places');
-
-// NOTE Access hace algo raro, arreglar
-// NOTE hay algunos que pasan un arreglo de columnas, para queries mas complejas
-// NOTE Ver tambien como hacer funcionar los accessibleBy.
+const knex = require('../../../../db/knex');
+const Places = require('../../../../services/models/tableGateway/example/places');
 
 
 const assert = chai.assert; //eslint-disable-line
