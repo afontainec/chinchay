@@ -9,7 +9,7 @@ module.exports = {
     directory: path.join(__dirname, '/generated/controllers')
   },
   views: {
-    directory: path.join(__dirname, '/generated/controllers')
+    directory: path.join(__dirname, '/generated/views')
   },
   routes: {
     directory: path.join(__dirname, '/generated/routes')

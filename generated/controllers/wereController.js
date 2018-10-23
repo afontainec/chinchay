@@ -4,7 +4,7 @@ const path = require('path');
 const httpResponse = require('../../services/httpResponse');
 const Table = require('../../services/models/tableGateway/table');
 
-const viewPath = '$CTRL2VIEWPATH$';
+const viewPath = '../views/were';
 
 const newElement = (req, res) => {
   Were.new().then((results) => {

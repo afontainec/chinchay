@@ -1,7 +1,7 @@
 // server/models/table.js
 'use strict';
 
-const knex = require('../../../db/knex');
+const knex = require('../../../knex');
 const utils = require('../../utils');
 const Message = require('../../message');
 
