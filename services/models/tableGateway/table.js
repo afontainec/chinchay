@@ -498,6 +498,28 @@ class Table {
     return Message.new(500, 'Internal error', err);
   }
 
+  static extractOptions(query) {
+    const options = {};
+    const queryKeys = Object.keys(query);
+    for (let i = 0; i < OPTIONS_KEYS.length; i++) {
+      const key = OPTIONS_KEYS[i];
+      if (queryKeys.indexOf(key) > -1) {
+        options[key] = query[key];
+        delete query.key;
+      }
+    }
+    return options;
+  }
+
+  static extractColumns(query) {
+    if (query.columns) {
+      const col = query.columns;
+      delete query.columns;
+      return col;
+    }
+    return 'all';
+  }
+
 }
 
 const ERROR_400 = {
@@ -510,6 +532,8 @@ const ERROR_400 = {
   pg_atoi: 'Problema en tipo de variable',
 
 };
+
+const OPTIONS_KEYS = ['startDate', 'endDate', 'groupBy', 'orderBy', 'limit', 'offset', 'rawSelect', 'clearSelect'];
 
 
 module.exports = Table;

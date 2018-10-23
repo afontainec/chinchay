@@ -1,13 +1,13 @@
 
-const $MODELNAME$ = require('$MODELPATH$');
+const Waba = require('../models/waba');
 const path = require('path');
-const httpResponse = require('$HTTPRESPONSEPATH$');
-const Table = require('$TABLEPATH$');
+const httpResponse = require('../../services/httpResponse');
+const Table = require('../../services/models/tableGateway/table');
 
 const viewPath = '$VIEWPATH$';
 
 const newElement = (req, res) => {
-  $MODELNAME$.new().then((results) => {
+  Waba.new().then((results) => {
     res.render(path.join(viewPath, 'create.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'create.ejs'), { error });
@@ -15,7 +15,7 @@ const newElement = (req, res) => {
 };
 
 const show = (req, res) => {
-  $MODELNAME$.findById(req.params.id).then((results) => {
+  Waba.findById(req.params.id).then((results) => {
     res.render(path.join(viewPath, 'show.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'show.ejs'), { error });
@@ -23,7 +23,7 @@ const show = (req, res) => {
 };
 
 const index = (req, res) => {
-  $MODELNAME$.find().then((results) => {
+  Waba.find().then((results) => {
     res.render(path.join(viewPath, 'index.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'index.ejs'), { error });
@@ -31,7 +31,7 @@ const index = (req, res) => {
 };
 
 const edit = (req, res) => {
-  $MODELNAME$.findById(req.params.id).then((results) => {
+  Waba.findById(req.params.id).then((results) => {
     res.render(path.join(viewPath, 'show.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'show.ejs'), { error });
@@ -41,19 +41,14 @@ const edit = (req, res) => {
 // //////////// API ///////////////
 
 const create = (req, res) => {
-  $MODELNAME$.save(req.query).then((results) => {
-    const json = httpResponse.success('Elemento guardado exitosamente', 'data', results);
-    return res.status(200).send(json);
-  }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
-  });
+  Waba.save(req.query).then((results) => {
+  }).catch((error) => {});
 };
 
 const find = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.query, columns, options).then((results) => {
+  Waba.find(req.query, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
@@ -64,9 +59,8 @@ const find = (req, res) => {
 
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
-  const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.query, columns, options).then((results) => {
-    const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
+  Waba.count(req.query, options).then((results) => {
+    const json = httpResponse.success('Elementos contados exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -74,9 +68,11 @@ const count = (req, res) => {
   });
 };
 
-const update = (req, res) => {
-  $MODELNAME$.update(req.params.id, req.query).then((results) => {
-    const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
+const find = (req, res) => {
+  const options = Table.extractOptions(req.query);
+  const columns = Table.extractColumns(req.query);
+  Waba.find(req.query, columns, options).then((results) => {
+    const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
