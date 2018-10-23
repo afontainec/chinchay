@@ -15,12 +15,8 @@ const newMVC = (table_name) => {
   if (typeof table_name !== 'string') {
     return Printer.error('Not valid model name');
   }
-  console.log('EL CONFIG ES', config);
   const values = getValues(table_name);
-  console.log(values);
-  console.log('aca');
   Model.createFile(table_name, values, config);
-  console.log('cac');
   Controller.createFile(table_name, values, config);
   Router.createFile(table_name, values, config);
   Views.createFile(table_name, values, config);

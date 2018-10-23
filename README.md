@@ -190,7 +190,7 @@ Copy the following code in the file created within database/migrations/
 
 ```javascript
 exports.up = function (knex) {
-  return knex.schema.createTable('person', (table) => {
+  return knex.schema.createTable('coffee', (table) => {
     // Incremental id
     table.increments();
     table.string('name').notNullable();
