@@ -23,9 +23,19 @@ const createFile = async (table_name) => {
 function getValues(table_name) {
   return {
     TABLE_NAME: table_name,
-    MODELNAME: table_name.charAt(0).toUpperCase() + table_name.substr(1),
+    MODELNAME: getModelName(table_name),
     TABLEPATH: path.relative(config.models.directory, config.models.superclass),
   };
+}
+
+function getModelName(table_name) {
+  const parts = table_name.split('_');
+  let name = '';
+  for (let i = 0; i < parts.length; i++) {
+    const elem = parts[i];
+    name += elem.charAt(0).toUpperCase() + elem.substr(1);
+  }
+  return name;
 }
 
 const compileString = function (string, values) {

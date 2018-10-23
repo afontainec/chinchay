@@ -57,3 +57,15 @@ const update = (req, res) => {
   $MODELNAME$.update(req.params.id, req.query).then((results) => {
   }).catch((error) => {});
 };
+
+
+module.exports = {
+  new: newElement,
+  show,
+  index,
+  edit,
+  create,
+  find,
+  count,
+  update,
+};
