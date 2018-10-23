@@ -16,20 +16,20 @@ const newElement = (req, res) => {
   }).catch((error) => {
     res.render(path.join(viewPath, 'create.ejs'), {
       error,
-      result: [],
+      result: {},
     });
   });
 };
 
 const show = (req, res) => {
-  $MODELNAME$.findById(req.params.id).then((results) => {
+  $MODELNAME$.findById(req.params.id).then((result) => {
     res.render(path.join(viewPath, 'show.ejs'), {
-      results,
+      result,
     });
   }).catch((error) => {
     res.render(path.join(viewPath, 'show.ejs'), {
       error,
-      results: [],
+      result: {},
     });
   });
 };
@@ -48,14 +48,14 @@ const index = (req, res) => {
 };
 
 const edit = (req, res) => {
-  $MODELNAME$.findById(req.params.id).then((results) => {
+  $MODELNAME$.findById(req.params.id).then((result) => {
     res.render(path.join(viewPath, 'show.ejs'), {
-      results,
+      result,
     });
   }).catch((error) => {
     res.render(path.join(viewPath, 'show.ejs'), {
       error,
-      results: [],
+      result: {},
     });
   });
 };

@@ -1,3 +1,27 @@
-HOLA MOSTRANDO SHOW
+<!DOCTYPE html>
+<% var keys = Object.keys(result); %>
 
-<%= results %>
+<html lang="en">
+<head>
+</head>
+<body >
+    <table>
+      <tbody>
+        <% for (var i = 0; i < keys.length; i++) { %>
+          <tr>
+          <td><%= keys[i] %></td>
+          <td><%= result[keys[i]] %></td>
+          </tr>
+          <% } %>
+        <tr style="margin: auto; text-align: center">
+          <td>
+            <a href="/$TABLE_NAME$/">Indice </a>
+          </td>
+          <td>
+            <a href="/$TABLE_NAME$/<%=result.id%>/edit">Editar </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</body>
+</html>
