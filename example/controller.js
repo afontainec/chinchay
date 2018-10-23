@@ -49,11 +49,11 @@ const index = (req, res) => {
 
 const edit = (req, res) => {
   $MODELNAME$.findById(req.params.id).then((result) => {
-    res.render(path.join(viewPath, 'show.ejs'), {
+    res.render(path.join(viewPath, 'edit.ejs'), {
       result,
     });
   }).catch((error) => {
-    res.render(path.join(viewPath, 'show.ejs'), {
+    res.render(path.join(viewPath, 'edit.ejs'), {
       error,
       result: {},
     });
@@ -73,7 +73,7 @@ const create = (req, res) => {
 };
 
 const update = (req, res) => {
-  $MODELNAME$.update(req.params.id, req.query).then((results) => {
+  $MODELNAME$.update(req.params.id, req.body).then((results) => {
     const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {

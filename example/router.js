@@ -24,15 +24,19 @@ router.get('/$TABLE_NAME$/:id/edit', (req, res, next) => {
   $CONTROLLERNAME$.edit(req, res, next);
 });
 
-router.get('/$TABLE_NAME$/:id/edit', (req, res, next) => {
-  $CONTROLLERNAME$.edit(req, res, next);
-});
-
 router.post('/$TABLE_NAME$/new', (req, res, next) => {
   $CONTROLLERNAME$.create(req, res, next);
 });
 
 router.put('/$TABLE_NAME$/:id/edit', (req, res, next) => {
+  $CONTROLLERNAME$.update(req, res, next);
+});
+
+router.post('/$TABLE_NAME$/:id/edit', (req, res, next) => {
+  $CONTROLLERNAME$.update(req, res, next);
+});
+
+router.patch('/$TABLE_NAME$/:id/edit', (req, res, next) => {
   $CONTROLLERNAME$.update(req, res, next);
 });
 
