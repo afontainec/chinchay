@@ -1,13 +1,13 @@
 
-const $MODELNAME$ = require('$CTRL2MODELPATH$');
+const Yes = require('../models/yes');
 const path = require('path');
-const httpResponse = require('$HTTPRESPONSEPATH$');
-const Table = require('$TABLEPATH$');
+const httpResponse = require('../../services/httpResponse');
+const Table = require('../../services/models/tableGateway/table');
 
-const viewPath = '$CTRL2VIEWPATH$';
+const viewPath = '$VIEWPATH$';
 
 const newElement = (req, res) => {
-  $MODELNAME$.new().then((results) => {
+  Yes.new().then((results) => {
     res.render(path.join(viewPath, 'create.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'create.ejs'), { error, results: [] });
@@ -15,7 +15,7 @@ const newElement = (req, res) => {
 };
 
 const show = (req, res) => {
-  $MODELNAME$.findById(req.params.id).then((results) => {
+  Yes.findById(req.params.id).then((results) => {
     res.render(path.join(viewPath, 'show.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'show.ejs'), { error, results: [] });
@@ -23,7 +23,7 @@ const show = (req, res) => {
 };
 
 const index = (req, res) => {
-  $MODELNAME$.find().then((results) => {
+  Yes.find().then((results) => {
     res.render(path.join(viewPath, 'index.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'index.ejs'), { error, results: [] });
@@ -31,7 +31,7 @@ const index = (req, res) => {
 };
 
 const edit = (req, res) => {
-  $MODELNAME$.findById(req.params.id).then((results) => {
+  Yes.findById(req.params.id).then((results) => {
     res.render(path.join(viewPath, 'show.ejs'), { results });
   }).catch((error) => {
     res.render(path.join(viewPath, 'show.ejs'), { error, results: [] });
@@ -41,7 +41,7 @@ const edit = (req, res) => {
 // //////////// API ///////////////
 
 const create = (req, res) => {
-  $MODELNAME$.save(req.query).then((results) => {
+  Yes.save(req.query).then((results) => {
     const json = httpResponse.success('Elemento guardado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
@@ -53,7 +53,7 @@ const create = (req, res) => {
 const find = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.query, columns, options).then((results) => {
+  Yes.find(req.query, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
@@ -65,7 +65,7 @@ const find = (req, res) => {
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.query, columns, options).then((results) => {
+  Yes.find(req.query, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
@@ -75,7 +75,7 @@ const count = (req, res) => {
 };
 
 const update = (req, res) => {
-  $MODELNAME$.update(req.params.id, req.query).then((results) => {
+  Yes.update(req.params.id, req.query).then((results) => {
     const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {

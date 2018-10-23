@@ -13,13 +13,15 @@ const newMVC = (table_name) => {
   }
   const values = getValues(table_name);
   Model.createFile(table_name, values);
-  // Controller.createFile(table_name, values);
+  Controller.createFile(table_name, values);
 };
 
 function getValues(table_name) {
   table_name = table_name.toLowerCase();
+  const MODELNAME = Model.getName(table_name);
   return {
-    MODELNAME: Model.getName(table_name),
+    MODELNAME,
+    CONTROLLERNAME: Controller.getName(MODELNAME),
     CTRL2MODELPATH: path.relative(config.controllers.directory, path.join(config.models.directory, `${table_name}`)),
     TABLEPATH: path.relative(config.controllers.directory, configPath.TABLEPATH),
     HTTPRESPONSEPATH: path.relative(config.controllers.directory, configPath.HTTPRESPONSEPATH),

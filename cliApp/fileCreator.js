@@ -1,4 +1,3 @@
-const path = require('path');
 const fs = require('fs');
 const {
   promisify,
@@ -21,7 +20,6 @@ class fileCreator {
     const f = async () => {
       const string = await this.getSample();
       const file = this.compileString(string, values);
-      console.log('compilo');
       await this.makeFile(file, this.filePath);
     };
     return f();
