@@ -1,7 +1,7 @@
 {
   "name": "codemaster",
-  "version": "1.0.0",
-  "description": "Foobar is a Python library for dealing with word pluralization.",
+  "version": "0.0.1",
+  "description": "Building MVC files for express and knex.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
