@@ -9,7 +9,8 @@ const Router = require('./routes');
 const Migration = require('./migrations');
 
 let config = require('../.chainfile');
-let knexConfig = require('../knexfile');
+
+let knexConfig;
 
 const configPath = require('./configPath');
 
@@ -42,7 +43,15 @@ function getKnexConfig() {
   if (fs.existsSync(p)) {
     return require(p)[environment]; // eslint-disable-line
   }
-  return require('../knexfile')[environment]; // eslint-disable-line
+  return defaultKnex(); // eslint-disable-line
+}
+
+function defaultKnex() {
+  return {
+    migrations: {
+      directory: path.join(__dirname, '../generated/migrations'),
+    },
+  };
 }
 
 function getValues(table_name) {
