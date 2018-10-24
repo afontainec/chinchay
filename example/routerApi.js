@@ -12,12 +12,12 @@ router.get('/$TABLE_NAME$/find', (req, res, next) => {
   $CONTROLLERNAME$.find(req, res, next);
 });
 
-router.get('/$TABLE_NAME$/:id', (req, res, next) => {
-  $CONTROLLERNAME$.findById(req, res, next);
+router.get('/$TABLE_NAME$/count', (req, res, next) => {
+  $CONTROLLERNAME$.count(req, res, next);
 });
 
-router.get('/$TABLE_NAME$/count', (req, res, next) => {
-  $CONTROLLERNAME$.edit(req, res, next);
+router.get('/$TABLE_NAME$/:id', (req, res, next) => {
+  $CONTROLLERNAME$.findById(req, res, next);
 });
 
 

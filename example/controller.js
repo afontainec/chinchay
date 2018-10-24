@@ -119,8 +119,7 @@ const findById = (req, res) => {
 
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
-  const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.query, columns, options).then((results) => {
+  $MODELNAME$.count(req.query, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
