@@ -6,12 +6,17 @@ const Model = require('./model');
 const Controller = require('./controller');
 const Views = require('./views');
 const Router = require('./routes');
+const Migration = require('./migrations');
+
 let config = require('../.chainfile');
+let knexConfig = require('../knexfile');
+
 const configPath = require('./configPath');
 
 
 const newMVC = (table_name) => {
   config = getConfig();
+  knexConfig = getKnexConfig();
   if (typeof table_name !== 'string') {
     return Printer.error('Not valid model name');
   }
@@ -20,6 +25,7 @@ const newMVC = (table_name) => {
   Controller.createFile(table_name, values, config);
   Router.createFile(table_name, values, config);
   Views.createFile(table_name, values, config);
+  Migration.createFile(table_name, values, config, knexConfig);
 };
 
 function getConfig() {
@@ -28,6 +34,15 @@ function getConfig() {
     return require(p); // eslint-disable-line
   }
   return require('../.chainfile'); // eslint-disable-line
+}
+
+function getKnexConfig() {
+  const p = path.join(process.cwd(), 'knexfile.js');
+  const environment = process.env.NODE_ENV || 'development';
+  if (fs.existsSync(p)) {
+    return require(p)[environment]; // eslint-disable-line
+  }
+  return require('../knexfile')[environment]; // eslint-disable-line
 }
 
 function getValues(table_name) {
