@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');
-const knex = require('../../../../db/knex');
+const knex = require('../../../../knex');
 const Places = require('../../../../services/models/tableGateway/example/places');
 
 // NOTE Access hace algo raro, arreglar

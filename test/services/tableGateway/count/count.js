@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');
-const knex = require('../../../../db/knex');
+const knex = require('../../../../knex');
 const Places = require('../../../../services/models/tableGateway/example/places');
 
 
@@ -62,7 +62,6 @@ describe('with advance settings: group by', () => { // eslint-disable-line
     await knex.seed.run();
   });
 
-  // cannot do a group by
   it('Give group by', async () => { // eslint-disable-line
     const places = await Places.count({}, {
       groupBy: 'is_active',
@@ -87,6 +86,21 @@ describe('with advance settings: group by', () => { // eslint-disable-line
       assert.equal(err.fullMessage, 'errorMissingColumn');
       done();
     });
+  });
+
+  // cannot do a group by
+  it('Give a complex group by', async () => { // eslint-disable-line
+    const places = await Places.count({}, {
+      rawSelect: '(created_at)::DATE as d',
+      groupBy: 'd',
+    });
+    assert.equal(places.length, 4);
+    for (let i = 0; i < places.length; i++) {
+      const keys = Object.keys(places[i]);
+      assert.isTrue(keys.indexOf('d') > -1);
+      assert.isTrue(keys.indexOf('count') > -1);
+      assert.equal(places[i].count, 1);
+    }
   });
 });
 
