@@ -183,10 +183,6 @@ module.exports = require('knex')(config);
 
 Now knex is configured to connect to the database.
 
-Let run this migration:
-```
-$ knex migrate:latest
-```
 
 ## Using Chinchay
 
@@ -280,6 +276,11 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return knex.schema.dropTable('coffee');
 };
+```
+
+Let run this migration:
+```
+$ knex migrate:latest
 ```
 
 This will create a relation witin our database with the variables name and price. Also will generate a id and a created_at and updated_at timestamps for every entry.
