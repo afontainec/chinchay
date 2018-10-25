@@ -181,30 +181,7 @@ module.exports = require('knex')(config);
 ```
 
 
-Now we are ready to connect to the database, lets build a relation called coffee:
-```
-$ knex migrate:make coffee_relation
-```
-
-Copy the following code in the file created within database/migrations/
-
-```javascript
-exports.up = function (knex) {
-  return knex.schema.createTable('person', (table) => {
-    // Incremental id
-    table.increments();
-    table.string('name').notNullable();
-    table.integer('price');
-    // created_at and updated_at
-    table.timestamps();
-  });
-};
-
-exports.down = function (knex) {
-  return knex.schema.dropTable('coffee');
-};
-```
-This will create a relation witin our database with the variables name and price. All will generate a id and a created_at and updated_at timestamps for every entry.
+Now knex is configured to connect to the database.
 
 Let run this migration:
 ```
@@ -276,11 +253,37 @@ $ npm install -g
 This will allow you to run chainsaw from outside.
 Now copy the services directory into your working project: test_saw.
 
-Add now the chainsaw for the coffee:
+Lets build a new relation called coffee and the files to work around with it:
 
 ```
 $ chainsaw new coffee
 ```
+
+This will create a model, a controllers, views and a knex migration.
+
+
+The migrations will be saved in the directory database/migrations/. The name will vary but it will be appended by an coffee.js
+
+In this file insert the following:
+```javascript
+exports.up = function (knex) {
+  return knex.schema.createTable('coffee', (table) => {
+    // Incremental id
+    table.increments();
+    table.string('name').notNullable();
+    table.integer('price');
+    // created_at and updated_at
+    table.timestamps();
+  });
+};
+
+exports.down = function (knex) {
+  return knex.schema.dropTable('coffee');
+};
+```
+
+This will create a relation witin our database with the variables name and price. Also will generate a id and a created_at and updated_at timestamps for every entry.
+
 
 Last, but not least, add the following lines to the app.js
 
@@ -297,7 +300,7 @@ $ npm start
 
 and visit localhost:3000/coffee
 
-Click create to create a coffee!
+Click new to create a coffee!
 
 Enjoy!
 

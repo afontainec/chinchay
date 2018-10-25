@@ -1,3 +1,31 @@
-HOLA MOSTRANDO UNDEX
+<!DOCTYPE html>
+<% var keys = results.length > 0? Object.keys(results[0]) : []; %>
 
-<%= results %>
+<html lang="en">
+<head>
+</head>
+<body >
+  <table style="margin: auto">
+    <thead>
+      <% for (var i = 0; i < keys.length; i++) { %>
+        <th><%= keys[i] %></th>
+      <% } %>
+    </thead>
+    <tbody>
+      <% for (var j = 0; j < results.length; j++) { %>
+      <tr>
+        <% for (var i = 0; i < keys.length; i++) { %>
+          <td><%= results[j][keys[i]] %></td>
+        <% } %>
+        <td> <a href="/$TABLE_NAME$/<%=results[j].id %>">Ver</a></td>
+        <td> <a href="/$TABLE_NAME$/<%=results[j].id%>/edit">Editar</a></td>
+
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <div style="margin: auto; text-align: center">
+    <a href="/$TABLE_NAME$/new">Nuevo</a>
+  </div>
+</body>
+</html>

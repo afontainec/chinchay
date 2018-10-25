@@ -1,2 +1,4 @@
 node_modules/*
 knexfile.js
+zdebug.js
+generated/*

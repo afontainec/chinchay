@@ -1,13 +1,13 @@
 {
-  "name": "accionet_services",
-  "version": "1.0.0",
-  "description": "Foobar is a Python library for dealing with word pluralization.",
+  "name": "codemaster",
+  "version": "0.0.1",
+  "description": "Building MVC files for express and knex.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "chainsaw": "./cliApp/lector.js"
+    "codemaster": "./cliApp/lector.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "chai-http": "^2.0.1",
     "eslint": "^3.4.0",
     "eslint-config-airbnb": "^11.0.0",
     "eslint-config-angular": "^0.5.0",

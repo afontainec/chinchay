@@ -200,7 +200,7 @@ class Table {
     case 'find':
       return this.addFindSelect(query, columns, options);
     case 'count':
-      return this.addCountSelect(query, columns, options);
+      return this.addCountSelect(query, options);
     default:
       return this.addFindSelect(query, columns, options);
     }
@@ -216,7 +216,11 @@ class Table {
     return query.select(columns);
   }
 
-  addCountSelect(query) {
+  addCountSelect(query, options) {
+    options = options || {};
+    if (options.rawSelect) {
+      query = Table.addRawSelect(query, options.rawSelect);
+    }
     return query.count();
   }
 
@@ -324,9 +328,8 @@ class Table {
   // COUNT
 
   count(whereQuery, options) {
-    const columns = 'all';
     const f = async () => {
-      const query = this.countQuery(whereQuery, columns, options);
+      const query = this.countQuery(whereQuery, options);
       const results = await Table.fetchQuery(query);
       if (results.length === 1) { return results[0].count; }
       return results;
@@ -334,8 +337,8 @@ class Table {
     return f();
   }
 
-  countQuery(whereQuery, columns, options) {
-    return this.buildQuery('count', whereQuery, columns, options);
+  countQuery(whereQuery, options) {
+    return this.buildQuery('count', whereQuery, 'all', options);
   }
 
   // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
