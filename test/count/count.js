@@ -76,6 +76,19 @@ describe('with advance settings: group by', () => { // eslint-disable-line
     }
   });
 
+  it('Give group by: array', async () => { // eslint-disable-line
+    const places = await Places.count({}, {
+      groupBy: ['is_active', 'id'],
+    });
+    assert.equal(places.length, 4);
+    for (let i = 0; i < places.length; i++) {
+      const keys = Object.keys(places[i]);
+      assert.isTrue(keys.indexOf('is_active') > -1);
+      assert.isTrue(keys.indexOf('id') > -1);
+      assert.equal(places[i].count, 1);
+    }
+  });
+
   it('invalid group by', (done) => { // eslint-disable-line
     Places.count({}, {
       groupBy: 'unexistant',
