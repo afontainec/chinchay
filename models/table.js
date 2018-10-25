@@ -376,12 +376,23 @@ class Table {
     attr.updated_at = new Date();
   }
 
-  static hasColumnInSelect(query, column) {
+  static getSelectString(query) {
     const str = query.toString();
-    const i = str.indexOf('select');
-    const j = str.indexOf('from');
-    const selectStr = str.substring(i + 6, j);
-    return selectStr.indexOf(` ${column} `) > -1 || selectStr.indexOf(` ${column},`) > -1 || selectStr.indexOf(`,${column} `) > -1;
+    let withinParentesis = false;
+    for (let i = 0; i < str.length; i++) {
+      const s = str.substring(i);
+      if (s[0] === '(') withinParentesis = true;
+      if (s[0] === ')') withinParentesis = false;
+      if (!withinParentesis && s.substring(0, 4) === 'from') {
+        return str.substring(6, i);
+      }
+    }
+    return 'Query badly parsed';
+  }
+
+  static hasColumnInSelect(query, column) {
+    const selectStr = Table.getSelectString(query);
+    return selectStr.indexOf(` ${column} `) > -1 || selectStr.indexOf(` ${column},`) > -1 || selectStr.indexOf(`,${column} `) > -1 || selectStr.indexOf(`"${column}"`) > -1;
   }
 
   static addGroupBy(query, groupby) {
