@@ -1,6 +1,6 @@
-# CHAINSAW ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+# Chinchay ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-Foobar is a Python library for dealing with word pluralization.
+Making Model View Controller made easy for Express.js and NodeJS
 
 ## CLI Tutorial
 
@@ -188,7 +188,7 @@ Let run this migration:
 $ knex migrate:latest
 ```
 
-## Using Chainsaw
+## Using Chinchay
 
 Now its the simple part. But before we need to create a few last directories, files:
 
@@ -215,7 +215,7 @@ Now its the simple part. But before we need to create a few last directories, fi
 
 * controllers: Directory that hold all the controllers to control the views
 * models: Directory that hold all the models.
-* .chainfile.js: file for all the configuration for chainsaw.
+* .chainfile.js: file for all the configuration for chinchay.
 
 Go ahead and create all this files.
 
@@ -243,20 +243,20 @@ module.exports = {
 
 Here we are defining which directories will hold the routes, the views, the models and the controllers.
 
-NOTE: for now, clone the chainsaw repository in another folder and run the following command:
+NOTE: for now, clone the chinchay repository in another folder and run the following command:
 
 ```
-$ git clone https://github.com/afontainec/chainsaw.git
-$ cd chainsaw
+$ git clone https://github.com/afontainec/chinchay.git
+$ cd chinchay
 $ npm install -g
 ```
-This will allow you to run chainsaw from outside.
+This will allow you to run chinchay from outside.
 Now copy the services directory into your working project: test_saw.
 
 Lets build a new relation called coffee and the files to work around with it:
 
 ```
-$ chainsaw new coffee
+$ chinchay new coffee
 ```
 
 This will create a model, a controllers, views and a knex migration.
