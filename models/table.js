@@ -1,9 +1,9 @@
 // server/models/table.js
 'use strict';
 
-const knex = require('../../../knex');
-const utils = require('../../utils');
-const Message = require('../../message');
+let knex;
+const Utils = require('codemaster').Utils;
+const Message = require('codemaster').message;
 
 
 class Table {
@@ -18,6 +18,14 @@ class Table {
 
   table() {
     return knex(this.table_name);
+  }
+
+  static setKnex(elem) {
+    knex = elem;
+  }
+
+  static getKnex() {
+    return knex;
   }
 
 
@@ -50,7 +58,7 @@ class Table {
   save(originalEntry) {
     const errorString = 'Something went wrong';
     // make a clone so if we delete stuff from entry it does not modify the original one
-    const entry = utils.cloneJSON(originalEntry);
+    const entry = Utils.cloneJSON(originalEntry);
     return new Promise((resolve, reject) => {
       this.parseAttributesForUpsert(entry, true)
         .then((attributes) => {
@@ -71,7 +79,7 @@ class Table {
   }
 
   update(id, originalAttributes) {
-    const attr = utils.cloneJSON(originalAttributes);
+    const attr = Utils.cloneJSON(originalAttributes);
     const errorString = 'Something went wrong';
     return new Promise((resolve, reject) => {
       this.findById(id).then(() => {
@@ -438,7 +446,7 @@ class Table {
   // Makes sure not to go searching for wierd stuff
   filterAttributes(attributes) {
     return new Promise((resolve, reject) => {
-      if (!utils.isJSON(attributes)) {
+      if (!Utils.isJSON(attributes)) {
         return reject('Parameter should be a valid json');
       }
 
@@ -480,7 +488,7 @@ class Table {
       this.filterAttributes(attributes).then((filteredAttributes) => {
         Table.removeUnSetableAttributes(filteredAttributes);
 
-        if (utils.isEmptyJSON(filteredAttributes)) {
+        if (Utils.isEmptyJSON(filteredAttributes)) {
           return reject('Paremeter should not be empty');
         }
 

@@ -13,5 +13,8 @@ module.exports = {
   },
   routes: {
     directory: path.join(__dirname, '/generated/routes')
+  },
+  knex: {
+    path: path.join(__dirname, 'knex.js');
   }
 };

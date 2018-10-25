@@ -1,4 +1,4 @@
-const Table = require('../table'); // eslint-disabled-this-line no-unused-vars
+const Table = require('./table'); // eslint-disabled-this-line no-unused-vars
 
 
 class Places extends Table {
