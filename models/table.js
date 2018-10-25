@@ -338,6 +338,7 @@ class Table {
   count(whereQuery, options) {
     const f = async () => {
       const query = this.countQuery(whereQuery, options);
+      console.log(query.toString());
       const results = await Table.fetchQuery(query);
       if (results.length === 1) { return results[0].count; }
       return results;
@@ -395,11 +396,25 @@ class Table {
     return selectStr.indexOf(` ${column} `) > -1 || selectStr.indexOf(` ${column},`) > -1 || selectStr.indexOf(`,${column} `) > -1 || selectStr.indexOf(`"${column}"`) > -1;
   }
 
+  static addColumn(query, column) {
+    if (!Table.hasColumnInSelect(query, column)) {
+      query.select(column);
+    }
+  }
+
+  static addGroupByToSelect(query, groupby) {
+    if (Array.isArray(groupby)) {
+      for (let i = 0; i < groupby.length; i++) {
+        Table.addColumn(query, groupby[i]);
+      }
+    } else {
+      Table.addColumn(query, groupby);
+    }
+  }
+
   static addGroupBy(query, groupby) {
     if (groupby) {
-      if (!Table.hasColumnInSelect(query, groupby)) {
-        query.select(groupby);
-      }
+      Table.addGroupByToSelect(query, groupby);
       query.groupBy(groupby);
     }
     return query;

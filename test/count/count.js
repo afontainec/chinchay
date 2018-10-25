@@ -89,6 +89,20 @@ describe('with advance settings: group by', () => { // eslint-disable-line
     }
   });
 
+  it('Give group by: array and complex raw select', async () => { // eslint-disable-line
+    const options = {};
+    options.rawSelect = 'created_at::DATE as date, EXTRACT (hour from (created_at)) as hour';
+    options.groupBy = ['date', 'hour'];
+    const places = await Places.count({}, options);
+    assert.equal(places.length, 4);
+    for (let i = 0; i < places.length; i++) {
+      const keys = Object.keys(places[i]);
+      assert.isTrue(keys.indexOf('date') > -1);
+      assert.isTrue(keys.indexOf('hour') > -1);
+      assert.equal(places[i].count, 1);
+    }
+  });
+
   it('invalid group by', (done) => { // eslint-disable-line
     Places.count({}, {
       groupBy: 'unexistant',
