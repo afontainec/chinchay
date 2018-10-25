@@ -3,8 +3,8 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');
-const knex = require('../../../../knex');
-const Places = require('../../../../services/models/tableGateway/example/places');
+const knex = require('../../knex');
+const Places = require('../../models/places-example');
 
 // NOTE Access hace algo raro, arreglar
 // NOTE hay algunos que pasan un arreglo de columnas, para queries mas complejas
