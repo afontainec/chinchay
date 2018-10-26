@@ -1,10 +1,10 @@
 {
   "name": "chinchay",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Building MVC files for express and knex.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive --timeout 20000 test/"
   },
   "bin": {
     "codemaster": "./cliApp/lector.js"

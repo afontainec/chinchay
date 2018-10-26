@@ -157,49 +157,74 @@ describe('with advance settings: order by', () => { // eslint-disable-line
       done();
     });
   });
+});
 
-  describe('with advance settings: start_date and end_date', () => { // eslint-disable-line
-    before(async () => { // eslint-disable-line
-      await knex.seed.run();
+describe('with advance settings: start_date and end_date', () => { // eslint-disable-line
+  before(async () => { // eslint-disable-line
+    await knex.seed.run();
+  });
+
+  it('With start date', async () => { // eslint-disable-line
+    const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
+    const results = await Places.count({}, {
+      startDate: date,
     });
+    assert.equal(results, 2);
+  });
 
-    it('With start date', async () => { // eslint-disable-line
-      const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
-      const results = await Places.count({}, {
-        startDate: date,
-      });
-      assert.equal(results, 2);
+  it('With end date', async () => { // eslint-disable-line
+    const date = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
+    const results = await Places.count({}, {
+      endDate: date,
     });
+    assert.equal(results, 3);
+  });
 
-    it('With end date', async () => { // eslint-disable-line
-      const date = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
-      const results = await Places.count({}, {
-        endDate: date,
-      });
-      assert.equal(results, 3);
+  it('With start day and end date', async () => { // eslint-disable-line
+    const startDate = new Date(new Date().getTime() - (5 * 24 * 60 * 60 * 1000));
+    const endDate = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
+    const results = await Places.count({}, {
+      endDate,
+      startDate,
     });
+    assert.equal(results.length, 1);
+  });
 
-    it('With start day and end date', async () => { // eslint-disable-line
-      const startDate = new Date(new Date().getTime() - (5 * 24 * 60 * 60 * 1000));
-      const endDate = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
-      const results = await Places.count({}, {
-        endDate,
-        startDate,
-      });
-      assert.equal(results.length, 1);
+  it('invalid start date', (done) => { // eslint-disable-line
+    const date = 'this is not a date';
+    Places.count({}, {
+      startDate: date,
+    }).then(() => {
+      done('SHOULD NOT GET HERE');
+    }).catch((err) => {
+      assert.equal(err.code, 400);
+      assert.equal(err.fullMessage, 'DateTimeParseError');
+      done();
     });
+  });
+});
 
-    it('invalid start date', (done) => { // eslint-disable-line
-      const date = 'this is not a date';
-      Places.count({}, {
-        startDate: date,
-      }).then(() => {
-        done('SHOULD NOT GET HERE');
-      }).catch((err) => {
-        assert.equal(err.code, 400);
-        assert.equal(err.fullMessage, 'DateTimeParseError');
-        done();
-      });
+describe('with advance settings: countDistinct', () => { // eslint-disable-line
+  before(async () => { // eslint-disable-line
+    await knex.seed.run();
+  });
+
+  it('With countDistinct', async () => { // eslint-disable-line
+    const results = await Places.count({}, {
+      countDistinct: 'daily_visits',
+    });
+    assert.equal(results, 3);
+  });
+
+  it('With invalid countDistinct', (done) => { // eslint-disable-line
+    Places.count({}, {
+      countDistinct: 'not a valid column',
+    }).then(() => {
+      done('SHOULD NOT GET HERE');
+    }).catch((err) => {
+      assert.equal(err.code, 400);
+      assert.equal(err.fullMessage, 'errorMissingColumn');
+      done();
     });
   });
 });
