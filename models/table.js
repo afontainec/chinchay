@@ -429,7 +429,11 @@ class Table {
 
   static addRawSelect(query, select) {
     if (select) {
-      query.select(knex.raw(select));
+      if (Array.isArray(select)) {
+        query.select(knex.raw(select[0], select[1]));
+      } else {
+        query.select(knex.raw(select));
+      }
     }
     return query;
   }
