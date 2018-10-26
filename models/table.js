@@ -197,6 +197,11 @@ class Table {
 
   buildQuery(selectType, whereQuery, columns, options) {
     let query = this.table();
+    query = this.makeQuery(query, selectType, whereQuery, columns, options);
+    return query;
+  }
+
+  makeQuery(query, selectType, whereQuery, columns, options) {
     this.addSelect(selectType, query, columns, options);
     query = this.addWhere(query, whereQuery);
     query = this.addAdvancedOptions(query, options);
