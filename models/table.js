@@ -348,6 +348,9 @@ class Table {
       const query = this.countQuery(whereQuery, options);
       const results = await Table.fetchQuery(query);
       if (results.length === 1) { return results[0].count; }
+      for (let i = 0; i < results.length; i++) {
+        if (results[i].count) { results[i].count = parseInt(results[i].count, 10); }
+      }
       return results;
     };
     return f();
