@@ -2,7 +2,7 @@
 'use strict';
 
 let knex;
-const Utils = require('codemaster').Utils;
+const Utils = require('codemaster').utils;
 const Message = require('codemaster').message;
 
 
