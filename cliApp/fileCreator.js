@@ -30,7 +30,7 @@ class fileCreator {
 
   makeFile(file, filePath) {
     if (!fs.existsSync(this.directory)) {
-      fs.mkdirSync(this.directory);
+      fs.mkdirSync(this.directory, { recursive: true });
     }
     return writeFile(filePath, file);
   }
