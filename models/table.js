@@ -346,8 +346,11 @@ class Table {
   count(whereQuery, options) {
     const f = async () => {
       const query = this.countQuery(whereQuery, options);
+      console.log(query.toString());
       const results = await Table.fetchQuery(query);
-      if (results.length === 1) { return results[0].count; }
+      if (results.length === 1) {
+        return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
+      }
       for (let i = 0; i < results.length; i++) {
         if (results[i].count) { results[i].count = parseInt(results[i].count, 10); }
       }

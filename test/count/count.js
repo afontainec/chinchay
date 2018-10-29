@@ -228,3 +228,19 @@ describe('with advance settings: countDistinct', () => { // eslint-disable-line
     });
   });
 });
+
+describe('with advance settings: rawSelect', () => { // eslint-disable-line
+  before(async () => { // eslint-disable-line
+    await knex.seed.run();
+  });
+
+  it('With max(created_at)', async () => { // eslint-disable-line
+    const results = await Places.count({}, {
+      rawSelect: 'max(created_at)',
+    });
+    const keys = Object.keys(results);
+    assert.equal(keys.length, 2);
+    assert.isTrue(keys.indexOf('count') > -1);
+    assert.isTrue(keys.indexOf('max') > -1);
+  });
+});
