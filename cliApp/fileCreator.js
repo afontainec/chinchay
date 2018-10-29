@@ -33,7 +33,7 @@ class fileCreator {
       this.mkDirByPathSync(this.directory);
     }
     if (fs.existsSync(filePath)) {
-      return console.log(`ERROR: file: ${filePath} already exists.`);
+      return console.log(`ERROR: file: ${filePath} already exists.`); // eslint-disable-line no-console
     }
     return writeFile(filePath, file);
   }

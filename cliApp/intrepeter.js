@@ -29,7 +29,7 @@ const newMVC = (table_name) => {
   promises.push(Views.createFile(table_name, values, config));
   promises.push(Migration.createFile(table_name, values, config, knexConfig));
   Promise.all(promises).then().catch((err) => {
-    console.log(err);
+    console.log(err); // eslint-disable-line no-console
   });
 };
 

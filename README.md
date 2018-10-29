@@ -186,34 +186,10 @@ Now knex is configured to connect to the database.
 
 ## Using Chinchay
 
-Now its the simple part. But before we need to create a few last directories, files:
-
-    .
-    ├── bin
-    ├── controllers       
-    ├── database
-        ├── migrations       
-        └── seeds
-            ├── development
-            ├── production   
-            └──  test
-    ├── models       
-    ├── node_modules       
-    ├── public   
-    ├── routes
-    ├── views    
-    ├── .chainfile.js                        
-    ├── app.js
-    ├── knex.js  
-    ├── knexfile.js  
-    ├── package-lock.json
-    └── package.json
-
-* controllers: Directory that hold all the controllers to control the views
-* models: Directory that hold all the models.
+Now its the simple part. But before we need to create one last file:
 * .chainfile.js: file for all the configuration for chinchay.
 
-Go ahead and create all this files.
+Go ahead and create this file.
 
 
 In the .chainfile.js add the following:
@@ -237,17 +213,13 @@ module.exports = {
 };
 ```
 
-Here we are defining which directories will hold the routes, the views, the models and the controllers.
+Here we are defining which directories will hold the  the models, the controllers, the views and the routes.
 
-NOTE: for now, clone the chinchay repository in another folder and run the following command:
-
+Install chinchay:
 ```
-$ git clone https://github.com/afontainec/chinchay.git
-$ cd chinchay
-$ npm install -g
+$ npm install chinchay -g -s
 ```
 This will allow you to run chinchay from outside.
-Now copy the services directory into your working project: test_saw.
 
 Lets build a new relation called coffee and the files to work around with it:
 
@@ -255,7 +227,7 @@ Lets build a new relation called coffee and the files to work around with it:
 $ chinchay new coffee
 ```
 
-This will create a model, a controllers, views and a knex migration.
+This will create a model, a controllers, views, routes and a knex migration in the directories defined in .chainfile.js.
 
 
 The migrations will be saved in the directory database/migrations/. The name will vary but it will be appended by an coffee.js
@@ -278,12 +250,10 @@ exports.down = function (knex) {
 };
 ```
 
-Let run this migration:
+This is the piece of code that will create a relation witin our database with the variables name and price. Also will generate a id and a created_at and updated_at timestamps for every entry. To run this migration:
 ```
 $ knex migrate:latest
 ```
-
-This will create a relation witin our database with the variables name and price. Also will generate a id and a created_at and updated_at timestamps for every entry.
 
 
 Last, but not least, add the following lines to the app.js
