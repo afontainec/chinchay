@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const {
   promisify,
 } = require('util');
@@ -7,9 +8,11 @@ const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
 class fileCreator {
-  constructor(samplePath, filePath) {
+
+  constructor(samplePath, directory, filename) {
     this.samplePath = samplePath;
-    this.filePath = filePath;
+    this.directory = directory;
+    this.filePath = path.join(directory, filename);
   }
 
   getSample() {
@@ -26,6 +29,9 @@ class fileCreator {
   }
 
   makeFile(file, filePath) {
+    if (!fs.existsSync(this.directory)) {
+      fs.mkdirSync(this.directory);
+    }
     return writeFile(filePath, file);
   }
 

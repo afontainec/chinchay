@@ -5,12 +5,12 @@ const samplePath = path.join(__dirname, '../', 'example', 'migration.js');
 
 
 const createFile = async(table_name, values, config, knexConfig) => {
-  const filePath = getFilePath(knexConfig, values.TABLE_NAME);
-  const Migration = new FileCreator(samplePath, filePath);
+  const filename = getFileName(knexConfig, values.TABLE_NAME);
+  const Migration = new FileCreator(samplePath, knexConfig.migrations.directory, filename);
   await Migration.create(values);
 };
 
-const getFilePath = (knexConfig, table_name) => {
+const getFileName = (knexConfig, table_name) => {
   const now = new Date();
   let filename = `${1900 + now.getYear()}`;
   filename += now.getMonth() < 10 ? `0${now.getMonth()}` : now.getMonth();
@@ -19,8 +19,7 @@ const getFilePath = (knexConfig, table_name) => {
   filename += now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes();
   filename += now.getSeconds() < 10 ? `0${now.getSeconds()}` : now.getSeconds();
   filename += `_${table_name}.js`;
-
-  return path.join(knexConfig.migrations.directory, filename);
+  return filename;
 };
 
 

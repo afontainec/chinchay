@@ -12,14 +12,12 @@ const createFile = async(table_name, values, config) => {
 };
 
 function createRoutes(table_name, values, config) {
-  const filePath = path.join(config.routes.directory, `${values.MODELFILENAME}.js`);
-  const Route = new FileCreator(samplePath, filePath);
+  const Route = new FileCreator(samplePath, config.routes.directory, `${values.MODELFILENAME}.js`);
   return Route.create(values);
 }
 
 function createAPIRoutes(table_name, values, config) {
-  const filePath = path.join(config.routes.directory, `${values.MODELFILENAME}API.js`);
-  const Route = new FileCreator(apiSample, filePath);
+  const Route = new FileCreator(apiSample, config.routes.directory, `${values.MODELFILENAME}API.js`);
   return Route.create(values);
 }
 

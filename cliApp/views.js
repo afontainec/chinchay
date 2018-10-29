@@ -10,9 +10,9 @@ const createFile = async(table_name, values, config) => {
   fs.existsSync(dir) || fs.mkdirSync(dir); //eslint-disable-line
   const promises = [];
   for (let i = 0; i < pages.length; i++) {
-    const filePath = path.join(dir, pages[i]);
+    // const filePath = path.join(dir, pages[i]);
     const samplePath = path.join(baseSamplePath, pages[i]);
-    const View = new FileCreator(samplePath, filePath);
+    const View = new FileCreator(samplePath, dir, pages[i]);
     promises.push(View.create(values));
   }
   return Promise.all(promises);
