@@ -575,24 +575,13 @@ class Table {
   }
 
   static mergeRawSelect(rawSelect, input) {
-    if (!rawSelect) {
-      return input;
-    }
-    if (!input) {
-      return rawSelect;
-    }
-    if (Array.isArray(rawSelect) && Array.isArray(input)) {
-      throw new Error('Cannot merge two raw select');
-    }
-    if (Array.isArray(rawSelect)) {
-      rawSelect[0] += `, ${input}`;
-      return rawSelect;
-    }
-    if (Array.isArray(input)) {
-      input[0] += `, ${rawSelect}`;
-      return input;
-    }
-    return `${rawSelect}, ${input}`;
+    const q = knex.queryBuilder();
+    Table.addRawSelect(q, rawSelect);
+    let string = q.toString();
+    Table.addRawSelect(q, input);
+    string = q.toString();
+    string = string.substring(7, string.length);
+    return string;
   }
 }
 

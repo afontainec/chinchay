@@ -3,7 +3,6 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');
-const knex = require('../knex');
 const Table = require('..').Table;
 
 
@@ -17,10 +16,7 @@ describe('TABLE GATEWAY: count', () => { // eslint-disable-line
     const first = ['EXTRACT(doy from ?)', 'created_at'];
     const second = 'count(*)';
     const merged = Table.mergeRawSelect(first, second);
-    assert.isArray(merged);
-    assert.equal(merged[1], first[1]);
-    assert.equal(merged[0], 'EXTRACT(doy from ?), count(*)');
-
+    assert.equal(merged, 'EXTRACT(doy from \'created_at\'), count(*)');
     done();
   });
 
@@ -28,9 +24,7 @@ describe('TABLE GATEWAY: count', () => { // eslint-disable-line
     const second = ['EXTRACT(doy from ?)', 'created_at'];
     const first = 'count(*)';
     const merged = Table.mergeRawSelect(first, second);
-    assert.isArray(merged);
-    assert.equal(merged[1], second[1]);
-    assert.equal(merged[0], 'EXTRACT(doy from ?), count(*)');
+    assert.equal(merged, 'count(*), EXTRACT(doy from \'created_at\')');
     done();
   });
 
@@ -60,14 +54,10 @@ describe('TABLE GATEWAY: count', () => { // eslint-disable-line
   });
 
   it(' Array and Array',  (done) => { // eslint-disable-line
-    const first = ['EXTRACT(doy from created_at', 'created_at'];
-    const second = ['EXTRACT(hour from created_at', 'created_at'];
-    try {
-      Table.mergeRawSelect(first, second);
-      done('SHOULD NOT GET HERE');
-    } catch (e) {
-      assert.equal(e.toString(), 'Error: Cannot merge two raw select');
-      done();
-    }
+    const first = ['EXTRACT(doy from ?)', 'created_at'];
+    const second = ['EXTRACT(hour from ?)', 'created_at'];
+    const merged = Table.mergeRawSelect(first, second);
+    assert.equal(merged, 'EXTRACT(doy from \'created_at\'), EXTRACT(hour from \'created_at\')');
+    done();
   });
 });
