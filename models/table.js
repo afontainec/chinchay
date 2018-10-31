@@ -1,9 +1,9 @@
 // server/models/table.js
 'use strict';
 
-const knex = require('../../../knex');
-const utils = require('../../utils');
-const Message = require('../../message');
+let knex;
+const Utils = require('codemaster').utils;
+const Message = require('codemaster').message;
 
 
 class Table {
@@ -18,6 +18,14 @@ class Table {
 
   table() {
     return knex(this.table_name);
+  }
+
+  static setKnex(elem) {
+    knex = elem;
+  }
+
+  static getKnex() {
+    return knex;
   }
 
 
@@ -50,7 +58,7 @@ class Table {
   save(originalEntry) {
     const errorString = 'Something went wrong';
     // make a clone so if we delete stuff from entry it does not modify the original one
-    const entry = utils.cloneJSON(originalEntry);
+    const entry = Utils.cloneJSON(originalEntry);
     return new Promise((resolve, reject) => {
       this.parseAttributesForUpsert(entry, true)
         .then((attributes) => {
@@ -71,7 +79,7 @@ class Table {
   }
 
   update(id, originalAttributes) {
-    const attr = utils.cloneJSON(originalAttributes);
+    const attr = Utils.cloneJSON(originalAttributes);
     const errorString = 'Something went wrong';
     return new Promise((resolve, reject) => {
       this.findById(id).then(() => {
@@ -189,6 +197,11 @@ class Table {
 
   buildQuery(selectType, whereQuery, columns, options) {
     let query = this.table();
+    query = this.makeQuery(query, selectType, whereQuery, columns, options);
+    return query;
+  }
+
+  makeQuery(query, selectType, whereQuery, columns, options) {
     this.addSelect(selectType, query, columns, options);
     query = this.addWhere(query, whereQuery);
     query = this.addAdvancedOptions(query, options);
@@ -220,6 +233,9 @@ class Table {
     options = options || {};
     if (options.rawSelect) {
       query = Table.addRawSelect(query, options.rawSelect);
+    }
+    if (options.countDistinct) {
+      return query.countDistinct(options.countDistinct);
     }
     return query.count();
   }
@@ -331,7 +347,12 @@ class Table {
     const f = async () => {
       const query = this.countQuery(whereQuery, options);
       const results = await Table.fetchQuery(query);
-      if (results.length === 1) { return results[0].count; }
+      if (results.length === 1) {
+        return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
+      }
+      for (let i = 0; i < results.length; i++) {
+        if (results[i].count) { results[i].count = parseInt(results[i].count, 10); }
+      }
       return results;
     };
     return f();
@@ -368,19 +389,44 @@ class Table {
     attr.updated_at = new Date();
   }
 
-  static hasColumnInSelect(query, column) {
+  static getSelectString(query) {
     const str = query.toString();
-    const i = str.indexOf('select');
-    const j = str.indexOf('from');
-    const selectStr = str.substring(i + 6, j);
-    return selectStr.indexOf(` ${column} `) > -1 || selectStr.indexOf(` ${column},`) > -1 || selectStr.indexOf(`,${column} `) > -1;
+    let withinParentesis = false;
+    for (let i = 0; i < str.length; i++) {
+      const s = str.substring(i);
+      if (s[0] === '(') withinParentesis = true;
+      if (s[0] === ')') withinParentesis = false;
+      if (!withinParentesis && s.substring(0, 4) === 'from') {
+        return str.substring(6, i);
+      }
+    }
+    return 'Query badly parsed';
+  }
+
+  static hasColumnInSelect(query, column) {
+    const selectStr = Table.getSelectString(query);
+    return selectStr.indexOf(` ${column} `) > -1 || selectStr.indexOf(` ${column},`) > -1 || selectStr.indexOf(`,${column} `) > -1 || selectStr.indexOf(`"${column}"`) > -1;
+  }
+
+  static addColumn(query, column) {
+    if (!Table.hasColumnInSelect(query, column)) {
+      query.select(column);
+    }
+  }
+
+  static addGroupByToSelect(query, groupby) {
+    if (Array.isArray(groupby)) {
+      for (let i = 0; i < groupby.length; i++) {
+        Table.addColumn(query, groupby[i]);
+      }
+    } else {
+      Table.addColumn(query, groupby);
+    }
   }
 
   static addGroupBy(query, groupby) {
     if (groupby) {
-      if (!Table.hasColumnInSelect(query, groupby)) {
-        query.select(groupby);
-      }
+      Table.addGroupByToSelect(query, groupby);
       query.groupBy(groupby);
     }
     return query;
@@ -388,7 +434,11 @@ class Table {
 
   static addRawSelect(query, select) {
     if (select) {
-      query.select(knex.raw(select));
+      if (Array.isArray(select)) {
+        query.select(knex.raw(select[0], select[1]));
+      } else {
+        query.select(knex.raw(select));
+      }
     }
     return query;
   }
@@ -438,7 +488,7 @@ class Table {
   // Makes sure not to go searching for wierd stuff
   filterAttributes(attributes) {
     return new Promise((resolve, reject) => {
-      if (!utils.isJSON(attributes)) {
+      if (!Utils.isJSON(attributes)) {
         return reject('Parameter should be a valid json');
       }
 
@@ -480,7 +530,7 @@ class Table {
       this.filterAttributes(attributes).then((filteredAttributes) => {
         Table.removeUnSetableAttributes(filteredAttributes);
 
-        if (utils.isEmptyJSON(filteredAttributes)) {
+        if (Utils.isEmptyJSON(filteredAttributes)) {
           return reject('Paremeter should not be empty');
         }
 
@@ -523,6 +573,15 @@ class Table {
     return 'all';
   }
 
+  static mergeRawSelect(rawSelect, input) {
+    const q = knex.queryBuilder();
+    Table.addRawSelect(q, rawSelect);
+    let string = q.toString();
+    Table.addRawSelect(q, input);
+    string = q.toString();
+    string = string.substring(7, string.length);
+    return string;
+  }
 }
 
 const ERROR_400 = {

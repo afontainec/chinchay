@@ -22,11 +22,15 @@ const newMVC = (table_name) => {
     return Printer.error('Not valid model name');
   }
   const values = getValues(table_name);
-  Model.createFile(table_name, values, config);
-  Controller.createFile(table_name, values, config);
-  Router.createFile(table_name, values, config);
-  Views.createFile(table_name, values, config);
-  Migration.createFile(table_name, values, config, knexConfig);
+  const promises = [];
+  promises.push(Model.createFile(table_name, values, config));
+  promises.push(Controller.createFile(table_name, values, config));
+  promises.push(Router.createFile(table_name, values, config));
+  promises.push(Views.createFile(table_name, values, config));
+  promises.push(Migration.createFile(table_name, values, config, knexConfig));
+  Promise.all(promises).then().catch((err) => {
+    console.log(err); // eslint-disable-line no-console
+  });
 };
 
 function getConfig() {
