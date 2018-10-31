@@ -1,7 +1,7 @@
 const $MODELNAME$ = require('$CTRL2MODELPATH$');
 const path = require('path');
 const httpResponse = require('codemaster').httpResponse;
-const Table = require('$TABLEPATH$');
+const Table = require('chinchay').Table;
 
 const viewPath = '$CTRL2VIEWPATH$';
 
