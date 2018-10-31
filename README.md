@@ -269,7 +269,7 @@ Now run the app
 $ npm start
 ```
 
-and visit localhost:3000/coffee
+and visit http://localhost:3000/coffee
 
 Click new to create a coffee!
 

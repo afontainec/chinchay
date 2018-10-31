@@ -195,7 +195,6 @@ const path = require('path');
 module.exports = {
   models: {
     directory: path.join(__dirname, '/models'),
-    superclass: path.join(__dirname, '/services/models/tableGateway/table')
   },
   controllers: {
     directory: path.join(__dirname, '/controllers')
@@ -205,7 +204,8 @@ module.exports = {
   },
   routes: {
     directory: path.join(__dirname, '/routes')
-  }
+  },
+  knex:  path.join(__dirname, 'knex.js')
 };
 ```
 
