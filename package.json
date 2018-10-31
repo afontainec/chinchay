@@ -7,7 +7,7 @@
     "test": "mocha --recursive --timeout 20000 test/"
   },
   "bin": {
-    "codemaster": "./cliApp/lector.js"
+    "chinchay": "./cliApp/lector.js"
   },
   "repository": {
     "type": "git",

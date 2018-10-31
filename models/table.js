@@ -346,7 +346,6 @@ class Table {
   count(whereQuery, options) {
     const f = async () => {
       const query = this.countQuery(whereQuery, options);
-      console.log(query.toString());
       const results = await Table.fetchQuery(query);
       if (results.length === 1) {
         return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
