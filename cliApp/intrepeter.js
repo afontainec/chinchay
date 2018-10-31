@@ -71,9 +71,7 @@ function getValues(table_name) {
     ROUTE2CTRL: path.relative(config.routes.directory, path.join(config.controllers.directory, CONTROLLERNAME)),
     CTRL2VIEWPATH: path.relative(config.controllers.directory, path.join(config.views.directory, MODELFILENAME)),
     TABLEPATH: path.relative(config.controllers.directory, configPath.TABLEPATH),
-    HTTPRESPONSEPATH: path.relative(config.controllers.directory, configPath.HTTPRESPONSEPATH),
     TABLE_NAME: table_name,
-    EXTENDPATH: path.relative(config.models.directory, config.models.superclass),
   };
 }
 
