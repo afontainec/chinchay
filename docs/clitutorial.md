@@ -1,7 +1,3 @@
-# Chinchay ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
-
-Making Model View Controller made easy for Express.js and NodeJS
-
 ## CLI Tutorial
 
 ### Requirements
