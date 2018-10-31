@@ -1,6 +1,13 @@
 # Chinchay ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-Making Model View Controller made easy for Express.js, Node.js and Postgres
+Making Model View Controller made easy for Express.js, Node.js and Postgres.
+
+Any Contribution are welcome!
+
+* [Github Repository](https://github.com/afontainec/chinchay)
+* [Issues](https://github.com/afontainec/chinchay/issues)
+* [Pull Requests](https://github.com/afontainec/chinchay/pulls)
+
 
 ## Command Line Interface
 
