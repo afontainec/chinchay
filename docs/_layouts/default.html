@@ -27,7 +27,7 @@
 }
 
 .navelem a:hover {
-    background-color: #111;
+    background-color: #000;
 }
 </style>
 {% seo %}
@@ -39,16 +39,16 @@
   <body>
     <div class="wrapper" style="margin-left:30px">
       <header>
-        
+
         <ul class="navbar">
          <li class="navelem"><a class="active" href="#home">Home</a></li>
          <li class="navelem"><a href="#news">News</a></li>
          <li class="navelem"><a href="#contact">Contact</a></li>
          <li class="navelem"><a href="#about">About</a></li>
         </ul>
-        
+
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
-        
+
         {% if site.logo %}
           <img src="{{site.logo | relative_url}}" alt="Logo" />
         {% endif %}
@@ -63,7 +63,7 @@
         <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
         {% endif %}
 
-       
+
       </header>
       <section>
 
