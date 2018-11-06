@@ -83,6 +83,19 @@ Go to the [knex documentation](https://knexjs.org/) for more info of how to work
 
 Dont forget to run: `$ knex migrate:latest ` in order for the migration to take place!
 
+#### Routes: API
+
+#### Routes: Views
+
+#### Controller
+
+#### Model
+
+
+### .chainfile.js
+
+
+
 
 
 
@@ -345,4 +358,3 @@ Enjoy!
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
-.
