@@ -3,7 +3,7 @@
 ### Requirements
   * [npm](https://www.npmjs.com/get-npm)
   * [express](https://expressjs.com/)
-  * Postgres (https://www.postgresql.org/)
+  * [Postgres](https://www.postgresql.org/)
 
   If you do not have express installed you can easily install it with npm
 ```
@@ -279,6 +279,8 @@ For more information to work around Chinchay CLI:
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
 Please make sure to update tests as appropriate.
-.
+
+  * [Github Repository](https://github.com/afontainec/chinchay)
+  * [Issues](https://github.com/afontainec/chinchay/issues)
+  * [Pull Requests](https://github.com/afontainec/chinchay/pulls)
