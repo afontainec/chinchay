@@ -1,9 +1,9 @@
 ## CLI Tutorial
 
 ### Requirements
-* npm
-* express
-* Postgres
+  * [npm](https://www.npmjs.com/get-npm)
+  * [express](https://expressjs.com/)
+  * Postgres (https://www.postgresql.org/)
 
   If you do not have express installed you can easily install it with npm
 ```
@@ -12,9 +12,9 @@ $ npm install express -g
 
 ## Create nodejs app with express
 
-Create a nodejs app called: test_saw
+Create a nodejs app called: test_chinchay
 ```
-$ express test_saw && cd test_saw
+$ express test_chinchay && cd test_chinchay
 ```
 
 We will install drivers to use PostgresSQL database. we will use knexjs and pg
@@ -48,7 +48,7 @@ $ psql
 This should open up postgresql console. Run the following command:
 
 ```
-postgres=# CREATE DATABASE test_saw;
+postgres=# CREATE DATABASE test_chinchay;
 ```
 *NOTE:* Depending on your default user and psql version the syntax of the previous line may vary.
 
@@ -118,7 +118,7 @@ const path = require('path');
 module.exports = {
   test: {
     client: 'pg',
-    connection: 'postgres://localhost:5432/test_saw',
+    connection: 'postgres://localhost:5432/test_chinchay',
     migrations: {
       directory: path.join(__dirname, '/database/migrations'),
     },
@@ -129,7 +129,7 @@ module.exports = {
   },
   development: {
     client: 'pg',
-    connection: 'postgres://localhost:5432/test_saw',
+    connection: 'postgres://localhost:5432/test_chinchay',
     migrations: {
       directory: path.join(__dirname, '/database/migrations'),
     },
@@ -140,7 +140,7 @@ module.exports = {
   },
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL || 'postgres://localhost:5432/test_saw',
+    connection: process.env.DATABASE_URL || 'postgres://localhost:5432/test_chinchay',
     migrations: {
       directory: path.join(__dirname, '/database/migrations'),
     },
@@ -151,7 +151,7 @@ module.exports = {
   },
   staging: {
     client: 'pg',
-    connection: process.env.DATABASE_URL || 'postgres://localhost:5432/test_saw',
+    connection: process.env.DATABASE_URL || 'postgres://localhost:5432/test_chinchay',
     migrations: {
       directory: path.join(__dirname, '/database/migrations'),
     },
@@ -270,6 +270,11 @@ and visit localhost:3000/coffee
 Click new to create a coffee!
 
 Enjoy!
+
+For more information to work around Chinchay CLI:
+
+[See the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)
+
 
 
 ## Contributing
