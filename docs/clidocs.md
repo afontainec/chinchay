@@ -4,7 +4,7 @@ Do not lose time creating over and over the same files. With Chinchay Command Li
 
 ### The "new" Command
 
-This command will create migrations, models, controllers, views and routes for a given relation. You can use it by running:
+This command will create migrations, models, controllers, views and routes for a given relation. Basically with just one command you are all set to for the CRUD (create, read, update, delete) of than relation. You can use it by running:
 
 ```
 $ chinchay new relation_name
@@ -83,9 +83,81 @@ Go to the [knex documentation](https://knexjs.org/) for more info of how to work
 
 Dont forget to run: `$ knex migrate:latest ` in order for the migration to take place!
 
-#### Routes: API
+#### Routes
 
-#### Routes: Views
+The command also generates a lot of routes to work around with this relation. 
+This routes are generated in two separated files: relationName.js and relationNameAPI.js. Both files are created within the directory specified in the [chainfile](#.chainfile.js). This will be explained further on but feel free to go to the [chainfile section](#.chainfile.js).
+
+The CRUD operations are in the following routes:
+
+##### C for CREATE
+
+* **URL:** _POST_ /relation_name/new
+* **File:** relationName.js
+* **Description:** This URL creates a new entry in the relation. It recieved a JSON object as parameter with the columns name.
+* **EXAMPLE:** Here is an example using requestify:
+```javascript
+requestify.post('/relation_name/new', {
+    name: 'The name of the entry',
+    price: 20
+  });
+```
+This will create the entry with the given name and price.
+
+##### R for READ
+
+* **URL:** _GET_ /relation_name/:id
+* **File:** relationNameAPI.js
+* **Description:** This URL returns the JSON corresponding to the entry with the given id.
+* **EXAMPLE:** Here is an example using requestify:
+```javascript
+const response = await requestify.get('/relation_name/1');
+const body = response.getBody();
+```
+
+
+* **URL:** *_DELETE_ /relation_name/:id
+* **File:** relationName.js
+* **Description:** This URL deletes an entry in the relation.
+* **EXAMPLE:** Here is an example using requestify:
+```javascript
+requestify.delete('/relation_name/1');
+```
+This will delete the entry with id = 1.
+
+##### U for UPDATE
+
+* **URL:** _PUT_ _POST_ _PATCH_ /relation_name/:id/edit
+* **File:** relationName.js
+* **Description:** This URL updates an entry in the relation. it recieved a JSON object as parameter with the columns name.
+* **EXAMPLE:** Here is an example using requestify:
+```javascript
+requestify.put('/relation_name/1/edit', {
+    name: 'This is the new name',
+    price: 10
+  });
+```
+This will update the name and price of the entry with id = 1. It will only update the columns specified, therefore if the price was not included in the JSON, only the name will be updated.
+
+* **URL:** *_DELETE_ /relation_name/:id
+* **File:** relationName.js
+* **Description:** This URL deletes an entry in the relation.
+* **EXAMPLE:** Here is an example using requestify:
+```javascript
+requestify.delete('/relation_name/1');
+```
+This will delete the entry with id = 1.
+
+
+
+* _GET_ /relation_name/
+* _GET_ /relation_name/new
+* _GET_ /relation_name/:id
+* _GET_ /relation_name/:id/edit
+
+All this files render a view. You can edit this views on the [view files created](#views)
+
+#### Views
 
 #### Controller
 
