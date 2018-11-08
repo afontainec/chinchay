@@ -11,7 +11,7 @@ const assert = chai.assert; //eslint-disable-line
 
 
 // Our parent block
-describe('TABLE GATEWAY: add rawSELECT', () => { // eslint-disable-line
+describe('TABLE GATEWAY: add rawWhere', () => { // eslint-disable-line
 
   before(async () => { // eslint-disable-line
     await knex.seed.run();

@@ -157,8 +157,11 @@ class Table {
   }
 
   find(whereQuery, columns, options) {
+    if (!options && Utils.isJSON(columns)) {
+      options = columns;
+      columns = 'all';
+    }
     const query = this.findQuery(whereQuery, columns, options);
-    console.log(query.toString());
 
     return Table.fetchQuery(query);
   }
