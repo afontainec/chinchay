@@ -1,6 +1,6 @@
 ## Command Line Interface Documentation
 
-Do not lose time creating over and over the same files. With Chinchay Command Line with only one command you can create several files all at once.
+should change this. Do not lose time creating over and over the same files. With Chinchay Command Line with only one command you can create several files all at once.
 
 ### The "new" Command
 
