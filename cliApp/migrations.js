@@ -13,7 +13,7 @@ const createFile = async(table_name, values, config, knexConfig) => {
 const getFileName = (knexConfig, table_name) => {
   const now = new Date();
   let filename = `${1900 + now.getYear()}`;
-  filename += now.getMonth() < 10 ? `0${now.getMonth()}` : now.getMonth();
+  filename += now.getMonth() < 9 ? `0${now.getMonth() + 1}` : now.getMonth() + 1;
   filename += now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
   filename += now.getHours() < 10 ? `0${now.getHours()}` : now.getHours();
   filename += now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes();
