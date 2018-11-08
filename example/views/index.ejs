@@ -17,15 +17,15 @@
         <% for (var i = 0; i < keys.length; i++) { %>
           <td><%= results[j][keys[i]] %></td>
         <% } %>
-        <td> <a href="/$TABLE_NAME$/<%=results[j].id %>">Ver</a></td>
-        <td> <a href="/$TABLE_NAME$/<%=results[j].id%>/edit">Editar</a></td>
+        <td> <a href="/$TABLE_NAME$/<%=results[j].id %>">Show</a></td>
+        <td> <a href="/$TABLE_NAME$/<%=results[j].id%>/edit">Edit</a></td>
 
       </tr>
       <% } %>
     </tbody>
   </table>
   <div style="margin: auto; text-align: center">
-    <a href="/$TABLE_NAME$/new">Nuevo</a>
+    <a href="/$TABLE_NAME$/new">New</a>
   </div>
 </body>
 </html>
