@@ -157,7 +157,12 @@ class Table {
   }
 
   find(whereQuery, columns, options) {
+    if (!options && Utils.isJSON(columns)) {
+      options = columns;
+      columns = 'all';
+    }
     const query = this.findQuery(whereQuery, columns, options);
+
     return Table.fetchQuery(query);
   }
 
@@ -203,7 +208,7 @@ class Table {
 
   makeQuery(query, selectType, whereQuery, columns, options) {
     this.addSelect(selectType, query, columns, options);
-    query = this.addWhere(query, whereQuery);
+    query = this.addWhere(query, whereQuery, options);
     query = this.addAdvancedOptions(query, options);
     return query;
   }
@@ -240,12 +245,16 @@ class Table {
     return query.count();
   }
 
-  addWhere(query, whereQuery) {
+  addWhere(query, whereQuery, options) {
+    options = options || {};
     if ((typeof whereQuery) !== 'object') whereQuery = {};
     const especialQuery = this.filterEspecialQuery(whereQuery);
     query.where(whereQuery);
     for (let i = 0; i < especialQuery.length; i++) {
       query.andWhere(especialQuery[i][0], especialQuery[i][1], especialQuery[i][2]);
+    }
+    if (options.rawWhere) {
+      query = Table.addRawWhere(query, options.rawWhere);
     }
     return query;
   }
@@ -438,6 +447,17 @@ class Table {
         query.select(knex.raw(select[0], select[1]));
       } else {
         query.select(knex.raw(select));
+      }
+    }
+    return query;
+  }
+
+  static addRawWhere(query, where) {
+    if (where) {
+      if (Array.isArray(where)) {
+        query.where(knex.raw(where[0], where[1]));
+      } else {
+        query.where(knex.raw(where));
       }
     }
     return query;
