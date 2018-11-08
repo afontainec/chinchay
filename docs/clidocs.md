@@ -1,6 +1,8 @@
 ## Command Line Interface Documentation
 
-should change this. Do not lose time creating over and over the same files. With Chinchay Command Line with only one command you can create several files all at once.
+Creating CRUD (Create, Read, Update, Delete) operations has never being easier than with Chinchay. Use a intuitive and easy-to-use CLI to get started, generating Model View Controllers with just one command.
+
+Do not get stuck making complex SQL queries. Chinchay makes that part easy using readable JSON object.
 
 ### The "new" Command
 
