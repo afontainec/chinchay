@@ -2,16 +2,16 @@ const path = require('path');
 
 module.exports = {
   models: {
-    directory: path.join(process.cwd(), '/chinchap/models')
+    directory: path.join(process.cwd(), '/chinchapp/models')
   },
   controllers: {
-    directory: path.join(process.cwd(), '/chinchap/controllers')
+    directory: path.join(process.cwd(), '/chinchapp/controllers')
   },
   views: {
-    directory: path.join(process.cwd(), '/chinchap/views')
+    directory: path.join(process.cwd(), '/chinchapp/views')
   },
   routes: {
-    directory: path.join(process.cwd(), '/chinchap/routes')
+    directory: path.join(process.cwd(), '/chinchapp/routes')
   },
   knex:  path.join(process.cwd(), 'knex.js')
 };
