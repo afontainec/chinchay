@@ -42,7 +42,7 @@ function getConfig() {
 }
 
 function getKnexConfig() {
-  const p = path.join(process.cwd(), 'knexfile.js');
+  const p = config.knexfile;
   const environment = process.env.NODE_ENV || 'development';
   if (fs.existsSync(p)) {
     return require(p)[environment]; // eslint-disable-line
@@ -53,7 +53,7 @@ function getKnexConfig() {
 function defaultKnex() {
   return {
     migrations: {
-      directory: path.join(__dirname, '../generated/migrations'),
+      directory: path.join(process.cwd(), '/chinchapp/migrations'),
     },
   };
 }
