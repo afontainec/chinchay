@@ -1,11 +1,10 @@
 # Chinchay ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-Creating CRUD (Create, Read, Update, Delete) operations has never being easier than with Chinchay.
-Use a intuitive and easy-to-use CLI to get started, generating Model View Controllers with just one command.
+Building a web app can be very time consuming and tedious, but Chinchay will help you speed up yor development.Use Chichay CLI to automate the CRUD (Create, Read, Update, Delete) operations with a MVC (Model View Controller) architecture pattern. You can easily configure it and modify it. It you are a bit lost, Chinchay does provide a default Structure.
 
-Do not get stuck making complex SQL queries. Chinchay makes that part easy using readable JSON object.
+But it does not stop there! Chinchay offers a fully featured, flexible and extendable Models to make quering easier to your Database easier. With no sql knowledge you can easily make complex queries and more.
 
-Works best with Express.js, Node.js and Postgres.
+
 
 Any Contribution are welcome!
 
@@ -21,13 +20,15 @@ For more information visit the [Chinchay website](https://afontainec.github.io/c
 Use a Command Line Interface to make a web app that creates, read, updated and deletes entries from a Postgres Database. Do it only with one simple command:
 
 ```
-$ chinchay new coffee
+$ chinchay new relation_name
 ```
 
 Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
+* [Go to the CLI documentation](https://afontainec.github.io/chinchay/clidocs)
+
 
 ## Extendable Models
 
-Do not get stuck making complex SQL queries. Chinchay makes that part easy using readable JSON object.
+Do not get stuck making complex SQL queries. Chinchay offers a fully featured, flexible and extendable Models to make quering easier to your Database easier. With no sql knowledge you can easily make complex queries and more.
