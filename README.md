@@ -26,7 +26,7 @@ $ chinchay new relation_name
 Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
-* [Go to the CLI documentation](https://afontainec.github.io/chinchay/clidocs)
+* [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)
 
 
 ## Extendable Models

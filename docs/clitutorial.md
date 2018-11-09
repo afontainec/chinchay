@@ -96,6 +96,7 @@ We will add the following:
     ├── routes
     ├── views              
     ├── app.js
+    ├── knexfile.js        
     ├── knex.js        
     ├── package-lock.json
     └── package.json
@@ -213,9 +214,10 @@ Here we are defining which directories will hold the  the models, the controller
 
 Install chinchay:
 ```
-$ npm install chinchay -g -s
+$ npm install chinchay -s
+$ npm install chinchay -g
 ```
-This will allow you to run chinchay from outside.
+This will allow you to run chinchay CLI.
 
 Lets build a new relation called coffee and the files to work around with it:
 
@@ -258,7 +260,7 @@ Last, but not least, add the following lines to the app.js
 var coffee = require('./routes/coffee');
 var coffeeAPI = require('./routes/coffeeAPI');
 app.use('/', coffee);
-app.use('/api', coffeeAPI);
+app.use('/', coffeeAPI);
 ```
 Now run the app
 ```
@@ -274,13 +276,3 @@ Enjoy!
 For more information to work around Chinchay CLI:
 
 [See the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)
-
-
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-Please make sure to update tests as appropriate.
-
-  * [Github Repository](https://github.com/afontainec/chinchay)
-  * [Issues](https://github.com/afontainec/chinchay/issues)
-  * [Pull Requests](https://github.com/afontainec/chinchay/pulls)
