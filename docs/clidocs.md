@@ -37,19 +37,119 @@ You can run `npm start` and	 navigate to http://localhost:3000/relation_name to 
 
 ### Working with the generated API:
 
-The following URLs are now accessible:
+Chinchay will build a full api so you can start working with your CRUD operation. Here is a list of the URL created and examples of how to work with them:
 
-#### POST /relation_name/new
 
-	* **Description:** Receives a JSON object and, in the database, inserts an entry with values defined in the JSON.
-	* **Example:** 
-      * **Expected Output:**
+#### POST /api/relation_name/new
+
+##### **Description:** Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
+##### **Example:**  For this examples, we will asume that the relation has a column name of type string and a column price of type integer.
+      
+The following:              
+      ````javascript
+      Requestify.post('http://localhost:3000/api/relation_name/new', {name: 'this is the name', price: 100});
+      ````
+
+Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = 100.
+
+The following:              
+      ````javascript
+      Requestify.post('http://localhost:3000/api/relation_name', {name: 'this is the name',});
+      ````
+
+Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = null.
+
+
+#### GET /api/relation_name/:id
+
+##### **Description:** Returns a JSON object representing the object with id = :id. If it does not exists reports the error.
+##### **Example:** 
+
+The following:              
+      ````javascript
+      Requestify.get('http://localhost:3000/api/relation_name/1');
+      ````
+
+Will return a JSON representing the object with id = 1 within the data key:
+
+    ````javascript
+    {
+    message: 'the message',
+    data:{  
+  },
+    _links: {}
+    }
+    ```` 
+
+
+#### GET /api/relation_name/find
+
+##### **Description:** Returns an array with all the entries matching the given query. If the query its empty it will return all the entries. 
+##### **Simple Queries:**  Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
+
+The following:              
+      ````javascript
+      Requestify.get('http://localhost:3000/api/relation_name/find');
+      ````
+
+Will return an array with all the entries.
+
+The following:              
+      ````javascript
+      Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
+      ````
+
+Will return an array of all the entries were price = 100:
+
+
+The following:              
+      ````javascript
+      Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=somename');
+      ````
+
+Will return an array of all the entries were price = 100 and name = "somename":
+
+
+##### **Complex Queries:**  Here are some examples of how to work with more complex queries. In the query you should pass an array with two values, as such: key=command,value. The query will translate to SQL as follows `WHERE  key command value`.
+
+The following:              
+      ````javascript
+      Requestify.get('http://localhost:3000/api/relation_name/find?price=>,90');
+      ````
+
+Some queries more complex are also available, this will return an array of all the entries were price > 90:
+
+The following:              
+      ````javascript
+      Requestify.get('http://localhost:3000/api/relation_name/find?price=in,100,110');
+      ````
+
+Will return an array of all the entries were price is either 100 or 110:
+
+  
+
 
 #### PUT PATCH POST /relation_name/:id/edit
 
-	* **Description:** Receives a JSON object and, in the database, updates the values defined in the JSON for the entry with id = :id.
-	* **Example:** 
-      * **Expected Output:**
+##### **Description:** This URL can be called either with PUT, PATCH or POST. It receives a JSON object and, in the database, updates the values defined in the JSON for the entry with id = :id. It will response if it was successful the update and the entry updated.
+
+##### **Example:** 
+
+The following:              
+      ````javascript
+      Requestify.post('http://localhost:3000/api/relation_name/1/edit', {name: 'this is another name', price: 110});
+      ````
+
+Will change in the database the entry with id = 1 in the relation relation_name the values with name and price to "this is another name" and 110.
+
+
+The following:              
+      ````javascript
+      Requestify.post('http://localhost:3000/api/relation_name/1/edit', {price: 90});
+      ````
+
+Will change in the database the entry with id = 1 in the relation relation_name the value price to 90 and leave the name intact.
+  
 
 #### DELETE /relation_name/:id
 
