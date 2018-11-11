@@ -4,6 +4,74 @@ Creating CRUD (Create, Read, Update, Delete) operations has never being easier t
 
 Do not get stuck making complex SQL queries. Chinchay makes that part easy using readable JSON object.
 
+
+### Getting Started
+
+First things first, we need a Node.js app with express,	knex and postgresql. So go ahead and create it, if you are lost or have no idea what are we talking about, no worries, follow our step-by-step [CLI Tutorial](/chinchay/clitutorial).
+
+Once you have your app nice and ready, lets add the Chinchay Dependency, run `npm install chinchay -s` and `npm install chinchay -g`. The **-g** its really important for the CLI to work.
+
+Now its time for magic,  run the command: 
+```$ chinchay new relation_name
+```
+
+Where _relation_name_ is the name of the relation you want to set the CRUD operations.
+
+This command will create 2 route files, 1 controller, 1 model, 4 views files and 1 migration file. We will explain how to workaround each file created. You can modify the directory where they were saved by creating a .chainfile.js, feel free to go to [chainfile section](#.chainfile.js) for more information.
+
+
+We need to declare the schema of our relation, we do this in the migration file. Go ahead and do so, if you don't have a clue of what are we talking about, check our [migration section](#migration). Don't forget to run: `$ knex migrate:latest`
+
+Lastly we add to the app.js file the routes by adding the following lines:
+
+```javascript
+var relation_name = require('./routes/relation_name');
+var relation_nameAPI = require('./routes/relation_nameAPI');
+app.use('/', relation_name);
+app.use('/', relation_nameAPI);
+```
+
+
+You can run `npm start` and	 navigate to http://localhost:3000/relation_name to start working with your Chinchay app!
+
+
+### Working with the generated API:
+
+The following URLs are now accessible:
+
+#### POST /relation_name/new
+
+	* **Description:** Receives a JSON object and, in the database, inserts an entry with values defined in the JSON.
+	* **Example:** 
+      * **Expected Output:**
+
+#### PUT PATCH POST /relation_name/:id/edit
+
+	* **Description:** Receives a JSON object and, in the database, updates the values defined in the JSON for the entry with id = :id.
+	* **Example:** 
+      * **Expected Output:**
+
+#### DELETE /relation_name/:id
+
+	* **Description:** In the database deletes the entry with id = :id.
+	* **Example:** 
+      * **Expected Output:**
+ 
+The Following URLs are created in a separated file: relationNameAPI.js.
+
+#### GET /api/relation_name/find
+
+#### GET /api/relation_name/count
+
+
+Beside all this URLs, there are some URLs that render web pages:
+
+#### GET /relation_name/
+#### GET /relation_name/:id
+#### GET /relation_name/:id/edit
+
+
+
 ### The "new" Command
 
 This command will create migrations, models, controllers, views and routes for a given relation. Basically with just one command you are all set to for the CRUD (create, read, update, delete) of than relation. You can use it by running:
