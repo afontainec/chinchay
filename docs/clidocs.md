@@ -11,7 +11,7 @@ First things first, we need a Node.js app with express,	knex and postgresql. So 
 
 Once you have your app nice and ready, lets add the Chinchay Dependency, run `npm install chinchay -s` and `npm install chinchay -g`. The **-g** its really important for the CLI to work.
 
-Now its time for magic,  run the command: 
+Now its time for magic,  run the command:
 ```$ chinchay new relation_name
 ```
 
@@ -44,26 +44,51 @@ Chinchay will build a full api so you can start working with your CRUD operation
 
 ##### **Description:** Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
 ##### **Example:**  For this examples, we will asume that the relation has a column name of type string and a column price of type integer.
-      
-The following:              
-      ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name/new', {name: 'this is the name', price: 100});
-      ````
-
-Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = 100.
 
 The following:              
       ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name', {name: 'this is the name',});
+      Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
       ````
 
-Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = null.
+Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = 100. The Return is as follows:
+```javascript
+{
+  "message": "Elemento guardado exitosamente",
+  "data": {
+  "id": 1,
+  "name": "this is the name",
+  "price": 100,
+  "created_at": "2018-11-11T20:20:20.650Z",
+  "updated_at": "2018-11-11T20:20:20.650Z"
+  }
+}
+```
+
+The following:              
+      ````javascript
+      Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the name"});
+      ````
+
+Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = null. The response is:
+
+```javascript
+{
+  "message": "Elemento guardado exitosamente",
+  "data": {
+    "id": 2,
+    "name": "this is the name",
+    "price": null,
+    "created_at": "2018-11-11T20:22:01.067Z",
+    "updated_at": "2018-11-11T20:22:01.067Z"
+  }
+}
+```
 
 
 #### GET /api/relation_name/:id
 
 ##### **Description:** Returns a JSON object representing the object with id = :id. If it does not exists reports the error.
-##### **Example:** 
+##### **Example:**
 
 The following:              
       ````javascript
@@ -79,12 +104,12 @@ Will return a JSON representing the object with id = 1 within the data key:
   },
     _links: {}
     }
-    ```` 
+    ````
 
 
 #### GET /api/relation_name/find
 
-##### **Description:** Returns an array with all the entries matching the given query. If the query its empty it will return all the entries. 
+##### **Description:** Returns an array with all the entries matching the given query. If the query its empty it will return all the entries.
 ##### **Simple Queries:**  Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
 
 The following:              
@@ -92,7 +117,43 @@ The following:
       Requestify.get('http://localhost:3000/api/relation_name/find');
       ````
 
-Will return an array with all the entries.
+Will return an array with all the entries:
+
+```javascript
+{
+"message": "Busqueda encontrada exitosamente",
+  "data": [
+      {
+    "id": 1,
+    "name": "this is the name",
+    "price": 100,
+    "created_at": "2018-11-11T20:20:20.650Z",
+    "updated_at": "2018-11-11T20:20:20.650Z"
+    },
+      {
+    "id": 2,
+    "name": "this is the name",
+    "price": null,
+    "created_at": "2018-11-11T20:22:01.067Z",
+    "updated_at": "2018-11-11T20:22:01.067Z"
+    },
+      {
+    "id": 3,
+    "name": "other",
+    "price": 100,
+    "created_at": "2018-11-11T20:23:18.297Z",
+    "updated_at": "2018-11-11T20:23:18.297Z"
+    },
+      {
+    "id": 4,
+    "name": "expensive",
+    "price": 110,
+    "created_at": "2018-11-11T20:23:31.159Z",
+    "updated_at": "2018-11-11T20:23:31.159Z"
+    }
+  ],
+}
+```
 
 The following:              
       ````javascript
@@ -126,14 +187,14 @@ The following:
 
 Will return an array of all the entries were price is either 100 or 110:
 
-  
+
 
 
 #### PUT PATCH POST /relation_name/:id/edit
 
 ##### **Description:** This URL can be called either with PUT, PATCH or POST. It receives a JSON object and, in the database, updates the values defined in the JSON for the entry with id = :id. It will response if it was successful the update and the entry updated.
 
-##### **Example:** 
+##### **Example:**
 
 The following:              
       ````javascript
@@ -149,14 +210,14 @@ The following:
       ````
 
 Will change in the database the entry with id = 1 in the relation relation_name the value price to 90 and leave the name intact.
-  
+
 
 #### DELETE /relation_name/:id
 
 	* **Description:** In the database deletes the entry with id = :id.
-	* **Example:** 
+	* **Example:**
       * **Expected Output:**
- 
+
 The Following URLs are created in a separated file: relationNameAPI.js.
 
 #### GET /api/relation_name/find
