@@ -47,6 +47,10 @@ function getKnexConfig() {
   if (fs.existsSync(p)) {
     return require(p)[environment]; // eslint-disable-line
   }
+  const defaultPath = path.join(process.cwd(), '/knexfile.js');
+  if (fs.existsSync(defaultPath)) {
+    return require(defaultPath)[environment]; // eslint-disable-line
+  }
   return defaultKnex(); // eslint-disable-line
 }
 

@@ -108,7 +108,7 @@ const find = (req, res) => {
 const findById = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.params.id, columns, options).then((results) => {
+  $MODELNAME$.findById(req.params.id, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
