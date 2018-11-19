@@ -15,7 +15,7 @@ const assert = chai.assert; //eslint-disable-line
 
 
 // Our parent block
-describe('TABLE GATEWAY: FIND WITH COMPLEX WHERE', () => { // eslint-disable-line
+describe('TABLE GATEWAY: COUNT WITH COMPLEX WHERE', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line
     await knex.seed.run();
   });
