@@ -71,10 +71,10 @@ function getValues(table_name) {
     MODELFILENAME,
     MODELNAME,
     CONTROLLERNAME,
-    CTRL2MODELPATH: path.posix.relative(config.controllers.directory, path.join(config.models.directory, MODELFILENAME)),
-    ROUTE2CTRL: path.posix.relative(config.routes.directory, path.join(config.controllers.directory, CONTROLLERNAME)),
-    CTRL2VIEWPATH: path.posix.relative(config.controllers.directory, path.join(config.views.directory, MODELFILENAME)),
-    TABLEPATH: path.posix.relative(config.controllers.directory, configPath.TABLEPATH),
+    CTRL2MODELPATH: path.relative(config.controllers.directory, path.join(config.models.directory, MODELFILENAME)).replace(/\\/g, '/'),
+    ROUTE2CTRL: path.relative(config.routes.directory, path.join(config.controllers.directory, CONTROLLERNAME)).replace(/\\/g, '/'),
+    CTRL2VIEWPATH: path.relative(config.controllers.directory, path.join(config.views.directory, MODELFILENAME)).replace(/\\/g, '/'),
+    TABLEPATH: path.relative(config.controllers.directory, configPath.TABLEPATH).replace(/\\/g, '/'),
     TABLE_NAME: table_name,
   };
 }

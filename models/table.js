@@ -354,9 +354,11 @@ class Table {
 
   count(whereQuery, options) {
     const f = async () => {
+      options = options || {};
+      const groupBy = options.groupBy;
       const query = this.countQuery(whereQuery, options);
       const results = await Table.fetchQuery(query);
-      if (results.length === 1) {
+      if (!groupBy) {
         return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
       }
       for (let i = 0; i < results.length; i++) {
