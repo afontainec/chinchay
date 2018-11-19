@@ -83,7 +83,7 @@ const update = (req, res) => {
 };
 
 const del = (req, res) => {
-  $MODELNAME$.del(req.params.id).then((results) => {
+  $MODELNAME$.delele(req.params.id).then((results) => {
     const json = httpResponse.success('Elemento eliminado exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
