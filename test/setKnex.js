@@ -7,7 +7,7 @@ const knex = require('../knex');
 const otherKnex = require('../otherKnex');
 const Table = require('..').Table;
 
-const Places = new Table('places', otherKnex);
+let Places = new Table('places', otherKnex);
 const BeforePlaces = new Table('places');
 const ClearDB = require('../db/seeds/test/00-cleardb');
 
@@ -19,7 +19,7 @@ const assert = chai.assert; //eslint-disable-line
 describe('TABLE GATEWAY: set knex', () => { // eslint-disable-line
 
   before(async () => { // eslint-disable-line
-    await knex.seed.run();
+    await ClearDB.seed(knex);
     await ClearDB.seed(otherKnex);
   });
 
@@ -33,14 +33,23 @@ describe('TABLE GATEWAY: set knex', () => { // eslint-disable-line
   });
 
   it('does not change other instances',  async () => { // eslint-disable-line
-    throw new Error('NOT IMPLEMENTED');
+    const NewPlace = new Table('places');
+    const results = await NewPlace.find();
+    assert.equal(results.length, 0);
   });
 
   it('Set knex afterwards',  async () => { // eslint-disable-line
-    throw new Error('NOT IMPLEMENTED');
+    Places = new Table('places');
+    let results = await Places.find();
+    assert.equal(results.length, 0);
+    Places.setKnex(otherKnex);
+    results = await Places.find();
+    assert.equal(results.length, 1);
   });
 
   it('does not change other instances',  async () => { // eslint-disable-line
-    throw new Error('NOT IMPLEMENTED');
+    const NewPlace = new Table('places');
+    const results = await NewPlace.find();
+    assert.equal(results.length, 0);
   });
 });

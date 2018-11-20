@@ -456,9 +456,9 @@ class Table {
   static addRawSelect(query, select) {
     if (select) {
       if (Array.isArray(select)) {
-        query.select(this.knex.raw(select[0], select[1]));
+        query.select(knex.raw(select[0], select[1]));
       } else {
-        query.select(this.knex.raw(select));
+        query.select(knex.raw(select));
       }
     }
     return query;
@@ -467,9 +467,9 @@ class Table {
   static addRawWhere(query, where) {
     if (where) {
       if (Array.isArray(where)) {
-        query.where(this.knex.raw(where[0], where[1]));
+        query.where(knex.raw(where[0], where[1]));
       } else {
-        query.where(this.knex.raw(where));
+        query.where(knex.raw(where));
       }
     }
     return query;
@@ -606,7 +606,7 @@ class Table {
   }
 
   static mergeRawSelect(rawSelect, input) {
-    const q = this.knex.queryBuilder();
+    const q = knex.queryBuilder();
     Table.addRawSelect(q, rawSelect);
     let string = q.toString();
     Table.addRawSelect(q, input);
