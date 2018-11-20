@@ -15,7 +15,7 @@ function getConfig() {
   return require('.chainfile'); // eslint-disable-line
 }
 
-Table.setKnex(knex);
+Table.setDefaultKnex(knex);
 
 module.exports = {
   Table,

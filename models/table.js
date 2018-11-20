@@ -8,8 +8,10 @@ const Message = require('codemaster').message;
 
 class Table {
 
-  constructor(table_name) {
+  constructor(table_name, givenKnex) {
     this.table_name = table_name;
+    this.knex = givenKnex || knex;
+    if (!this.knex) throw new Error('Knex param missing.');
   }
 
   toString() {
@@ -17,15 +19,23 @@ class Table {
   }
 
   table() {
-    return knex(this.table_name);
+    return this.knex(this.table_name);
   }
 
-  static setKnex(elem) {
+  static setDefaultKnex(elem) {
     knex = elem;
   }
 
-  static getKnex() {
+  static getDefaultKnex() {
     return knex;
+  }
+
+  setKnex(elem) {
+    this.knex = elem;
+  }
+
+  getKnex() {
+    return this.knex;
   }
 
 
@@ -36,7 +46,7 @@ class Table {
   new() {
     const table_name = this.table_name;
     return new Promise((resolve, reject) => {
-      knex('information_schema.columns').select('column_name').where({
+      this.knex('information_schema.columns').select('column_name').where({
         table_name,
       }).then((attributes) => {
           // check if attributes is an array
@@ -311,7 +321,7 @@ class Table {
   getAttributesNames() {
     const table_name = this.table_name;
     return new Promise((resolve, reject) => {
-      knex('information_schema.columns').select('column_name').where({
+      this.knex('information_schema.columns').select('column_name').where({
         table_name,
       }).then((results) => {
           // check if results is an array
