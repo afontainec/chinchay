@@ -38,15 +38,23 @@ class HATEOAS {
 
   compileUri(uri, values) {
     values = values || {};
-    console.log(uri);
+    const parts = this.divideUri(uri);
+    if (!parts) return uri;
+    const replacement = values[parts.middle];
+    if (!replacement) throw new Error(`missing value ${parts.middle}`);
+    return parts.first + replacement + this.compileUri(parts.second, values);
+  }
+
+  divideUri(uri) {
+    const parts = {};
     const index = uri.indexOf(':');
-    if (index === -1) return uri;
-    const first = uri.substring(0, index);
-    let lastIndex = uri.indexOf('/');
-    lastIndex = lastIndex < index ? uri.length : lastIndex;
-    const middle = uri.substring(index + 1, lastIndex);
-    const second = uri.substring(lastIndex + 1, uri.length);
-    console.log(first, middle, second);
+    if (index === -1) return null;
+    parts.first = uri.substring(0, index);
+    parts.second = uri.substring(index, uri.length);
+    const lastIndex = parts.second.indexOf('/') === -1 ? parts.second.length : parts.second.indexOf('/');
+    parts.middle = parts.second.substring(1, lastIndex);
+    parts.second = parts.second.substring(lastIndex, parts.second.length);
+    return parts;
   }
 
 
