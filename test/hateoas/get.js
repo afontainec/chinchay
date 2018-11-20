@@ -67,4 +67,18 @@ describe('HATEOAS: get', () => { // eslint-disable-line
     assert.equal(array[0].type, 'GET');
     done();
   });
+
+  it('override link',  (done) => { // eslint-disable-line
+    HATEOAS.addLink('self', '/api/places/:id');
+    const array = HATEOAS.get({ id: 1 });
+    assert.isArray(array);
+    assert.equal(array.length, 2);
+    assert.equal(array[0].rel, 'index');
+    assert.equal(array[0].href, '/api/places');
+    assert.equal(array[0].type, 'GET');
+    assert.equal(array[1].rel, 'self');
+    assert.equal(array[1].href, '/api/places/1');
+    assert.equal(array[1].type, 'GET');
+    done();
+  });
 });
