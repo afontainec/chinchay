@@ -2,8 +2,11 @@ const $MODELNAME$ = require('$CTRL2MODELPATH$');
 const path = require('path');
 const httpResponse = require('codemaster').httpResponse;
 const Table = require('chinchay').Table;
+const HateoasGenerator = require('chinchay').Hateoas;
+
 
 const viewPath = '$CTRL2VIEWPATH$';
+
 
 const newElement = (req, res) => {
   $MODELNAME$.new().then((result) => {
@@ -61,6 +64,18 @@ const edit = (req, res) => {
 };
 
 // //////////// API ///////////////
+
+const HATEOAS = new HateoasGenerator();
+initializeHATEOAS();
+
+function initializeHATEOAS() {
+  HATEOAS.addLink('self', '/api/$MODELNAME$/:id');
+  HATEOAS.addLink('edit', '/api/$MODELNAME$/:id/edit', 'POST');
+  HATEOAS.addLink('delete', '/api/$MODELNAME$/:id/delete', 'DELETE');
+  HATEOAS.addLink('new', '/api/$MODELNAME$/new', 'POST');
+  HATEOAS.addLink('all', '/api/$MODELNAME$/find');
+  HATEOAS.addLink('count', '/api/$MODELNAME$/count');
+}
 
 const create = (req, res) => {
   $MODELNAME$.save(req.body).then((results) => {
