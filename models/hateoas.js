@@ -15,23 +15,35 @@ class HATEOAS {
     delete this.uris[name];
   }
 
-  get() {
+  get(values) {
+    values = values || {};
     const links = [];
     const keys = Object.keys(this.uris);
     for (let i = 0; i < keys.length; i++) {
-      const elem = this.buildElem(keys[i]);
+      const elem = this.buildElem(keys[i], values);
       links.push(elem);
     }
     return links;
   }
 
-  buildElem(key) {
+  buildElem(key, values) {
     const URI = this.uris[key];
+    const href = this.compileUri(URI.uri, values);
     return {
       rel: key,
-      href: URI.uri,
+      href,
       type: URI.type || 'GET',
     };
+  }
+
+  compileUri(uri, values) {
+    values = values || {};
+    console.log(uri);
+    const index = uri.indexOf(':');
+    if (index === -1) return uri;
+    const first = uri.substring(0, index);
+    const second = uri.substring(index + 1, uri.length);
+    console.log(first, '-sep-', second);
   }
 
 
