@@ -42,8 +42,11 @@ class HATEOAS {
     const index = uri.indexOf(':');
     if (index === -1) return uri;
     const first = uri.substring(0, index);
-    const second = uri.substring(index + 1, uri.length);
-    console.log(first, '-sep-', second);
+    let lastIndex = uri.indexOf('/');
+    lastIndex = lastIndex < index ? uri.length : lastIndex;
+    const middle = uri.substring(index + 1, lastIndex);
+    const second = uri.substring(lastIndex + 1, uri.length);
+    console.log(first, middle, second);
   }
 
 
