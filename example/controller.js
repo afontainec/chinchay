@@ -69,12 +69,12 @@ const HATEOAS = new HateoasGenerator();
 initializeHATEOAS();
 
 function initializeHATEOAS() {
-  HATEOAS.addLink('self', '/api/$MODELNAME$/:id');
-  HATEOAS.addLink('edit', '/api/$MODELNAME$/:id/edit', 'POST');
-  HATEOAS.addLink('delete', '/api/$MODELNAME$/:id/delete', 'DELETE');
-  HATEOAS.addLink('new', '/api/$MODELNAME$/new', 'POST');
-  HATEOAS.addLink('all', '/api/$MODELNAME$/find');
-  HATEOAS.addLink('count', '/api/$MODELNAME$/count');
+  HATEOAS.addLink('self', '/api/$TABLE_NAME$/:id');
+  HATEOAS.addLink('edit', '/api/$TABLE_NAME$/:id/edit', 'POST');
+  HATEOAS.addLink('delete', '/api/$TABLE_NAME$/:id/delete', 'DELETE');
+  HATEOAS.addLink('new', '/api/$TABLE_NAME$/new', 'POST');
+  HATEOAS.addLink('all', '/api/$TABLE_NAME$/find');
+  HATEOAS.addLink('count', '/api/$TABLE_NAME$/count');
 }
 
 const create = (req, res) => {

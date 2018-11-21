@@ -42,13 +42,15 @@ Chinchay will build a full api so you can start working with your CRUD operation
 
 #### POST /api/relation_name/new
 
-##### **Description:** Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
-##### **Example:**  For this examples, we will asume that the relation has a column name of type string and a column price of type integer.
+##### **Description:**
+ Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
+##### **Example:**
+  For this examples, we will asume that the relation has a column name of type string and a column price of type integer.
 
 The following:              
-      ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
-      ````
+```javascript
+Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
+```
 
 Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = 100. The Return is as follows:
 ```javascript
