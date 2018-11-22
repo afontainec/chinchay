@@ -172,7 +172,10 @@ class Table {
       columns = 'all';
     }
     const query = this.findQuery(whereQuery, columns, options);
-
+    options = options || {};
+    if (options.returnAsQuery) {
+      return query;
+    }
     return Table.fetchQuery(query);
   }
 
