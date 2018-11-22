@@ -19,8 +19,11 @@ const assert = chai.assert; //eslint-disable-line
 describe('TABLE GATEWAY: set knex', () => { // eslint-disable-line
 
   before(async () => { // eslint-disable-line
+    console.log('a');
     await ClearDB.seed(knex);
+    console.log('aa');
     await ClearDB.seed(otherKnex);
+    console.log('vamos aca');
   });
 
   it('Set knex in constructor ',  async () => { // eslint-disable-line
