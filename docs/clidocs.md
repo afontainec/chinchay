@@ -283,25 +283,36 @@ Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=othe
 Here are some examples of how to work with more complex queries. In the query you should pass an array with two values, as such: key=command,value. The query will translate to SQL as follows `WHERE  key command value`.
 
 The following:              
-      ````javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find?price=>,90');
-      ````
+  ```javascript
+  Requestify.get('http://localhost:3000/api/relation_name/find?price=>,90');
+  ```
 
 Some queries more complex are also available, this will return an array of all the entries were price > 90:
 
 The following:              
-      ````javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find?price=in,100,110');
-      ````
+````javascript
+Requestify.get('http://localhost:3000/api/relation_name/find?price=in,100,110');
+````
 
 Will return an array of all the entries were price is either 100 or 110:
+
+##### **Raw Query:**  
+
+
+##### **Columns:**  
+
+##### **Advance Options:**  
+some
+
+
 
 
 
 
 #### PUT PATCH POST /relation_name/:id/edit
 
-##### **Description:** This URL can be called either with PUT, PATCH or POST. It receives a JSON object and, in the database, updates the values defined in the JSON for the entry with id = :id. It will response if it was successful the update and the entry updated.
+##### **Description:**
+This URL can be called either with PUT, PATCH or POST. It receives a JSON object and, in the database, updates the values defined in the JSON for the entry with id = :id. It will response if it was successful the update and the entry updated.
 
 ##### **Example:**
 

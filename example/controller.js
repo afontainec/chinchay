@@ -114,7 +114,8 @@ const del = (req, res) => {
 const find = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.query, columns, options).then((results) => {
+  const query = Table.extractQuery(req.query);
+  $MODELNAME$.find(query, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     for (let i = 0; i < json.data.length; i++) {
       json.data[i].links = HATEOAS.get(json.data[i]);
@@ -141,7 +142,8 @@ const findById = (req, res) => {
 
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
-  $MODELNAME$.count(req.query, options).then((results) => {
+  const query = Table.extractQuery(req.query);
+  $MODELNAME$.count(query, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {

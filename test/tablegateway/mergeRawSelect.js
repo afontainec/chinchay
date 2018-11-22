@@ -10,7 +10,7 @@ const assert = chai.assert; //eslint-disable-line
 
 
 // Our parent block
-describe('TABLE GATEWAY: count', () => { // eslint-disable-line
+describe('TABLE GATEWAY: merge raw select', () => { // eslint-disable-line
 
   it('Array and non Array',  (done) => { // eslint-disable-line
     const first = ['EXTRACT(doy from ?)', 'created_at'];
