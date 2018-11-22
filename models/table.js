@@ -172,10 +172,7 @@ class Table {
       columns = 'all';
     }
     const query = this.findQuery(whereQuery, columns, options);
-    options = options || {};
-    if (options.returnAsQuery) {
-      return query;
-    }
+    if (Table.returnAsQuery(options)) return query;
     return Table.fetchQuery(query);
   }
 
@@ -366,10 +363,7 @@ class Table {
   // COUNT
 
   count(whereQuery, options) {
-    const f = async () => {
-      options = options || {};
-      const groupBy = options.groupBy;
-      const query = this.countQuery(whereQuery, options);
+    const f = async (query, groupBy) => {
       const results = await Table.fetchQuery(query);
       if (!groupBy) {
         return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
@@ -379,7 +373,11 @@ class Table {
       }
       return results;
     };
-    return f();
+    options = options || {};
+    const groupBy = options.groupBy;
+    const query = this.countQuery(whereQuery, options);
+    if (Table.returnAsQuery(options)) return query;
+    return f(query, groupBy);
   }
 
   countQuery(whereQuery, options) {
@@ -517,6 +515,11 @@ class Table {
         reject(Table.makeError(err.routine));
       });
     });
+  }
+
+  static returnAsQuery(options) {
+    options = options || {};
+    return options.returnAsQuery;
   }
 
 

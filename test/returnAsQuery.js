@@ -23,7 +23,7 @@ describe('TABLE GATEWAY: return as query', () => { // eslint-disable-line
     done();
   });
 
-  it('In find: not given return aas query', (done) => { // eslint-disable-line
+  it('In find: not given return as query', (done) => { // eslint-disable-line
     const query = Places.find({}, 'all', { returnAsQuery: false });
     assert.equal(typeof query, 'object');
     assert.equal(query.toString(), '[object Promise]');
@@ -31,15 +31,15 @@ describe('TABLE GATEWAY: return as query', () => { // eslint-disable-line
   });
 
   it('In count ', (done) => { // eslint-disable-line
-    const query = Places.count({}, 'all', { returnAsQuery: true });
-    const knexQuery = knex('places').select('*');
+    const query = Places.count({}, { returnAsQuery: true });
+    const knexQuery = knex('places').count('*');
     assert.equal(typeof query, 'object');
     assert.equal(query.toString(), knexQuery.toString());
     done();
   });
 
-  it('In count: not given return aas query', (done) => { // eslint-disable-line
-    const query = Places.count({}, 'all', { returnAsQuery: false });
+  it('In count: not given return as query', (done) => { // eslint-disable-line
+    const query = Places.count({}, { returnAsQuery: false });
     assert.equal(typeof query, 'object');
     assert.equal(query.toString(), '[object Promise]');
     done();
