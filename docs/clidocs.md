@@ -53,7 +53,7 @@ Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is t
 ```
 
 Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=100. The Return is as follows:
-```javascript
+```JSON
 {
   "message": "Elemento guardado exitosamente",
   "data": {
@@ -81,7 +81,7 @@ Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the n
 
 Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=null. The response is:
 
-```javascript
+```JSON
 {
   "message": "Elemento guardado exitosamente",
   "data": {
@@ -116,7 +116,7 @@ Requestify.get('http://localhost:3000/api/relation_name/1');
 
 Will return a JSON representing the object with id=1 within the data key:
 
-```javascript
+```JSON
 {
   "message": "Busqueda encontrada exitosamente",
   "data": {
@@ -153,7 +153,7 @@ Here are some examples of how to work with simple queries: The query will filter
 
     Will return an array with all the entries:
 
-    ```javascript
+    ```JSON
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -212,19 +212,71 @@ Here are some examples of how to work with simple queries: The query will filter
     This is the simplest by powerful way of querying, the query will filter with the given format _key=value_.
 
     Therefore, the request:
-      ```javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
-      ```
 
+  ```javascript
+  Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
+  ```
       Will return an array of all the entries were price=100:
 
+  ```JSON
+  {
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 1,
+      "name": "this is the name",
+      "price": 100,
+      "created_at": "2018-11-21T11:54:42.840Z",
+      "updated_at": "2018-11-21T11:54:42.840Z",
+      "links": [
+        { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+        { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+        { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }, {
+      "id": 3,
+      "name": "other",
+      "price": 100,
+      "created_at": "2018-11-21T12:06:04.065Z",
+      "updated_at": "2018-11-21T12:06:04.065Z",
+      "links": [
+        { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+        { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+        { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }],
+    }
+  ```
 
     and the following:              
-    ```javascript
-    Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=somename');
-    ```
+```javascript
+Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=other');
+```
 
-    Will return an array of all the entries were price=100 and name="somename":
+    Will return an array of all the entries were price=100 and name="other":
+```JSON
+{
+"message": "Busqueda encontrada exitosamente",
+"data": [ {
+      "id": 3,
+      "name": "other",
+      "price": 100,
+      "created_at": "2018-11-21T12:06:04.065Z",
+      "updated_at": "2018-11-21T12:06:04.065Z",
+      "links": [
+            { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+            { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+            { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+            { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+            { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+            { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }],
+}
+```
+
 
 
 ##### **Complex Queries:**  
