@@ -1,10 +1,13 @@
 rm -r test_chinchay
+psql postgres -c "DROP DATABASE test_chinchay"
+
 npm install express -g
 express test_chinchay && cd test_chinchay
 npm install pg -s
 npm install knex -s
 npm install ejs -s
 npm install
+psql postgres -c "CREATE DATABASE test_chinchay"
 mkdir database
 mkdir database/migrations
 echo "const path = require('path');

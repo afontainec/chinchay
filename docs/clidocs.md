@@ -45,33 +45,41 @@ Chinchay will build a full api so you can start working with your CRUD operation
 ##### **Description:**
  Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
 ##### **Example:**
-  For this examples, we will asume that the relation has a column name of type string and a column price of type integer.
+  For this examples, we will assume that the relation has a column _name_ of type string and a column _price_ of type integer.
 
 The following:              
 ```javascript
 Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
 ```
 
-Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = 100. The Return is as follows:
+Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=100. The Return is as follows:
 ```javascript
 {
   "message": "Elemento guardado exitosamente",
   "data": {
-  "id": 1,
-  "name": "this is the name",
-  "price": 100,
-  "created_at": "2018-11-11T20:20:20.650Z",
-  "updated_at": "2018-11-11T20:20:20.650Z"
+    "id": 1,
+    "name": "this is the name",
+    "price": 100,
+    "created_at": "2018-11-21T11:54:42.840Z",
+    "updated_at": "2018-11-21T11:54:42.840Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }
+    ],
   }
 }
 ```
 
 The following:              
-      ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the name"});
-      ````
+```javascript
+Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the name"});
+```
 
-Will save in the database an entry in the relation relation_name the values with name = "this is the name" and price = null. The response is:
+Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=null. The response is:
 
 ```javascript
 {
@@ -80,8 +88,16 @@ Will save in the database an entry in the relation relation_name the values with
     "id": 2,
     "name": "this is the name",
     "price": null,
-    "created_at": "2018-11-11T20:22:01.067Z",
-    "updated_at": "2018-11-11T20:22:01.067Z"
+    "created_at": "2018-11-21T11:57:02.767Z",
+    "updated_at": "2018-11-21T11:57:02.767Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }
+      ],
   }
 }
 ```
@@ -89,91 +105,111 @@ Will save in the database an entry in the relation relation_name the values with
 
 #### GET /api/relation_name/:id
 
-##### **Description:** Returns a JSON object representing the object with id = :id. If it does not exists reports the error.
+##### **Description:**
+Returns a JSON object representing the object with id = :id. If it does not exists reports the error.
 ##### **Example:**
 
 The following:              
-      ````javascript
-      Requestify.get('http://localhost:3000/api/relation_name/1');
-      ````
+```javascript
+Requestify.get('http://localhost:3000/api/relation_name/1');
+```
 
-Will return a JSON representing the object with id = 1 within the data key:
+Will return a JSON representing the object with id=1 within the data key:
 
-    ````javascript
-    {
-    message: 'the message',
-    data:{  
-  },
-    _links: {}
-    }
-    ````
+```javascript
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": {
+    "id": 1,
+    "name": "this is the name",
+    "price": 100,
+    "created_at": "2018-11-21T11:54:42.840Z",
+    "updated_at": "2018-11-21T11:54:42.840Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }
+      ],
+  }
+}
+```
 
 
 #### GET /api/relation_name/find
 
-##### **Description:** Returns an array with all the entries matching the given query. If the query its empty it will return all the entries.
-##### **Simple Queries:**  Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
+##### **Description:**
+Returns an array with all the entries matching the given query. If the query its empty it will return all the entries.
+##### **Simple Queries:**
+Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
 
-The following:              
+1. Get all:     
+    If no query is defined, it will return all the elements.
       ````javascript
       Requestify.get('http://localhost:3000/api/relation_name/find');
       ````
 
-Will return an array with all the entries:
+    Will return an array with all the entries:
 
-```javascript
-{
-"message": "Busqueda encontrada exitosamente",
-  "data": [
-      {
-    "id": 1,
-    "name": "this is the name",
-    "price": 100,
-    "created_at": "2018-11-11T20:20:20.650Z",
-    "updated_at": "2018-11-11T20:20:20.650Z"
-    },
-      {
-    "id": 2,
-    "name": "this is the name",
-    "price": null,
-    "created_at": "2018-11-11T20:22:01.067Z",
-    "updated_at": "2018-11-11T20:22:01.067Z"
-    },
-      {
-    "id": 3,
-    "name": "other",
-    "price": 100,
-    "created_at": "2018-11-11T20:23:18.297Z",
-    "updated_at": "2018-11-11T20:23:18.297Z"
-    },
-      {
-    "id": 4,
-    "name": "expensive",
-    "price": 110,
-    "created_at": "2018-11-11T20:23:31.159Z",
-    "updated_at": "2018-11-11T20:23:31.159Z"
+    ```javascript
+    {
+    "message": "Busqueda encontrada exitosamente",
+      "data": [
+          {
+        "id": 1,
+        "name": "this is the name",
+        "price": 100,
+        "created_at": "2018-11-11T20:20:20.650Z",
+        "updated_at": "2018-11-11T20:20:20.650Z"
+        },
+          {
+        "id": 2,
+        "name": "this is the name",
+        "price": null,
+        "created_at": "2018-11-11T20:22:01.067Z",
+        "updated_at": "2018-11-11T20:22:01.067Z"
+        },
+          {
+        "id": 3,
+        "name": "other",
+        "price": 100,
+        "created_at": "2018-11-11T20:23:18.297Z",
+        "updated_at": "2018-11-11T20:23:18.297Z"
+        },
+          {
+        "id": 4,
+        "name": "expensive",
+        "price": 110,
+        "created_at": "2018-11-11T20:23:31.159Z",
+        "updated_at": "2018-11-11T20:23:31.159Z"
+        }
+      ],
     }
-  ],
-}
-```
+    ```
 
-The following:              
-      ````javascript
+2. Filter with query:   
+    This is the simplest by powerful way of querying, the query will filter with the given format _key=value_.
+
+    Therefore, the request:
+      ```javascript
       Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
-      ````
+      ```
 
-Will return an array of all the entries were price = 100:
-
-
-The following:              
-      ````javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=somename');
-      ````
-
-Will return an array of all the entries were price = 100 and name = "somename":
+      Will return an array of all the entries were price=100:
 
 
-##### **Complex Queries:**  Here are some examples of how to work with more complex queries. In the query you should pass an array with two values, as such: key=command,value. The query will translate to SQL as follows `WHERE  key command value`.
+    and the following:              
+    ```javascript
+    Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=somename');
+    ```
+
+    Will return an array of all the entries were price=100 and name="somename":
+
+
+##### **Complex Queries:**  
+Here are some examples of how to work with more complex queries. In the query you should pass an array with two values, as such: key=command,value. The query will translate to SQL as follows `WHERE  key command value`.
 
 The following:              
       ````javascript
