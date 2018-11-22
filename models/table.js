@@ -606,7 +606,6 @@ class Table {
   }
 
   static extractQuery(query) {
-    console.log('q', query);
     const keys = Object.keys(query);
     for (let i = 0; i < keys.length; i++) {
       const k = keys[i];
