@@ -2,9 +2,9 @@
 process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
-const chai = require('chai');
-const knex = require('../../knex');
-const Places = require('../../models/places-example');
+const chai = require('chai'); // eslint-disable-line
+const knex = require('../../../knex');
+const Places = require('../../../models/places-example');
 
 // NOTE Access hace algo raro, arreglar
 // NOTE hay algunos que pasan un arreglo de columnas, para queries mas complejas
@@ -35,7 +35,6 @@ describe('TABLE GATEWAY: COUNT WITH groupBy', () => { // eslint-disable-line
     const query = { is_active: false };
     const opt = { groupBy: 'daily_visits' };
     const results = await Places.count(query, opt);
-    console.log(results);
     assert.equal(results.length, 1);
     assert.isNotNull(results[0], 'daily_visits');
     assert.isNotNull(results[0], 'count');

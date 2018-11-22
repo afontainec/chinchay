@@ -2,8 +2,11 @@ const $MODELNAME$ = require('$CTRL2MODELPATH$');
 const path = require('path');
 const httpResponse = require('codemaster').httpResponse;
 const Table = require('chinchay').Table;
+const HateoasGenerator = require('chinchay').Hateoas;
+
 
 const viewPath = '$CTRL2VIEWPATH$';
+
 
 const newElement = (req, res) => {
   $MODELNAME$.new().then((result) => {
@@ -62,9 +65,22 @@ const edit = (req, res) => {
 
 // //////////// API ///////////////
 
+const HATEOAS = new HateoasGenerator();
+initializeHATEOAS();
+
+function initializeHATEOAS() {
+  HATEOAS.addLink('self', '/api/$TABLE_NAME$/:id');
+  HATEOAS.addLink('edit', '/api/$TABLE_NAME$/:id/edit', 'POST');
+  HATEOAS.addLink('delete', '/api/$TABLE_NAME$/:id/delete', 'DELETE');
+  HATEOAS.addLink('new', '/api/$TABLE_NAME$/new', 'POST');
+  HATEOAS.addLink('all', '/api/$TABLE_NAME$/find');
+  HATEOAS.addLink('count', '/api/$TABLE_NAME$/count');
+}
+
 const create = (req, res) => {
   $MODELNAME$.save(req.body).then((results) => {
     const json = httpResponse.success('Elemento guardado exitosamente', 'data', results);
+    json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -75,6 +91,7 @@ const create = (req, res) => {
 const update = (req, res) => {
   $MODELNAME$.update(req.params.id, req.body).then((results) => {
     const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
+    json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -85,6 +102,7 @@ const update = (req, res) => {
 const del = (req, res) => {
   $MODELNAME$.delele(req.params.id).then((results) => {
     const json = httpResponse.success('Elemento eliminado exitosamente', 'data', results);
+    json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -96,8 +114,12 @@ const del = (req, res) => {
 const find = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  $MODELNAME$.find(req.query, columns, options).then((results) => {
+  const query = Table.extractQuery(req.query);
+  $MODELNAME$.find(query, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
+    for (let i = 0; i < json.data.length; i++) {
+      json.data[i].links = HATEOAS.get(json.data[i]);
+    }
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -110,6 +132,7 @@ const findById = (req, res) => {
   const columns = Table.extractColumns(req.query);
   $MODELNAME$.findById(req.params.id, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
+    json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
     const json = httpResponse.error(error.message, error.fullMessage);
@@ -119,7 +142,8 @@ const findById = (req, res) => {
 
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
-  $MODELNAME$.count(req.query, options).then((results) => {
+  const query = Table.extractQuery(req.query);
+  $MODELNAME$.count(query, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
