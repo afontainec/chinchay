@@ -596,7 +596,7 @@ class Table {
       const key = OPTIONS_KEYS[i];
       if (queryKeys.indexOf(key) > -1) {
         options[key] = query[key];
-        delete query.key;
+        delete query[key];
       }
     }
     return options;
