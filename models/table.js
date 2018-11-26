@@ -80,7 +80,7 @@ class Table {
             resolve(entry[0]);
           })
             .catch((err) => { //eslint-disable-line
-              reject(errorString);
+              reject(err);
             });
         }).catch((err) => {
           reject(err);
@@ -107,8 +107,8 @@ class Table {
               }
               resolve(entry[0]);
             })
-            .catch(() => {
-              reject(errorString);
+            .catch((err) => {
+              reject(err);
             });
         }).catch((err) => {
           reject(err);
