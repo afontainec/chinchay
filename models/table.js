@@ -616,7 +616,7 @@ class Table {
     for (let i = 0; i < keys.length; i++) {
       const k = keys[i];
       const elem = query[k];
-      if (typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('}'))) {
+      if (typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'))) {
         query[k] = JSON.parse(elem);
       }
     }
