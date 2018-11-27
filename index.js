@@ -1,6 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 const Table = require('./models/table');
+const Hateoas = require('./models/hateoas');
+
 
 const chainConfig = getConfig();
 
@@ -19,4 +21,5 @@ Table.setDefaultKnex(knex);
 
 module.exports = {
   Table,
+  Hateoas,
 };

@@ -2,9 +2,9 @@
 process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
-const chai = require('chai');
-const knex = require('../../knex');
-const Places = require('../../models/places-example');
+const chai = require('chai'); // eslint-disable-line
+const knex = require('../../../knex');
+const Places = require('../../../models/places-example');
 
 
 const assert = chai.assert; //eslint-disable-line
@@ -47,7 +47,7 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
     assert.equal(results.length, 4);
     for (let i = 0; i < results.length; i++) {
       const keys = Object.keys(results[i]);
-      assert.equal(keys.length, 20);
+      assert.equal(keys.length, 7);
     }
   });
 });
@@ -96,7 +96,7 @@ describe('Malicious happy path', () => { // eslint-disable-line
     assert.equal(results.length, 4);
     for (let i = 0; i < results.length; i++) {
       const keys = Object.keys(results[i]);
-      assert.equal(keys.length, 20);
+      assert.equal(keys.length, 7);
     }
   });
 });

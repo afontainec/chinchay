@@ -596,7 +596,7 @@ class Table {
       const key = OPTIONS_KEYS[i];
       if (queryKeys.indexOf(key) > -1) {
         options[key] = query[key];
-        delete query.key;
+        delete query[key];
       }
     }
     return options;
@@ -609,6 +609,18 @@ class Table {
       return col;
     }
     return 'all';
+  }
+
+  static extractQuery(query) {
+    const keys = Object.keys(query);
+    for (let i = 0; i < keys.length; i++) {
+      const k = keys[i];
+      const elem = query[k];
+      if (typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'))) {
+        query[k] = JSON.parse(elem);
+      }
+    }
+    return query;
   }
 
   static mergeRawSelect(rawSelect, input) {
