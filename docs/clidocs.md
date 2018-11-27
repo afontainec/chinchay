@@ -284,17 +284,19 @@ Here are some examples of how to work with more complex queries. In the query yo
 
 
   price=["<>", 90] will translate to `WHERE  price <> 90`
+
   price=["in", [90, 100]] will translate to `WHERE  price in {90, 100}`
-  price=["not in", [90, 100]] will translate to `WHERE  price in {90, 100}`
+
+  price=["not in", [90, 100]] will translate to `WHERE  price not in {90, 100}`
 
   It is very important for the brackets to be before and after every array, otherwise it will be parse as a string, for instance:
 
-  price=">", 90 will translate to `WHERE  price = '">", 90'`
+  price=">",90 will translate to `WHERE  price = '">", 90'`
 
 
 The following:              
   ```javascript
-  Requestify.get('http://localhost:3000/api/relation_name/find?price=>,90');
+  Requestify.get('http://localhost:3000/api/relation_name/find?price=[">",90]');
   ```
 
 Some queries more complex are also available, this will return an array of all the entries were price > 90:
