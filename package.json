@@ -27,7 +27,7 @@
     "pg": "^7.5.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.2.0",
     "eslint": "^3.4.0",
     "eslint-config-airbnb": "^11.0.0",
     "eslint-config-angular": "^0.5.0",
