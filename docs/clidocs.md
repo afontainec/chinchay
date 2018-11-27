@@ -296,17 +296,81 @@ Here are some examples of how to work with more complex queries. In the query yo
 
 The following:              
   ```javascript
-  Requestify.get('http://localhost:3000/api/relation_name/find?price=[">",90]');
+  Requestify.get('http://localhost:3000/api/relation_name/find?price=[">", 105]');
   ```
 
-Some queries more complex are also available, this will return an array of all the entries were price > 90:
+  Will return an array of all the entries where price > 105 :
+```JSON
+{
+"message": "Busqueda encontrada exitosamente",
+"data": [ {
+    "id": 4,
+    "name": "expensive",
+    "price": 110,
+    "created_at": "2018-11-21T12:06:22.400Z",
+    "updated_at": "2018-11-21T12:06:22.400Z",
+    "links": [
+          { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
+          { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
+          { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }],
+}
+```
 
 The following:              
-````javascript
-Requestify.get('http://localhost:3000/api/relation_name/find?price=in,100,110');
-````
+  ```javascript
+  Requestify.get('http://localhost:3000/api/relation_name/find?price=["in",[110,100]]');
+  ```
 
-Will return an array of all the entries were price is either 100 or 110:
+  Will return an array of all the entries where price = 110 or price = 100 :
+```JSON
+{
+"message": "Busqueda encontrada exitosamente",
+"data": [ {
+    "id": 1,
+    "name": "this is the name",
+    "price": 100,
+    "created_at": "2018-11-21T11:54:42.840Z",
+    "updated_at": "2018-11-21T11:54:42.840Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }, {
+    "id": 3,
+    "name": "other",
+    "price": 100,
+    "created_at": "2018-11-21T12:06:04.065Z",
+    "updated_at": "2018-11-21T12:06:04.065Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }, {
+    "id": 4,
+    "name": "expensive",
+    "price": 110,
+    "created_at": "2018-11-21T12:06:22.400Z",
+    "updated_at": "2018-11-21T12:06:22.400Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }],
+}
+```
 
 ##### **Raw Query:**  
 
@@ -314,7 +378,11 @@ Will return an array of all the entries were price is either 100 or 110:
 ##### **Columns:**  
 
 ##### **Advance Options:**  
-some
+
+startDate, endDate
+group by, orderby
+limit, offset
+rawSelect, clearSelect
 
 
 

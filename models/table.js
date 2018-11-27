@@ -595,7 +595,11 @@ class Table {
     for (let i = 0; i < OPTIONS_KEYS.length; i++) {
       const key = OPTIONS_KEYS[i];
       if (queryKeys.indexOf(key) > -1) {
-        options[key] = query[key];
+        let elem = query[key];
+        if (typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'))) {
+          elem = JSON.parse(elem);
+        }
+        options[key] = elem;
         delete query[key];
       }
     }
@@ -645,7 +649,7 @@ const ERROR_400 = {
 
 };
 
-const OPTIONS_KEYS = ['startDate', 'endDate', 'groupBy', 'orderBy', 'limit', 'offset', 'rawSelect', 'clearSelect'];
+const OPTIONS_KEYS = ['startDate', 'endDate', 'groupBy', 'orderBy', 'limit', 'offset', 'rawSelect', 'clearSelect', 'rawWhere'];
 
 
 module.exports = Table;
