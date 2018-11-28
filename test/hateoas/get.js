@@ -81,10 +81,4 @@ describe('HATEOAS: get', () => { // eslint-disable-line
     assert.equal(array[1].type, 'GET');
     done();
   });
-
-  it('Get without id',  (done) => { // eslint-disable-line
-    const array = HATEOAS.get();
-    assert.notExists(array);
-    done();
-  });
 });
