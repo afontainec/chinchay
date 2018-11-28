@@ -34,6 +34,17 @@ describe('TABLE GATEWAY: extractColumns', () => { // eslint-disable-line
     done();
   });
 
+  it('With array as String',  (done) => { // eslint-disable-line
+    const columns = '["price", "name"]';
+    const query = {};
+    query.columns = columns;
+    const extracted = Table.extractColumns(query);
+    assert.isArray(extracted);
+    assert.deepEqual(extracted, JSON.parse(columns));
+    assert.notExists(query.columns);
+    done();
+  });
+
   it('With an array within another array',  (done) => { // eslint-disable-line
     const query = {};
     const extracted = Table.extractColumns(Utils.cloneJSON(query));

@@ -589,6 +589,10 @@ class Table {
     return Message.new(500, 'Internal error', err);
   }
 
+  static isStringArray(elem) {
+    return typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'));
+  }
+
   static extractOptions(query) {
     const options = {};
     const queryKeys = Object.keys(query);
@@ -596,7 +600,7 @@ class Table {
       const key = OPTIONS_KEYS[i];
       if (queryKeys.indexOf(key) > -1) {
         let elem = query[key];
-        if (typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'))) {
+        if (Table.isStringArray(elem)) {
           elem = JSON.parse(elem);
         }
         options[key] = elem;
@@ -608,8 +612,10 @@ class Table {
 
   static extractColumns(query) {
     if (query.columns) {
-      const col = query.columns;
+      console.log(Table.isStringArray(query.columns));
+      const col = Table.isStringArray(query.columns) ? JSON.parse(query.columns) : query.columns;
       delete query.columns;
+      console.log(query);
       return col;
     }
     return 'all';
