@@ -612,10 +612,13 @@ class Table {
 
   static extractColumns(query) {
     if (query.columns) {
-      console.log(Table.isStringArray(query.columns));
-      const col = Table.isStringArray(query.columns) ? JSON.parse(query.columns) : query.columns;
+      let col = query.columns;
+      if (Table.isStringArray(col)) {
+        col = JSON.parse(col);
+      } else if (typeof col === 'string') {
+        col = [col];
+      }
       delete query.columns;
-      console.log(query);
       return col;
     }
     return 'all';
