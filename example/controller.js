@@ -100,7 +100,7 @@ const update = (req, res) => {
 };
 
 const del = (req, res) => {
-  $MODELNAME$.delele(req.params.id).then((results) => {
+  $MODELNAME$.delete(req.params.id).then((results) => {
     const json = httpResponse.success('Elemento eliminado exitosamente', 'data', results);
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
