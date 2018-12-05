@@ -460,7 +460,92 @@ Requestify.get(`http://localhost:3000/api/coffee/find?rawWhere=["name = ? or nam
 
 
 
-##### **Columns:**  
+##### **Columns:**
+
+
+Sometimes we don't want to get all the information, just the essential stuff. The columns options comes handy. In an array you can specify all the columns you want to get.
+
+For instance, the following:
+
+```javascript
+Requestify.get("http://localhost:3000/api/coffee/find?rawWhere=name = 'expensive' or name = 'other'");
+```
+
+Will return all the entries where name = 'other' or name = 'expensive'.
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [ {
+  "id": 3,
+  "name": "other",
+  "price": 100,
+  "created_at": "2018-11-21T12:06:04.065Z",
+  "updated_at": "2018-11-21T12:06:04.065Z",
+  "links": [
+    { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+    { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+    { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+    { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+    { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+    { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }, {
+  "id": 4,
+  "name": "expensive",
+  "price": 110,
+  "created_at": "2018-11-21T12:06:22.400Z",
+  "updated_at": "2018-11-21T12:06:22.400Z",
+  "links": [
+      { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }],
+}
+```
+
+
+However, if you want to specify in an array-format you could run the following command:
+
+And this will have the same return:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
+```
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [ {
+  "id": 3,
+  "name": "other",
+  "price": 100,
+  "created_at": "2018-11-21T12:06:04.065Z",
+  "updated_at": "2018-11-21T12:06:04.065Z",
+  "links": [
+    { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+    { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+    { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+    { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+    { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+    { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }, {
+  "id": 4,
+  "name": "expensive",
+  "price": 110,
+  "created_at": "2018-11-21T12:06:22.400Z",
+  "updated_at": "2018-11-21T12:06:22.400Z",
+  "links": [
+      { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }],
+}
+```
 
 ##### **Advance Options:**  
 
