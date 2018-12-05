@@ -42,12 +42,9 @@ describe('HATEOAS: compileUri', () => { // eslint-disable-line
   });
 
   it('Missing values',  (done) => { // eslint-disable-line
-    try {
-      const values = { id: 1 };
-      HATEOAS.compileUri('/:name/:id/edit', values);
-      done('SHOULD NOT GET HERE');
-    } catch (e) {
-      done();
-    }
+    const values = { id: 1 };
+    const compiled = HATEOAS.compileUri('/:name/:id/edit', values);
+    assert.equal(compiled, '/:name/1/edit');
+    done();
   });
 });

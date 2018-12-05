@@ -40,7 +40,7 @@ class HATEOAS {
     values = values || {};
     const parts = this.divideUri(uri);
     if (!parts) return uri;
-    const replacement = values[parts.middle];
+    const replacement = values[parts.middle] || `:${parts.middle}`;
     if (!replacement) throw new Error(`missing value ${parts.middle}`);
     return parts.first + replacement + this.compileUri(parts.second, values);
   }

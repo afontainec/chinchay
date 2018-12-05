@@ -468,10 +468,10 @@ Sometimes we don't want to get all the information, just the essential stuff. Th
 For instance, the following:
 
 ```javascript
-Requestify.get("http://localhost:3000/api/coffee/find?rawWhere=name = 'expensive' or name = 'other'");
+Requestify.get("http://localhost:3000/api/coffee/find?columns=name");
 ```
 
-Will return all the entries where name = 'other' or name = 'expensive'.
+Will return all the entries giving only the name.
 ```JSON
 {
   "message": "Busqueda encontrada exitosamente",
