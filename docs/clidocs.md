@@ -666,10 +666,7 @@ It will get the second and third entries ids ordered by id in descending order:
 
 
 ###### **rawSelect:**
-group by, orderby
 
-
-limit, offset
 rawSelect, clearSelect
 
 
