@@ -521,7 +521,7 @@ Will return all the entries giving only the name.
 Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","name"]`);
 ```
 
-Will return all the entries giving their name and id, with all the hateoas correctly compiled. 
+Will return all the entries giving their name and id, with all the hateoas correctly compiled.
 
 ```JSON
 {
@@ -573,8 +573,38 @@ Will return all the entries giving their name and id, with all the hateoas corre
 
 ##### **Advance Options:**  
 
+It just does not end here! There are some more options to do your querying even more complete!
+
+###### **Start Date and End Date:**  
+
+You can specify a range of dates to specify. It will filter all the values where startDate < created_at < endDate. If startDate it is not defined it will query since dawn of time, whereas if endDate is not defined it will query till the end of time.
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","created_at"]&startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
+```
+
+Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/11/2018. Note it will only return the id and created_at.
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 2,
+      "created_at": "2018-11-21T11:57:02.767Z",
+      "links": [{ "rel": "self", "href": "/api/coffee/2", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }],
+}
+```
+
 startDate, endDate
 group by, orderby
+
+
 limit, offset
 rawSelect, clearSelect
 
