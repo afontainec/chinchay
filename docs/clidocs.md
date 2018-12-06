@@ -577,7 +577,7 @@ It just does not end here! There are some more options to do your querying even 
 
 ###### **Start Date and End Date:**  
 
-You can specify a range of dates to specify. It will filter all the values where startDate < created_at < endDate. If startDate it is not defined it will query since dawn of time, whereas if endDate is not defined it will query till the end of time.
+You can specify a range of dates to query. It will filter all the values where startDate < created_at < endDate. If startDate it is not defined it will query since dawn of time, whereas if endDate is not defined it will query till the end of time.
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","created_at"]&startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
@@ -601,12 +601,100 @@ Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/
 }
 ```
 
-startDate, endDate
+###### **order By, limit and offset:**
+
+There are more options, for instance:
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=id&limit=2`);
+```
+
+It will get the first two entries ids ordered by id.
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 1,
+      "links": [{ "rel": "self", "href": "/api/coffee/1", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }, {
+        "id": 2,
+        "links": [{ "rel": "self", "href": "/api/coffee/2", "type": "GET"},
+          { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST"},
+          { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE"},
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }],
+}
+```
+
+Moreover, you can set orderBy as an array, not only specifying the column to order by but also if its ascending or descending. To do so, orderBy is defined as column to order and then the direction that can either be: "asc" or "desc". for instance:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=id&limit=2`);
+```
+
+It will get the second and third entries ids ordered by id in descending order:
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 3,
+      "links": [{ "rel": "self", "href": "/api/coffee/3", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }, {
+        "id": 2,
+        "links": [{ "rel": "self", "href": "/api/coffee/2", "type": "GET"},
+          { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST"},
+          { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE"},
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }],
+}
+```
+
+
+###### **rawSelect:**
 group by, orderby
 
 
 limit, offset
 rawSelect, clearSelect
+
+
+#### GET /relation_name/count
+
+##### **Description:**
+
+##### **Simple Queries:**
+    1. Get all:
+    2. Filter with query:
+
+##### **Complex Queries:**
+
+##### **Raw Query:**
+
+##### **Advanced Options:**
+
+###### **Start Date and End Date:**
+###### **Group by and order By:**
+###### **rawSelect:**
+
+
+
+
+
 
 
 
