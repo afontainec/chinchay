@@ -633,10 +633,10 @@ It will get the first two entries ids ordered by id.
 }
 ```
 
-Moreover, you can set orderBy as an array, not only specifying the column to order by but also if its ascending or descending. To do so, orderBy is defined as column to order and then the direction that can either be: "asc" or "desc". for instance:
+Moreover, you can set orderBy as an array, not only specifying the column to order by but also if its ascending (asc) or descending (desc). To do so, orderBy is defined as column to order and then the direction that can either be: "asc" or "desc". for instance:
 
 ```javascript
-Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=id&limit=2`);
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=["id","desc"]&limit=2`);
 ```
 
 It will get the second and third entries ids ordered by id in descending order:
@@ -667,7 +667,56 @@ It will get the second and third entries ids ordered by id in descending order:
 
 ###### **rawSelect:**
 
-rawSelect, clearSelect
+RawSelect allows you to be even more specific on what you want to ask for. It can be given as a string or an array for sql injection. Fo instance:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=EXTRACT(MONTH FROM created_at) as month`);
+```
+
+Will extract the month. Note it also brings all the attributes, if you just want to extract the month, you should also add the _clearSelect_ option.
+
+```JSON
+{
+"message": "Busqueda encontrada exitosamente",
+"data": [{
+    "month": 11,
+    "id": 1,
+    "name": "this is the name",
+    "price": 100,
+    "created_at": "2018-11-21T11:54:42.840Z",
+    "updated_at": "2018-11-21T11:54:42.840Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }],
+}
+```
+
+Same request, with clearSelect and with rawSelect as an array:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRACT(MONTH from ??) as month", "created_at"]&clearSelect=true`);
+```
+
+```JSON
+{
+"message": "Busqueda encontrada exitosamente",
+"data": [{
+    "month": 11,
+    "links": [
+      { "rel": "self", "href": "/api/coffee/:id", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/:id/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/:id/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }],
+}
+```
 
 
 #### GET /relation_name/count
