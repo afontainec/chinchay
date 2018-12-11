@@ -723,19 +723,70 @@ Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRAC
 
 ##### **Description:**
 
+This would allow you to count how many entries are there. Extremely useful for analytics and key metrics. Most of what has been said for find applies to count requests, with simple Queries, Complex Queries, raw Query and advance options such us startDate, endDate and rawSelect.
+
 ##### **Simple Queries:**
-    1. Get all:
-    2. Filter with query:
+
+```javascript
+Requestify.get('http://localhost:3000/api/relation_name/count?price=100');
+```
+
+Will return:
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": "2"
+}
+```
 
 ##### **Complex Queries:**
 
+```javascript
+Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]');
+```
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": 1
+}
+```
+
 ##### **Raw Query:**
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
+```
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": 2
+}
+```
 
 ##### **Advanced Options:**
 
 ###### **Start Date and End Date:**
-###### **Group by and order By:**
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/count?columns=["id","created_at"]&startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
+```
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": 1
+}
+```
+
+
 ###### **rawSelect:**
+
+###### **Group by and order By:**
+
+
 
 
 
