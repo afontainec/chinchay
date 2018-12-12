@@ -216,7 +216,8 @@ Here are some examples of how to work with simple queries: The query will filter
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
   ```
-      Will return an array of all the entries were price=100:
+
+  Will return an array of all the entries were price=100:
 
   ```JSON
   {
@@ -251,7 +252,9 @@ Here are some examples of how to work with simple queries: The query will filter
     }
   ```
 
-    and the following:              
+
+and the following:              
+
 ```javascript
 Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=other');
 ```
@@ -515,7 +518,7 @@ Will return all the entries giving only the name.
 }
 ```
 
-*NOTE:* how the link left the :id part of href unchange, for the change to occur you need to ask for the :id. For instance:
+*NOTE:* Hateoas was unable to insert the id in the hyperlinks (href attribute) because the id column was not asked for. You need to ask for the id attribute for the correct link. For instance:
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","name"]`);
