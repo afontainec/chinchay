@@ -475,88 +475,391 @@ Will return all the entries giving only the name.
 ```JSON
 {
   "message": "Busqueda encontrada exitosamente",
-  "data": [ {
-  "id": 3,
-  "name": "other",
-  "price": 100,
-  "created_at": "2018-11-21T12:06:04.065Z",
-  "updated_at": "2018-11-21T12:06:04.065Z",
-  "links": [
-    { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
-    { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
-    { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
-    { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-    { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-    { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-  }, {
-  "id": 4,
-  "name": "expensive",
-  "price": 110,
-  "created_at": "2018-11-21T12:06:22.400Z",
-  "updated_at": "2018-11-21T12:06:22.400Z",
-  "links": [
-      { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
-      { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
-      { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+  "data": [{
+    "name": "this is the name",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/:id", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/:id/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/:id/delete", "type": "DELETE" },
       { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
       { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
       { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }, {
+    "name": "this is the name",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/:id", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/:id/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/:id/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }, {
+    "name": "other",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/:id", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/:id/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/:id/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }, {
+    "name": "expensive",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/:id", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/:id/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/:id/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" } ],
   }],
 }
 ```
 
-
-However, if you want to specify in an array-format you could run the following command:
-
-And this will have the same return:
+*NOTE:* how the link left the :id part of href unchange, for the change to occur you need to ask for the :id. For instance:
 
 ```javascript
-Requestify.get(`http://localhost:3000/api/coffee/find?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","name"]`);
+```
+
+Will return all the entries giving their name and id, with all the hateoas correctly compiled.
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 1,
+      "name": "this is the name",
+      "links": [{ "rel": "self", "href": "/api/coffee/1", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    },
+    {
+      "id": 2,
+      "name": "this is the name",
+      "links": [{ "rel": "self", "href": "/api/coffee/2", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    },
+    {
+      "id": 3,
+      "name": "other",
+      "links": [{ "rel": "self", "href": "/api/coffee/3", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    },
+    {
+      "id": 4,
+      "name": "expensive",
+      "links": [{ "rel": "self", "href": "/api/coffee/4", "type": "GET" },
+        { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
+        { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }
+  ],
+}
+
+```
+
+##### **Advance Options:**  
+
+It just does not end here! There are some more options to do your querying even more complete!
+
+###### **Start Date and End Date:**  
+
+You can specify a range of dates to query. It will filter all the values where startDate < created_at < endDate. If startDate it is not defined it will query since dawn of time, whereas if endDate is not defined it will query till the end of time.
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","created_at"]&startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
+```
+
+Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/11/2018. Note it will only return the id and created_at.
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 2,
+      "created_at": "2018-11-21T11:57:02.767Z",
+      "links": [{ "rel": "self", "href": "/api/coffee/2", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }],
+}
+```
+
+###### **order By, limit and offset:**
+
+There are more options, for instance:
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=id&limit=2`);
+```
+
+It will get the first two entries ids ordered by id.
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 1,
+      "links": [{ "rel": "self", "href": "/api/coffee/1", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }, {
+        "id": 2,
+        "links": [{ "rel": "self", "href": "/api/coffee/2", "type": "GET"},
+          { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST"},
+          { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE"},
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }],
+}
+```
+
+Moreover, you can set orderBy as an array, not only specifying the column to order by but also if its ascending (asc) or descending (desc). To do so, orderBy is defined as column to order and then the direction that can either be: "asc" or "desc". for instance:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=["id","desc"]&limit=2`);
+```
+
+It will get the second and third entries ids ordered by id in descending order:
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+      "id": 3,
+      "links": [{ "rel": "self", "href": "/api/coffee/3", "type": "GET"},
+        { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST"},
+        { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE"},
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }, {
+        "id": 2,
+        "links": [{ "rel": "self", "href": "/api/coffee/2", "type": "GET"},
+          { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST"},
+          { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE"},
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST"},
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET"},
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET"}],
+    }],
+}
+```
+
+
+###### **rawSelect:**
+
+RawSelect allows you to be even more specific on what you want to ask for. It can be given as a string or an array for sql injection. Fo instance:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=EXTRACT(MONTH FROM created_at) as month`);
+```
+
+Will extract the month. Note it also brings all the attributes, if you just want to extract the month, you should also add the _clearSelect_ option.
+
+```JSON
+{
+"message": "Busqueda encontrada exitosamente",
+"data": [{
+    "month": 11,
+    "id": 1,
+    "name": "this is the name",
+    "price": 100,
+    "created_at": "2018-11-21T11:54:42.840Z",
+    "updated_at": "2018-11-21T11:54:42.840Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }],
+}
+```
+
+Same request, with clearSelect and with rawSelect as an array:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRACT(MONTH from ??) as month", "created_at"]&clearSelect=true`);
+```
+
+```JSON
+{
+"message": "Busqueda encontrada exitosamente",
+"data": [{
+    "month": 11,
+    "links": [
+      { "rel": "self", "href": "/api/coffee/:id", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/:id/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/:id/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+    }],
+}
+```
+
+
+#### GET /relation_name/count
+
+##### **Description:**
+
+This would allow you to count how many entries are there. Extremely useful for analytics and key metrics. Most of what has been said for find applies to count requests, with simple Queries, Complex Queries, raw Query and advance options such us startDate, endDate and rawSelect.
+
+##### **Simple Queries:**
+
+```javascript
+Requestify.get('http://localhost:3000/api/relation_name/count?price=100');
+```
+
+Will return:
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": "2"
+}
+```
+
+##### **Complex Queries:**
+
+```javascript
+Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]');
 ```
 
 ```JSON
 {
   "message": "Busqueda encontrada exitosamente",
-  "data": [ {
-  "id": 3,
-  "name": "other",
-  "price": 100,
-  "created_at": "2018-11-21T12:06:04.065Z",
-  "updated_at": "2018-11-21T12:06:04.065Z",
-  "links": [
-    { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
-    { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
-    { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
-    { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-    { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-    { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-  }, {
-  "id": 4,
-  "name": "expensive",
-  "price": 110,
-  "created_at": "2018-11-21T12:06:22.400Z",
-  "updated_at": "2018-11-21T12:06:22.400Z",
-  "links": [
-      { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
-      { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
-      { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
-      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  "data": 1
+}
+```
+
+##### **Raw Query:**
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
+```
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": 2
+}
+```
+
+##### **Advanced Options:**
+
+###### **Start Date and End Date:**
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
+```
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": 1
+}
+```
+
+###### **Group by and order By:**
+
+There is an extra option that was not present in the find examples: _groupBy_. You can group your answer according to an attribute.
+For instance:
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name`);
+```
+
+Will return how many entries are there per each name.
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [
+      {
+    "count": 2,
+    "name": "this is the name"
+    },
+      {
+    "count": 1,
+    "name": "other"
+    },
+      {
+    "count": 1,
+    "name": "expensive"
   }],
 }
 ```
 
-##### **Advance Options:**  
+You can also order this answers:
 
-startDate, endDate
-group by, orderby
-limit, offset
-rawSelect, clearSelect
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name&orderBy=count`);
+```
 
+Will return the save results as before but ordered by count in ascending order.
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+    "count": 1,
+    "name": "other"
+    }, {
+    "count": 1,
+    "name": "expensive"
+  }, {
+    "count": 2,
+    "name": "this is the name"
+    }],
+}
+```
 
+###### **rawSelect:**
 
+There rawSelect option its also valid. However, be caution when using it because sometimes it will not be valid if its does not came with a group By.
+Here an example:
 
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=minute&rawSelect=EXTRACT(minutes from created_at) as minutes`);
+```
+
+Will return how many entries were created grouped by the minute of there creation.
+
+```JSON
+{
+  "message": "Busqueda encontrada exitosamente",
+  "data": [{
+    "count": 1,
+    "minutes": 57
+    }, {
+    "count": 2,
+    "minutes": 6
+  }, {
+    "count": 1,
+    "minutes": 54
+  }],
+}
+```
 
 
 #### PUT PATCH POST /relation_name/:id/edit
@@ -567,39 +870,107 @@ This URL can be called either with PUT, PATCH or POST. It receives a JSON object
 ##### **Example:**
 
 The following:              
-      ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name/1/edit', {name: 'this is another name', price: 110});
-      ````
+```javascript
+Requestify.post('http://localhost:3000/api/relation_name/2/edit', {name: 'this is an updated name', price: 80});
+```
 
-Will change in the database the entry with id = 1 in the relation relation_name the values with name and price to "this is another name" and 110.
+Will change in the database the entry with id = 2 in the relation relation_name the values with name and price to "this is an updated name" and 80.
+
+It will return the updated entry:
+
+```JSON
+{
+  "message": "Elemento actualizado exitosamente",
+  "data": {
+    "id": 2,
+    "name": "this is an updated name",
+    "price": 80,
+    "created_at": "2018-11-21T11:57:02.767Z",
+    "updated_at": "2018-12-12T11:52:32.750Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }
+}
+```
 
 
 The following:              
-      ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name/1/edit', {price: 90});
-      ````
+```javascript
+Requestify.post('http://localhost:3000/api/relation_name/2/edit', {price: 90});
+```
 
-Will change in the database the entry with id = 1 in the relation relation_name the value price to 90 and leave the name intact.
+Will change in the database the entry with id = 2 in the relation relation_name the value price to 80 and leave the name intact.
+
+```JSON
+{
+  "message": "Elemento actualizado exitosamente",
+  "data": {
+    "id": 2,
+    "name": "this is an updated name",
+    "price": 90,
+    "created_at": "2018-11-21T11:57:02.767Z",
+    "updated_at": "2018-12-12T11:55:59.828Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }
+}
+```
 
 
 #### DELETE /relation_name/:id
 
-	* **Description:** In the database deletes the entry with id = :id.
-	* **Example:**
-      * **Expected Output:**
+In the database deletes the entry with id = :id.
 
-The Following URLs are created in a separated file: relationNameAPI.js.
+The following:              
+```javascript
+  Requestify.delete('http://localhost:3000/api/relation_name/2');
+```
 
-#### GET /api/relation_name/find
+Will delete in the database the entry with id = 2, and return the deleted element.
 
-#### GET /api/relation_name/count
+```JSON
+{
+  "message": "Elemento eliminado exitosamente",
+  "data": {
+    "id": 2,
+    "name": "this is an updated name",
+    "price": 90,
+    "created_at": "2018-11-21T11:57:02.767Z",
+    "updated_at": "2018-12-12T11:55:59.828Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }
+}
+```
 
 
-Beside all this URLs, there are some URLs that render web pages:
 
-#### GET /relation_name/
-#### GET /relation_name/:id
-#### GET /relation_name/:id/edit
+### Working with the generated web app:
+
+All this files render a view. You can edit this views on the [view files created](#views)
+
+#### web index
+
+#### web new
+
+#### web show
+
+#### web edit
 
 
 
@@ -725,38 +1096,6 @@ const body = response.getBody();
 requestify.delete('/relation_name/1');
 ```
 This will delete the entry with id = 1.
-
-##### U for UPDATE
-
-* **URL:** _PUT_ _POST_ _PATCH_ /relation_name/:id/edit
-* **File:** relationName.js
-* **Description:** This URL updates an entry in the relation. it recieved a JSON object as parameter with the columns name.
-* **EXAMPLE:** Here is an example using requestify:
-```javascript
-requestify.put('/relation_name/1/edit', {
-    name: 'This is the new name',
-    price: 10
-  });
-```
-This will update the name and price of the entry with id = 1. It will only update the columns specified, therefore if the price was not included in the JSON, only the name will be updated.
-
-* **URL:** *_DELETE_ /relation_name/:id
-* **File:** relationName.js
-* **Description:** This URL deletes an entry in the relation.
-* **EXAMPLE:** Here is an example using requestify:
-```javascript
-requestify.delete('/relation_name/1');
-```
-This will delete the entry with id = 1.
-
-
-
-* _GET_ /relation_name/
-* _GET_ /relation_name/new
-* _GET_ /relation_name/:id
-* _GET_ /relation_name/:id/edit
-
-All this files render a view. You can edit this views on the [view files created](#views)
 
 #### Views
 
