@@ -862,19 +862,6 @@ Will return how many entries were created grouped by the minute of there creatio
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #### PUT PATCH POST /relation_name/:id/edit
 
 ##### **Description:**
@@ -883,19 +870,61 @@ This URL can be called either with PUT, PATCH or POST. It receives a JSON object
 ##### **Example:**
 
 The following:              
-      ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name/1/edit', {name: 'this is another name', price: 110});
-      ````
+```javascript
+Requestify.post('http://localhost:3000/api/relation_name/2/edit', {name: 'this is an updated name', price: 80});
+```
 
-Will change in the database the entry with id = 1 in the relation relation_name the values with name and price to "this is another name" and 110.
+Will change in the database the entry with id = 2 in the relation relation_name the values with name and price to "this is an updated name" and 80.
+
+It will return the updated entry:
+
+```JSON
+{
+  "message": "Elemento actualizado exitosamente",
+  "data": {
+    "id": 2,
+    "name": "this is an updated name",
+    "price": 80,
+    "created_at": "2018-11-21T11:57:02.767Z",
+    "updated_at": "2018-12-12T11:52:32.750Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }
+}
+```
 
 
 The following:              
-      ````javascript
-      Requestify.post('http://localhost:3000/api/relation_name/1/edit', {price: 90});
-      ````
+```javascript
+Requestify.post('http://localhost:3000/api/relation_name/2/edit', {price: 90});
+```
 
-Will change in the database the entry with id = 1 in the relation relation_name the value price to 90 and leave the name intact.
+Will change in the database the entry with id = 2 in the relation relation_name the value price to 80 and leave the name intact.
+
+```JSON
+{
+  "message": "Elemento actualizado exitosamente",
+  "data": {
+    "id": 2,
+    "name": "this is an updated name",
+    "price": 90,
+    "created_at": "2018-11-21T11:57:02.767Z",
+    "updated_at": "2018-12-12T11:55:59.828Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }
+}
+```
 
 
 #### DELETE /relation_name/:id
