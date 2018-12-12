@@ -929,22 +929,48 @@ Will change in the database the entry with id = 2 in the relation relation_name 
 
 #### DELETE /relation_name/:id
 
-	* **Description:** In the database deletes the entry with id = :id.
-	* **Example:**
-      * **Expected Output:**
+In the database deletes the entry with id = :id.
 
-The Following URLs are created in a separated file: relationNameAPI.js.
+The following:              
+```javascript
+  Requestify.delete('http://localhost:3000/api/relation_name/2');
+```
 
-#### GET /api/relation_name/find
+Will delete in the database the entry with id = 2, and return the deleted element.
 
-#### GET /api/relation_name/count
+```JSON
+{
+  "message": "Elemento eliminado exitosamente",
+  "data": {
+    "id": 2,
+    "name": "this is an updated name",
+    "price": 90,
+    "created_at": "2018-11-21T11:57:02.767Z",
+    "updated_at": "2018-12-12T11:55:59.828Z",
+    "links": [
+      { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+      { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+      { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+      { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+      { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+      { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+  }
+}
+```
 
 
-Beside all this URLs, there are some URLs that render web pages:
 
-#### GET /relation_name/
-#### GET /relation_name/:id
-#### GET /relation_name/:id/edit
+### Working with the generated web app:
+
+All this files render a view. You can edit this views on the [view files created](#views)
+
+#### web index
+
+#### web new
+
+#### web show
+
+#### web edit
 
 
 
@@ -1070,38 +1096,6 @@ const body = response.getBody();
 requestify.delete('/relation_name/1');
 ```
 This will delete the entry with id = 1.
-
-##### U for UPDATE
-
-* **URL:** _PUT_ _POST_ _PATCH_ /relation_name/:id/edit
-* **File:** relationName.js
-* **Description:** This URL updates an entry in the relation. it recieved a JSON object as parameter with the columns name.
-* **EXAMPLE:** Here is an example using requestify:
-```javascript
-requestify.put('/relation_name/1/edit', {
-    name: 'This is the new name',
-    price: 10
-  });
-```
-This will update the name and price of the entry with id = 1. It will only update the columns specified, therefore if the price was not included in the JSON, only the name will be updated.
-
-* **URL:** *_DELETE_ /relation_name/:id
-* **File:** relationName.js
-* **Description:** This URL deletes an entry in the relation.
-* **EXAMPLE:** Here is an example using requestify:
-```javascript
-requestify.delete('/relation_name/1');
-```
-This will delete the entry with id = 1.
-
-
-
-* _GET_ /relation_name/
-* _GET_ /relation_name/new
-* _GET_ /relation_name/:id
-* _GET_ /relation_name/:id/edit
-
-All this files render a view. You can edit this views on the [view files created](#views)
 
 #### Views
 
