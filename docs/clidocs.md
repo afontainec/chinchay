@@ -17,7 +17,7 @@ Now its time for magic,  run the command:
 
 Where _relation_name_ is the name of the relation you want to set the CRUD operations.
 
-This command will create 2 route files, 1 controller, 1 model, 4 views files and 1 migration file. We will explain how to workaround each file created. You can modify the directory where they were saved by creating a .chainfile.js, feel free to go to [chainfile section](#.chainfile.js) for more information.
+This command will create 2 route files, 1 controller, 1 model, 4 views files and 1 migration file. We will explain how to workaround each file created. You can modify the directory where they were saved by creating a .chainfile.js, feel free to go to [chainfile section](#.chainfile) for more information.
 
 
 We need to declare the schema of our relation, we do this in the migration file. Go ahead and do so, if you don't have a clue of what are we talking about, check our [migration section](#migration). Don't forget to run: `$ knex migrate:latest`
@@ -35,7 +35,7 @@ app.use('/', relation_nameAPI);
 You can run `npm start` and	 navigate to http://localhost:3000/relation_name to start working with your Chinchay app!
 
 
-### Working with the generated API:
+### Working with the generated API: {#generated-api}
 
 Chinchay will build a full api so you can start working with your CRUD operation. Here is a list of the URL created and examples of how to work with them:
 
@@ -965,15 +965,26 @@ Will delete in the database the entry with id = 2, and return the deleted elemen
 
 ### Working with the generated web app:
 
-All this files render a view. You can edit this views on the [view files created](#views)
+Chinchay gives you a fully-functional API to play around. But also it provides a web app to create, edit, and view your entries. This web app is just a frontend that makes API calls to the [generated API](#generated-api)
 
 #### web index
 
+If you navigate to http://localhost:3000/relation_name you will see a table were every row is one entry from the database.
+On every column you can click [show](#web show) to view a page that render that particular entry or [edit](#web edit) to redirect to a page where you can edit that entry.
+
+On the bottom you have a [new](#web new) button to go and create a new entry!
+
 #### web new
+
+If you navigate to http://localhost:3000/relation_name/new you will see a form. It will have inputs to define all the columns of a given relation except for id, created_at and updated_at. Click save to save this entry!
 
 #### web show
 
+If you navigate to http://localhost:3000/relation_name/:id you will see all the information regarding the entry with id = :id. You can click [edit](#web edit) to edit that entry or [index](#web index) to go back to the index.
+
 #### web edit
+
+If you navigate to http://localhost:3000/relation_name/:id/edit you will see a form to edit the information regarding the entry with id = :id. It is very similar to the form of [new](#web new), you will not be able to edit the id, created_at nor updated_at. You can click [update](#web edit) to edit that entry.
 
 
 
@@ -998,7 +1009,7 @@ The main commands that knex uses here are:
 ```
 $ knex migrate:latest
 ```
-This will run all the _up_ methods of the migration files. It will register which migrations it ran, therefore if yo create more migration and then run again this command, only the new migrations will ran.
+This will run all the _up_ methods of the migration files. It will register which migrations has ran, therefore if you create more migration and then run this command again, only the new migrations will be run.
 ```
 $ knex migrate:rollback
 ```
