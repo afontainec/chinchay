@@ -1061,7 +1061,7 @@ Dont forget to run: `$ knex migrate:latest ` in order for the migration to take 
 #### Routes
 
 The command also generates a lot of routes to work around with this relation.
-This routes are generated in two separated files: relationName.js and relationNameAPI.js. Both files are created within the directory specified in the [chainfile](#.chainfile.js). This will be explained further on but feel free to go to the [chainfile section](#.chainfile.js).
+This routes are generated in two separated files: relationName.js and relationNameAPI.js. Both files are created within the directory specified in the [chainfile](#chainfile). This will be explained further on but feel free to go to the [chainfile section](#chainfile).
 
 The CRUD operations are in the following routes:
 
@@ -1107,7 +1107,7 @@ This will delete the entry with id = 1.
 #### Model
 
 
-### .chainfile.js
+### .chainfile.js {#chainfile}
 
 This is the configuration file. Chinchay will provide a default file, therefore is _optional_. This file has the following structure:
 
