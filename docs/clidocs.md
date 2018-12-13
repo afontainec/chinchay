@@ -961,9 +961,7 @@ Will delete in the database the entry with id = 2, and return the deleted elemen
 }
 ```
 
-
-
-### Working with the generated web app:
+### Working with the generated web app:{#web-app}
 
 Chinchay gives you a fully-functional API to play around. But also it provides a web app to create, edit, and view your entries. This web app is just a frontend that makes API calls to the [generated API](#generated-api)
 
@@ -974,23 +972,31 @@ On every column you can click [show](#web show) to view a page that render that 
 
 On the bottom you have a [new](#web new) button to go and create a new entry!
 
+It will render the file named index.ejs, view the [views section](#views) for more details.
+
 #### web new
 
 If you navigate to http://localhost:3000/relation_name/new you will see a form. It will have inputs to define all the columns of a given relation except for id, created_at and updated_at. Click save to save this entry!
+
+It will render the file named create.ejs, view the [views section](#views) for more details.
+
 
 #### web show
 
 If you navigate to http://localhost:3000/relation_name/:id you will see all the information regarding the entry with id = :id. You can click [edit](#web edit) to edit that entry or [index](#web index) to go back to the index.
 
+It will render the file named show.ejs, view the [views section](#views) for more details.
+
 #### web edit
 
 If you navigate to http://localhost:3000/relation_name/:id/edit you will see a form to edit the information regarding the entry with id = :id. It is very similar to the form of [new](#web new), you will not be able to edit the id, created_at nor updated_at. You can click [update](#web edit) to edit that entry.
 
+It will render the file named edit.ejs, view the [views section](#views) for more details.
 
 
-### The "new" Command
+### The "new" Command {#new-command}
 
-This command will create migrations, models, controllers, views and routes for a given relation. Basically with just one command you are all set to for the CRUD (create, read, update, delete) of than relation. You can use it by running:
+This command will create a migration, a model, a controller, several views and two routes files for a given relation. Basically with just one command you are all set to for the CRUD (create, read, update, delete) of than relation. You can use it by running:
 
 ```
 $ chinchay new relation_name
@@ -1071,47 +1077,31 @@ Dont forget to run: `$ knex migrate:latest ` in order for the migration to take 
 
 #### Routes
 
-The command also generates a lot of routes to work around with this relation.
-This routes are generated in two separated files: relationName.js and relationNameAPI.js. Both files are created within the directory specified in the [chainfile](#chainfile). This will be explained further on but feel free to go to the [chainfile section](#chainfile).
+The command will generate two files of routes to work around with the [web app](#web-app) and the [API](#generated-api). Both files are created within the directory specified in the [chainfile](#chainfile). By default, it will be in the directory: `./routes/`
 
-The CRUD operations are in the following routes:
+The file relationName.js contains all the routes for the [web app](#web-app) and relationNameAPI.js contains all the routes for the [API](#generated-api).
 
-##### C for CREATE
+Don't forget to include this files in the app.js file:
 
-* **URL:** _POST_ /relation_name/new
-* **File:** relationName.js
-* **Description:** This URL creates a new entry in the relation. It recieved a JSON object as parameter with the columns name.
-* **EXAMPLE:** Here is an example using requestify:
 ```javascript
-requestify.post('/relation_name/new', {
-    name: 'The name of the entry',
-    price: 20
-  });
+var relation_name = require('./routes/relation_name');
+var relation_nameAPI = require('./routes/relation_nameAPI');
+app.use('/', relation_name);
+app.use('/', relation_nameAPI);
 ```
-This will create the entry with the given name and price.
-
-##### R for READ
-
-* **URL:** _GET_ /relation_name/:id
-* **File:** relationNameAPI.js
-* **Description:** This URL returns the JSON corresponding to the entry with the given id.
-* **EXAMPLE:** Here is an example using requestify:
-```javascript
-const response = await requestify.get('/relation_name/1');
-const body = response.getBody();
-```
-
-
-* **URL:** *_DELETE_ /relation_name/:id
-* **File:** relationName.js
-* **Description:** This URL deletes an entry in the relation.
-* **EXAMPLE:** Here is an example using requestify:
-```javascript
-requestify.delete('/relation_name/1');
-```
-This will delete the entry with id = 1.
 
 #### Views
+
+The command will generate a folder with four files to render the [web app](#web-app) and the [API](#generated-api). This folder will be named `relation_name` and created within the directory specified in the [chainfile](#chainfile). By default, it will be in the directory: `./views/`.
+
+Each files uses ejs to generate the html file. Feel free to visit the [ejs website](https://ejs.co/) for further information on how to work with ejs. But in a nutshell, it allows you to embed javascript within <%%> tags.
+
+The four files created are the following:
+
+1. create.js: File to render a form to create a new entry. render in [web new](#web new). As input it receives a JSON object representing an empty instance of the relation. Note line 12 is filtering that you cannot set the id, created_at nor updated_at.
+2. edit.js: File to render a form to edit a given entry. render in [web edit](#web edit). As input it receives a JSON object representing the object to edit. Note line 12 is filtering that you cannot set the id, created_at nor updated_at.
+3. index.js: File that shows a table with all the entries from the relation Render in [web index](#web index). Receives an Array of JSON objects, each object representing an entry on the database.
+4. show.js: File renders a table to show the value of every variable of the object. render in [web show](#web show). Receives a JSON object representing the entry to show.
 
 #### Controller
 
