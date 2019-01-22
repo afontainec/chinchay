@@ -17,7 +17,9 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
   });
 
   it('With query', async () => { // eslint-disable-line
-    const results = await Places.deleteWhere({ daily_visits: 500 });
+    const results = await Places.deleteWhere({
+      daily_visits: 500,
+    });
     assert.equal(results.length, 1);
   });
 
@@ -31,25 +33,23 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
       await knex.seed.run();
     });
 
-    it('unexistant key',  (done) => { // eslint-disable-line
-      Places.deleteWhere({ unexistant: 500 }).then(() => {
+    it('unexistant key', (done) => { // eslint-disable-line
+      Places.deleteWhere({
+        unexistant: 500,
+      }).then(() => {
         done('SHOULD NOT GET HERE');
       }).catch(() => {
         done();
       });
     });
 
-    it('There is no entry that matches that query',  (done) => { // eslint-disable-line
-      Places.deleteWhere({ daily_visits: -500 }).then(() => {
-        done('SHOULD NOT GET HERE');
-      }).catch(() => {
-        Places.count().then((results) => {
-          assert.equal(results, 4);
-          done();
-        }).catch((err) => {
-          done(err);
-        });
+    it('There is no entry that matches that query', async () => { // eslint-disable-line
+      const all = await Places.count();
+      await Places.deleteWhere({
+        daily_visits: -500,
       });
+      const results = await Places.count();
+      assert.equal(results, all);
     });
   });
 
@@ -59,7 +59,13 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
     });
 
     it('delete lower than', async () => { // eslint-disable-line
-      throw new Error('NOT IMPLEMENTED');
+      await Places.deleteWhere({
+        daily_visits: ['<', 3000],
+      });
+      const results = await Places.count({
+        daily_visits: ['<', 3000],
+      });
+      assert.equal(results, 0);
     });
   });
 });
