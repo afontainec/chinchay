@@ -31,8 +31,13 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
       await knex.seed.run();
     });
 
-    it('unexistant key', async () => { // eslint-disable-line
-      throw new Error('NOT IMPLEMENTED');
+    it('unexistant key', async (done) => { // eslint-disable-line
+      Places.deleteWhere({ unexistant: 500 }).then(() => {
+        done('SHOULD NOT GET HERE');
+      }).catch((err) => {
+        console.log(err);
+        done();
+      });
     });
 
     it('There is no entry that matches that query', async () => { // eslint-disable-line
