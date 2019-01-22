@@ -119,24 +119,6 @@ class Table {
     });
   }
 
-  // delete(id) {
-  //   return new Promise((resolve, reject) => {
-  //     this.table().where({
-  //       id,
-  //     }).del().returning('*')
-  //       .then((entry) => {
-  //         // check if attributes is an array
-  //         if (!entry || entry.length === 0) {
-  //           return reject('Hubo un error eliminando la entrada');
-  //         }
-  //         resolve(entry[0]);
-  //       })
-  //       .catch((err) => {
-  //         reject(err);
-  //       });
-  //   });
-  // }
-
   delete(input, options) {
     const whereQuery = typeof input === 'object' ? input : { id: input };
     return this.deleteWhere(whereQuery, options);
@@ -147,20 +129,6 @@ class Table {
     const query = this.deleteQuery(whereQuery, options);
     if (Table.returnAsQuery(options)) return query;
     return Table.fetchQuery(query);
-    //
-    // return new Promise((resolve, reject) => {
-    //   this.table().where(params).del().returning('*')
-    //     .then((entry) => {
-    //       // check if attributes is an array
-    //       if (!entry || entry.length === 0) {
-    //         return reject('Hubo un error eliminando la entrada');
-    //       }
-    //       resolve(entry);
-    //     })
-    //     .catch((err) => {
-    //       reject(err);
-    //     });
-    // });
   }
 
   deleteQuery(whereQuery, options) {
