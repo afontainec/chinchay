@@ -119,37 +119,20 @@ class Table {
     });
   }
 
-  delete(id) {
-    return new Promise((resolve, reject) => {
-      this.table().where({
-        id,
-      }).del().returning('*')
-        .then((entry) => {
-          // check if attributes is an array
-          if (!entry || entry.length === 0) {
-            return reject('Hubo un error eliminando la entrada');
-          }
-          resolve(entry[0]);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+  delete(input, options) {
+    const whereQuery = typeof input === 'object' ? input : { id: input };
+    return this.deleteWhere(whereQuery, options);
   }
-  deleteWhere(params) {
-    return new Promise((resolve, reject) => {
-      this.table().where(params).del().returning('*')
-        .then((entry) => {
-          // check if attributes is an array
-          if (!entry || entry.length === 0) {
-            return reject('Hubo un error eliminando la entrada');
-          }
-          resolve(entry[0]);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+
+
+  deleteWhere(whereQuery, options) {
+    const query = this.deleteQuery(whereQuery, options);
+    if (Table.returnAsQuery(options)) return query;
+    return Table.fetchQuery(query);
+  }
+
+  deleteQuery(whereQuery, options) {
+    return this.buildQuery('delete', whereQuery, 'all', options);
   }
 
 
@@ -200,7 +183,9 @@ class Table {
   findIn(target, validOptions, query, columns, options) {
     query = query || {};
     if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
-    else { query[target] = validOptions; }
+    else {
+      query[target] = validOptions;
+    }
     return this.find(query, columns, options);
   }
 
@@ -229,6 +214,8 @@ class Table {
       return this.addFindSelect(query, columns, options);
     case 'count':
       return this.addCountSelect(query, options);
+    case 'delete':
+      return this.addDelete(query, options);
     default:
       return this.addFindSelect(query, columns, options);
     }
@@ -253,6 +240,10 @@ class Table {
       return query.countDistinct(options.countDistinct);
     }
     return query.count();
+  }
+
+  addDelete(query) {
+    return query.del().returning('*');
   }
 
   addWhere(query, whereQuery, options) {
@@ -369,7 +360,9 @@ class Table {
         return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
       }
       for (let i = 0; i < results.length; i++) {
-        if (results[i].count) { results[i].count = parseInt(results[i].count, 10); }
+        if (results[i].count) {
+          results[i].count = parseInt(results[i].count, 10);
+        }
       }
       return results;
     };
@@ -395,7 +388,9 @@ class Table {
   countIn(target, validOptions, query, options) {
     query = query || {};
     if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
-    else { query[target] = validOptions; }
+    else {
+      query[target] = validOptions;
+    }
     return this.count(query, options);
   }
 
