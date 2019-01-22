@@ -16,231 +16,37 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
     await knex.seed.run();
   });
 
-  it('Empty query', async () => { // eslint-disable-line
-    const results = await Places.count({});
-    assert.equal(results, 4);
-  });
-
   it('With query', async () => { // eslint-disable-line
-    const results = await Places.count({
-      is_active: true,
-    });
-    assert.equal(results, 3);
-  });
-});
-
-describe('Malicious happy path', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
-    await knex.seed.run();
-  });
-
-  it('Query is undefined', async () => { // eslint-disable-line
-    const results = await Places.count();
-    assert.equal(results, 4);
-  });
-
-  it('Query is not a valid json', async () => { // eslint-disable-line
-    const results = await Places.count('something wierd');
-    assert.equal(results, 4);
-  });
-
-  it('Query with invalid attr', (done) => { // eslint-disable-line
-    Places.count({
-      invalid: 'ues',
-    }).then(() => {
-      done('SHOULD NOT GET HERE');
-    }).catch((err) => {
-      assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'errorMissingColumn');
-      done();
-    });
-  });
-});
-
-describe('with advance settings: group by', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
-    await knex.seed.run();
-  });
-
-  it('Give group by', async () => { // eslint-disable-line
-    const places = await Places.count({}, {
-      groupBy: 'is_active',
-    });
-    assert.equal(places.length, 2);
-    for (let i = 0; i < places.length; i++) {
-      const keys = Object.keys(places[i]);
-      assert.isTrue(keys.indexOf('is_active') > -1);
-      assert.isTrue(keys.indexOf('count') > -1);
-      const c = places[i].is_active ? 3 : 1;
-      assert.equal(places[i].count, c);
-    }
-  });
-
-  it('Give group by: array', async () => { // eslint-disable-line
-    const places = await Places.count({}, {
-      groupBy: ['is_active', 'id'],
-    });
-    assert.equal(places.length, 4);
-    for (let i = 0; i < places.length; i++) {
-      const keys = Object.keys(places[i]);
-      assert.isTrue(keys.indexOf('is_active') > -1);
-      assert.isTrue(keys.indexOf('id') > -1);
-      assert.equal(places[i].count, 1);
-    }
-  });
-
-  it('Give group by: array and complex raw select', async () => { // eslint-disable-line
-    const options = {};
-    options.rawSelect = 'created_at::DATE as date, EXTRACT (hour from (created_at)) as hour';
-    options.groupBy = ['date', 'hour'];
-    const places = await Places.count({}, options);
-    assert.equal(places.length, 4);
-    for (let i = 0; i < places.length; i++) {
-      const keys = Object.keys(places[i]);
-      assert.isTrue(keys.indexOf('date') > -1);
-      assert.isTrue(keys.indexOf('hour') > -1);
-      assert.equal(places[i].count, 1);
-    }
-  });
-
-  it('invalid group by', (done) => { // eslint-disable-line
-    Places.count({}, {
-      groupBy: 'unexistant',
-    }).then(() => {
-      done('SHOULD NOT GET HERE');
-    }).catch((err) => {
-      assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'errorMissingColumn');
-      done();
-    });
-  });
-
-  // cannot do a group by
-  it('Give a complex group by', async () => { // eslint-disable-line
-    const places = await Places.count({}, {
-      rawSelect: '(created_at)::DATE as d',
-      groupBy: 'd',
-    });
-    assert.equal(places.length, 4);
-    for (let i = 0; i < places.length; i++) {
-      const keys = Object.keys(places[i]);
-      assert.isTrue(keys.indexOf('d') > -1);
-      assert.isTrue(keys.indexOf('count') > -1);
-      assert.equal(places[i].count, 1);
-    }
-  });
-});
-
-describe('with advance settings: order by', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
-    await knex.seed.run();
-  });
-  it('With order by', async () => { // eslint-disable-line
-    const results = await Places.count({}, {
-      groupBy: 'is_active',
-      orderBy: ['count', 'desc'],
-    });
-    assert.equal(results.length, 2);
-    for (let i = 1; i < results.length; i++) {
-      assert.isTrue(results[i - 1].count >= results[i].count);
-    }
-  });
-
-  it('With invalid order by', (done) => { // eslint-disable-line
-    Places.count({}, {
-      orderBy: ['daily_visits', 'asc'],
-    }).then(() => {
-      done('SHOULD NOT GET HERE');
-    }).catch((err) => {
-      assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'check_ungrouped_columns_walker');
-      done();
-    });
-  });
-});
-
-describe('with advance settings: start_date and end_date', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
-    await knex.seed.run();
-  });
-
-  it('With start date', async () => { // eslint-disable-line
-    const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
-    const results = await Places.count({}, {
-      startDate: date,
-    });
-    assert.equal(results, 2);
-  });
-
-  it('With end date', async () => { // eslint-disable-line
-    const date = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
-    const results = await Places.count({}, {
-      endDate: date,
-    });
-    assert.equal(results, 3);
-  });
-
-  it('With start day and end date', async () => { // eslint-disable-line
-    const startDate = new Date(new Date().getTime() - (5 * 24 * 60 * 60 * 1000));
-    const endDate = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
-    const results = await Places.count({}, {
-      endDate,
-      startDate,
-    });
+    const results = await Places.deleteWhere({ daily_visits: 500 });
     assert.equal(results.length, 1);
   });
 
-  it('invalid start date', (done) => { // eslint-disable-line
-    const date = 'this is not a date';
-    Places.count({}, {
-      startDate: date,
-    }).then(() => {
-      done('SHOULD NOT GET HERE');
-    }).catch((err) => {
-      assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'DateTimeParseError');
-      done();
+  it('Empty query: Should delete all', async () => { // eslint-disable-line
+    const results = await Places.deleteWhere({});
+    assert.equal(results.length, 3);
+  });
+
+  describe('Malicious happy path', () => { // eslint-disable-line
+    before(async () => { // eslint-disable-line
+      await knex.seed.run();
+    });
+
+    it('unexistant key', async () => { // eslint-disable-line
+      throw new Error('NOT IMPLEMENTED');
+    });
+
+    it('There is no entry that matches that query', async () => { // eslint-disable-line
+      throw new Error('NOT IMPLEMENTED');
     });
   });
-});
 
-describe('with advance settings: countDistinct', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
-    await knex.seed.run();
-  });
-
-  it('With countDistinct', async () => { // eslint-disable-line
-    const results = await Places.count({}, {
-      countDistinct: 'daily_visits',
+  describe('with advance queries', () => { // eslint-disable-line
+    before(async () => { // eslint-disable-line
+      await knex.seed.run();
     });
-    assert.equal(results, 3);
-  });
 
-  it('With invalid countDistinct', (done) => { // eslint-disable-line
-    Places.count({}, {
-      countDistinct: 'not a valid column',
-    }).then(() => {
-      done('SHOULD NOT GET HERE');
-    }).catch((err) => {
-      assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'errorMissingColumn');
-      done();
+    it('delete lower than', async () => { // eslint-disable-line
+      throw new Error('NOT IMPLEMENTED');
     });
-  });
-});
-
-describe('with advance settings: rawSelect', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
-    await knex.seed.run();
-  });
-
-  it('With max(created_at)', async () => { // eslint-disable-line
-    const results = await Places.count({}, {
-      rawSelect: 'max(created_at)',
-    });
-    const keys = Object.keys(results);
-    assert.equal(keys.length, 2);
-    assert.isTrue(keys.indexOf('count') > -1);
-    assert.isTrue(keys.indexOf('max') > -1);
   });
 });

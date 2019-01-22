@@ -144,7 +144,7 @@ class Table {
           if (!entry || entry.length === 0) {
             return reject('Hubo un error eliminando la entrada');
           }
-          resolve(entry[0]);
+          resolve(entry);
         })
         .catch((err) => {
           reject(err);
