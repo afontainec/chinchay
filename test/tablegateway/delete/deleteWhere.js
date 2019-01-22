@@ -31,7 +31,7 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
       await knex.seed.run();
     });
 
-    it('unexistant key', async (done) => { // eslint-disable-line
+    it('unexistant key',  (done) => { // eslint-disable-line
       Places.deleteWhere({ unexistant: 500 }).then(() => {
         done('SHOULD NOT GET HERE');
       }).catch(() => {
@@ -39,8 +39,17 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
       });
     });
 
-    it('There is no entry that matches that query', async () => { // eslint-disable-line
-      throw new Error('NOT IMPLEMENTED');
+    it('There is no entry that matches that query',  (done) => { // eslint-disable-line
+      Places.deleteWhere({ daily_visits: -500 }).then(() => {
+        done('SHOULD NOT GET HERE');
+      }).catch(() => {
+        Places.count().then((results) => {
+          assert.equal(results, 4);
+          done();
+        }).catch((err) => {
+          done(err);
+        });
+      });
     });
   });
 
