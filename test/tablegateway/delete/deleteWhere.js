@@ -34,8 +34,7 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
     it('unexistant key', async (done) => { // eslint-disable-line
       Places.deleteWhere({ unexistant: 500 }).then(() => {
         done('SHOULD NOT GET HERE');
-      }).catch((err) => {
-        console.log(err);
+      }).catch(() => {
         done();
       });
     });
