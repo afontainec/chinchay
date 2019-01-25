@@ -2,7 +2,7 @@
 
 Building a web app can be very time consuming and tedious, but Chinchay will help you speed up yor development.Use Chichay CLI to automate the CRUD (Create, Read, Update, Delete) operations with a MVC (Model View Controller) architecture pattern. You can easily configure it and modify it. It you are a bit lost, Chinchay does provide a default Structure.
 
-But it does not stop there! Chinchay offers a fully featured, flexible and extendable Models to make quering easier to your Database easier. With no sql knowledge you can easily make complex queries and more.
+But it does not stop there! Chinchay offers a fully featured, flexible and extendable Models to make quering to your Database easier. With no sql knowledge you can easily make complex queries and more.
 
 
 
@@ -11,6 +11,7 @@ Any Contribution are welcome!
 * [Github Repository](https://github.com/afontainec/chinchay)
 * [Issues](https://github.com/afontainec/chinchay/issues)
 * [Pull Requests](https://github.com/afontainec/chinchay/pulls)
+&nbsp;
 
 For more information visit the [Chinchay website](https://afontainec.github.io/chinchay/clitutorial).
 
