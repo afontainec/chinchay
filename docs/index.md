@@ -26,6 +26,9 @@ Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
 * [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)  
+Hola
+
+Mundo
 
 
 ## Extendable Models
@@ -41,6 +44,7 @@ Hola
 Mundo
 
 Hola<br/>
+<br/>
 Mundo
 
 Hola
