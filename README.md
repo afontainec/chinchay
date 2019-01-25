@@ -12,7 +12,7 @@ Any Contribution are welcome!
 * [Issues](https://github.com/afontainec/chinchay/issues)
 * [Pull Requests](https://github.com/afontainec/chinchay/pulls)
 
-For more information visit the [Chinchay website](https://afontainec.github.io/chinchay/clitutorial)\
+For more information visit the [Chinchay website](https://afontainec.github.io/chinchay/clitutorial)
 
 
 ## Command Line Interface
