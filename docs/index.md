@@ -28,18 +28,6 @@ Files Created are completely configurable.
 * [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)<br/>
 <br/>
 <br/>
-Mundo
-
-
 ## Extendable Models
 
 Do not get stuck making complex SQL queries. Chinchay offers a fully featured, flexible and extendable Models to make quering easier to your Database easier. With no sql knowledge you can easily make complex queries and more.
-
-Hola<br/>
-<br/>
-<br/>
-Mundo
-
-Hola
-
-Mundo
