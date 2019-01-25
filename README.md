@@ -23,7 +23,6 @@ Use a Command Line Interface to make a web app that creates, read, updated and d
 $ chinchay new relation_name
 ```
 
-
 Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
