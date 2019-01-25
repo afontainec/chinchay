@@ -26,7 +26,7 @@ Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
 * [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)<br/>
-<br/>
+<br/> 
 
 ## Extendable Models Tag A
 
