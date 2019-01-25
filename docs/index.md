@@ -10,11 +10,7 @@ Any Contribution are welcome!
 
 * [Github Repository](https://github.com/afontainec/chinchay)
 * [Issues](https://github.com/afontainec/chinchay/issues)
-* [Pull Requests](https://github.com/afontainec/chinchay/pulls)
-&nbsp;  
-&nbsp;  
-&nbsp;  
-
+* [Pull Requests](https://github.com/afontainec/chinchay/pulls).
 
 For more information visit the [Chinchay website](https://afontainec.github.io/chinchay/clitutorial).
 
