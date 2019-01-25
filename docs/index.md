@@ -11,7 +11,8 @@ Any Contribution are welcome!
 * [Github Repository](https://github.com/afontainec/chinchay)
 * [Issues](https://github.com/afontainec/chinchay/issues)
 * [Pull Requests](https://github.com/afontainec/chinchay/pulls)
-&nbsp;
+&nbsp;  
+
 
 For more information visit the [Chinchay website](https://afontainec.github.io/chinchay/clitutorial).
 
@@ -23,6 +24,7 @@ Use a Command Line Interface to make a web app that creates, read, updated and d
 ```
 $ chinchay new relation_name
 ```
+.
 
 Files Created are completely configurable.
 
