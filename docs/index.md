@@ -25,9 +25,9 @@ $ chinchay new relation_name
 Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
-* [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)
+* [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)<br/>
 <br/>
 
-## Extendable Models Tag C
+## Extendable Models Tag D
 
 Do not get stuck making complex SQL queries. Chinchay offers a fully featured, flexible and extendable Models to make quering easier to your Database easier. With no sql knowledge you can easily make complex queries and more.
