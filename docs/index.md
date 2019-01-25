@@ -23,11 +23,10 @@ Use a Command Line Interface to make a web app that creates, read, updated and d
 $ chinchay new relation_name
 ```.
 
-<br/>
 Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
-* [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)
+* [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs).
 
 
 ## Extendable Models
