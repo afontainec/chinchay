@@ -5,12 +5,11 @@ Building a web app can be very time consuming and tedious, but Chinchay will hel
 But it does not stop there! Chinchay offers a fully featured, flexible and extendable Models to make quering to your Database easier. With no sql knowledge you can easily make complex queries and more.
 
 
-
 Any Contribution are welcome!
 
 * [Github Repository](https://github.com/afontainec/chinchay)
 * [Issues](https://github.com/afontainec/chinchay/issues)
-* [Pull Requests](https://github.com/afontainec/chinchay/pulls).
+* [Pull Requests](https://github.com/afontainec/chinchay/pulls)
 
 For more information visit the [Chinchay website](https://afontainec.github.io/chinchay/clitutorial).
 
@@ -21,12 +20,12 @@ Use a Command Line Interface to make a web app that creates, read, updated and d
 
 ```
 $ chinchay new relation_name
-```.
+```  
 
 Files Created are completely configurable.
 
 * [Go to a full tutorial, creating an app from cero](https://afontainec.github.io/chinchay/clitutorial)
-* [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs).
+* [Go to the Command Line Interface Documentation!](https://afontainec.github.io/chinchay/clidocs)  
 
 
 ## Extendable Models
