@@ -165,74 +165,75 @@ Returns an array with all the entries matching the given query. If the query is 
 ##### **Simple Queries:**
 Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
 
-&nbsp;**1. Get all:**     
-    If no query is defined, it will return all the elements.
+&nbsp;**1. Get all:**  
 
-      Therefore, the request:
+  If no query is defined, it will return all the elements.
 
-      ```javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find');
-      ```
-      <br/>
+  Therefore, the request:
 
-    Will return an array with all the entries:
+  ```javascript
+  Requestify.get('http://localhost:3000/api/relation_name/find');
+  ```
+  <br/>
 
-    ```javascript
-    {
-      "message": "Busqueda encontrada exitosamente",
-      "data": [{
-              "id": 1,
-              "name": "this is the name",
-              "price": 100,
-              "created_at": "2018-11-21T11:54:42.840Z",
-              "updated_at": "2018-11-21T11:54:42.840Z",
-              "links": [ { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
-                { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
-                { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
-                { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-                { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-                { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-              }, {
-                "id": 2,
-                "name": "this is the name",
-                "price": null,
-                "created_at": "2018-11-21T11:57:02.767Z",
-                "updated_at": "2018-11-21T11:57:02.767Z",
-                "links": [ { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
-                  { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
-                  { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
-                  { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-                  { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-                  { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-              }, {
-                "id": 3,
-                "name": "other",
-                "price": 100,
-                "created_at": "2018-11-21T12:06:04.065Z",
-                "updated_at": "2018-11-21T12:06:04.065Z",
-                "links": [ { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
-                  { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
-                  { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
-                  { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-                  { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-                  { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-              }, {
-                "id": 4,
-                "name": "expensive",
-                "price": 110,
-                "created_at": "2018-11-21T12:06:22.400Z",
-                "updated_at": "2018-11-21T12:06:22.400Z",
-                "links": [ { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
-                  { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
-                  { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
-                  { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-                  { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-                  { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-              }
-            ],
-    }
-    ```
-    <br/>
+  Will return an array with all the entries:
+
+  ```javascript
+  {
+    "message": "Busqueda encontrada exitosamente",
+    "data": [{
+      "id": 1,
+      "name": "this is the name",
+      "price": 100,
+      "created_at": "2018-11-21T11:54:42.840Z",
+      "updated_at": "2018-11-21T11:54:42.840Z",
+      "links": [ { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+        { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+        { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }, {
+        "id": 2,
+        "name": "this is the name",
+        "price": null,
+        "created_at": "2018-11-21T11:57:02.767Z",
+        "updated_at": "2018-11-21T11:57:02.767Z",
+        "links": [ { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+          { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+          { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }, {
+        "id": 3,
+        "name": "other",
+        "price": 100,
+        "created_at": "2018-11-21T12:06:04.065Z",
+        "updated_at": "2018-11-21T12:06:04.065Z",
+        "links": [ { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+          { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+          { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }, {
+        "id": 4,
+        "name": "expensive",
+        "price": 110,
+        "created_at": "2018-11-21T12:06:22.400Z",
+        "updated_at": "2018-11-21T12:06:22.400Z",
+        "links": [ { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
+          { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
+          { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }
+    ],
+  }
+  ```
+  <br/>
 
 
 &nbsp;**2. Filter with query:**     
@@ -416,7 +417,9 @@ For instance, the following:
 Requestify.get("http://localhost:3000/api/coffee/find?rawWhere=name = 'expensive' or name = 'other'");
 ```
 
-Will return all the entries where name = 'other' or name = 'expensive'.
+<br/>
+
+Will return all the entries where _name_ = 'other' or _name_ = 'expensive'.
 ```JSON
 {
   "message": "Busqueda encontrada exitosamente",
