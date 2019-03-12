@@ -232,7 +232,7 @@ Here are some examples of how to work with simple queries: The query will filter
     <br/>
 
 
-&nbsp;&nbsp; **1. Filter with query:**     
+&nbsp;**1. Filter with query:**     
   This is the simplest but powerful way of querying, the query will filter with the given format _key=value_.
 
   Therefore, the request:
@@ -241,7 +241,7 @@ Here are some examples of how to work with simple queries: The query will filter
   Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
   ```
   <br/>
-  Will return an array of all the entries were price=100:
+  Will return an array of all the entries were _price=100_:
 
   ```JSON
   {

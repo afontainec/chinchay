@@ -100,6 +100,7 @@ We will add the following:
     ├── knex.js        
     ├── package-lock.json
     └── package.json
+
 <br/>
 
 * database/migrations/ directory will hold all the migrations (changes) to the database.
