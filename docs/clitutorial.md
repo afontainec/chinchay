@@ -221,18 +221,19 @@ Install chinchay:
 $ npm install chinchay -s
 $ npm install chinchay -g
 ```
-This will allow you to run chinchay CLI.
+<br/>
+Installing chinchay globally will allow you to run chinchay CLI.
 
-Lets build a new relation called coffee and the files to work around with it:
+Lets build a new relation called coffee and the files to create, view, update and delete entries to it:
 
 ```
 $ chinchay new coffee
 ```
-
+<br/>
 This will create a model, a controllers, views, routes and a knex migration in the directories defined in .chainfile.js.
 
 
-The migrations will be saved in the directory database/migrations/. The name will vary but it will be appended by an coffee.js
+The migrations will be saved in the directory database/migrations/. The name will vary, as it takes the current date and time to make the file, but it will be appended by an coffee.js
 
 In this file insert the following:
 ```javascript
@@ -251,12 +252,13 @@ exports.down = function (knex) {
   return knex.schema.dropTable('coffee');
 };
 ```
+<br/>
+This piece of code will create a relation called coffee within our database with the variables name and price. Also will generate a id and a created_at and updated_at timestamps for every entry. To run this migration:
 
-This is the piece of code that will create a relation witin our database with the variables name and price. Also will generate a id and a created_at and updated_at timestamps for every entry. To run this migration:
 ```
 $ knex migrate:latest
 ```
-
+<br/>
 
 Last, but not least, add the following lines to the app.js
 
@@ -266,12 +268,15 @@ var coffeeAPI = require('./routes/coffeeAPI');
 app.use('/', coffee);
 app.use('/', coffeeAPI);
 ```
-Now run the app
+<br/>
+This lines makes the app use the routes for the CRUD operations to the coffee relation.
+<br/>
+Now run the app:
 ```
 $ npm start
 ```
 
-and visit localhost:3000/coffee
+and visit [localhost:3000/coffee](localhost:3000/coffee)
 
 Click new to create a coffee!
 
