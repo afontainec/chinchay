@@ -16,7 +16,7 @@ Create a nodejs app called: test_chinchay
 ```
 $ express test_chinchay && cd test_chinchay
 ```
-
+<br/>
 We will install drivers to use PostgresSQL database. we will use knexjs and pg
 
 ```
@@ -56,7 +56,6 @@ postgres=# CREATE DATABASE test_chinchay;
 if its successful close psql, run:
 ```
 postgres=# \q
-
 ```
 
 
@@ -275,7 +274,7 @@ Now run the app:
 ```
 $ npm start
 ```
-
+<br/>
 and visit [localhost:3000/coffee](localhost:3000/coffee)
 
 Click new to create a coffee!
