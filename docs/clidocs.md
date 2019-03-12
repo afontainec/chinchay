@@ -167,10 +167,13 @@ Here are some examples of how to work with simple queries: The query will filter
 
 &nbsp;**1. Get all:**     
     If no query is defined, it will return all the elements.
-    ```javascript
-    Requestify.get('http://localhost:3000/api/relation_name/find');
-    ```
-    <br/>
+
+      Therefore, the request:
+
+      ```javascript
+      Requestify.get('http://localhost:3000/api/relation_name/find');
+      ```
+      <br/>
 
     Will return an array with all the entries:
 
@@ -232,7 +235,7 @@ Here are some examples of how to work with simple queries: The query will filter
     <br/>
 
 
-&nbsp;**1. Filter with query:**     
+&nbsp;**2. Filter with query:**     
   This is the simplest but powerful way of querying, the query will filter with the given format _key=value_.
 
   Therefore, the request:
@@ -243,7 +246,7 @@ Here are some examples of how to work with simple queries: The query will filter
   <br/>
   Will return an array of all the entries were _price=100_:
 
-  ```JSON
+  ```javascript
   {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -275,7 +278,7 @@ Here are some examples of how to work with simple queries: The query will filter
       }],
     }
   ```
-
+  <br/>
 
 and the following:              
 
@@ -284,7 +287,7 @@ Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=othe
 ```
 
     Will return an array of all the entries were price=100 and name="other":
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [ {
