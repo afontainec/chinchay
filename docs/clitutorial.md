@@ -35,11 +35,11 @@ $ npm install
 $ npm start
 ```
 
-Visit http://localhost:3000 to see the defaut express web app
+Visit [http://localhost:3000](http://localhost:3000) to see the defaut express web app
 
 ## Create Postgresql Database
 
-In this tutorial we will not dig in how Postgres fully work. For more information on how to work around Postgres visit https://www.postgresql.org/.
+In this tutorial we will not dig in how Postgres fully work. For more information on how to work around Postgres visit [https://www.postgresql.org/](https://www.postgresql.org/).
 
 In order to connect to Postgres, we need to create a database. If you have postgresql installed you can run
 ```
@@ -61,14 +61,14 @@ postgres=# \q
 
 ## Connecting to the Database
 
-In this tutorial we will not dig in how knex fully work. For more information on how to work around knex visit https://knex.org/.
+In this tutorial we will not dig in how knex fully work. For more information on how to work around knex [click here](https://knex.org/).
 
 First of all, we highly recommend to install knex globally:
 
 ```
 $ npm install knex -g
 ```
-
+<br/>
 Until now we should have the following Directory Structure:
 
     .
@@ -100,6 +100,7 @@ We will add the following:
     ├── knex.js        
     ├── package-lock.json
     └── package.json
+<br/>
 
 * database/migrations/ directory will hold all the migrations (changes) to the database.
 * database/seed/ directory will hold all the seed files. Every subdirectory will hold the seed corresponding to that environment.
