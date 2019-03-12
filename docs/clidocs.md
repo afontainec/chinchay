@@ -246,7 +246,7 @@ Here are some examples of how to work with simple queries: The query will filter
   <br/>
   Will return an array of all the entries were _price=100_:
 
-  ```JSON
+  ```javascript
   {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -278,7 +278,7 @@ Here are some examples of how to work with simple queries: The query will filter
       }],
     }
   ```
-
+  <br/>
 
 and the following:              
 
@@ -287,7 +287,7 @@ Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=othe
 ```
 
     Will return an array of all the entries were price=100 and name="other":
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [ {
