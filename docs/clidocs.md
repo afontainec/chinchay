@@ -333,7 +333,7 @@ Therefore, the following:
   <br/>
 
   Will return an array of all the entries where price > 105 :
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [ {
@@ -352,6 +352,7 @@ Therefore, the following:
     }],
 }
 ```
+
 <br/>
 
 And the following:              
