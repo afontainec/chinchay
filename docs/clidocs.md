@@ -54,7 +54,7 @@ Chinchay will build a full api so you can start working with your CRUD operation
 
 
 #### POST /api/relation_name/new
-
+<br/>
 ##### **Description:**
  Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
 ##### **Example:**
@@ -64,8 +64,9 @@ The following:
 ```javascript
 Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
 ```
+<br/>
+Will save in the database an entry with the values _name="this is the name"_ and _price=100_ in the relation _relation_name_. The Return is as follows:
 
-Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=100. The Return is as follows:
 ```JSON
 {
   "message": "Elemento guardado exitosamente",
@@ -86,7 +87,7 @@ Will save in the database an entry in the relation relation_name the values with
   }
 }
 ```
-
+<br/>
 The following:              
 ```javascript
 Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the name"});
