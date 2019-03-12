@@ -288,7 +288,7 @@ Here are some examples of how to work with simple queries: The query will filter
   ```
   <br/>
 
-    Will return an array of all the entries were price=100 and name="other":
+  Will return an array of all the entries were price=100 and name="other":
 
   ```javascript
   {
