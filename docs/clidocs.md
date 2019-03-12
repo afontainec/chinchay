@@ -65,7 +65,7 @@ The following:
 Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
 ```
 <br/>
-Will save in the database an entry with the values _name="this is the name"_ and _price=100_ in the relation _relation_name_. The Return is as follows:
+Will save in the database an entry were _name="this is the name"_ and _price=100_ in the relation _relation_name_. The Return is as follows:
 
 ```JSON
 {
@@ -88,12 +88,14 @@ Will save in the database an entry with the values _name="this is the name"_ and
 }
 ```
 <br/>
+
 The following:              
 ```javascript
 Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the name"});
 ```
+<br/>
 
-Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=null. The response is:
+Will save in the database an entry,  were _name="this is the name"_ and _price=null_, in the relation _relation_name_. The response is:
 
 ```JSON
 {
@@ -115,20 +117,21 @@ Will save in the database an entry in the relation relation_name the values with
   }
 }
 ```
-
+<br/>
 
 #### GET /api/relation_name/:id
-
+<br/>
 ##### **Description:**
-Returns a JSON object representing the object with id = :id. If it does not exists reports the error.
+Returns a JSON object representing the object with id = :id. If there is no such entry, it reports the error.
 ##### **Example:**
 
 The following:              
 ```javascript
 Requestify.get('http://localhost:3000/api/relation_name/1');
 ```
+<br/>
 
-Will return a JSON representing the object with id=1 within the data key:
+Will return a JSON representing the object with id=1:
 
 ```JSON
 {
@@ -150,6 +153,7 @@ Will return a JSON representing the object with id=1 within the data key:
   }
 }
 ```
+<br/>
 
 
 #### GET /api/relation_name/find
