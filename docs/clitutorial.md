@@ -23,18 +23,18 @@ We will install drivers to use PostgresSQL database. we will use knexjs and pg
 $ npm install pg -s
 $ npm install knex -s
 ```
-
-Also we will use ejs instead off jade. So we need to run
+<br/>
+Also we will use ejs instead of jade. So we need to run
 ```
 $ npm install ejs -s
 ```
-
+<br/>
 You can run the following commands to see the default express app
 ```
 $ npm install
 $ npm start
 ```
-
+<br/>
 Visit [http://localhost:3000](http://localhost:3000) to see the defaut express web app
 
 ## Create Postgresql Database
@@ -45,6 +45,7 @@ In order to connect to Postgres, we need to create a database. If you have postg
 ```
 $ psql
 ```
+<br/>
 This should open up postgresql console. Run the following command:
 
 ```
@@ -105,13 +106,14 @@ We will add the following:
 * database/migrations/ directory will hold all the migrations (changes) to the database.
 * database/seed/ directory will hold all the seed files. Every subdirectory will hold the seed corresponding to that environment.
 * knex.js Will be the instance to connect to the database.
-
+<br/>
 Go ahead and create those files
 
 Before we continue we need to create a configuration file to let knex know how to interact with the database. We need to create a knexfile.js
 ```
 $ touch knexfile.js
 ```
+<br/>
 Add the following code to knexfile.js
 
 ```javascript
@@ -167,7 +169,7 @@ module.exports = {
 ```
 _NOTE:_ If your Postgres user it is not postgres change it accordingly in the connection URL.
 
-We will not get i detail of how this file works, but basically we are telling knex were we want to save the migrations, the seeds and what is the url to connect to the database. Note that the knexfile defines this variables for every environment by separate.
+We will not get ni detail of how this file works, but basically we are telling knex were we want to save the migrations, the seeds and what is the url to connect to the database. Note that the knexfile defines this variables for every environment by separate.
 
 
 Now we need to add the following code to the knex.js file:
@@ -177,20 +179,21 @@ const environment = process.env.NODE_ENV || 'development';
 const config = require('./knexfile')[environment];
 module.exports = require('knex')(config);
 ```
-
-
+<br/>
 Now knex is configured to connect to the database.
 
 
 ## Using Chinchay
 
 Now its the simple part. But before we need to create one last file:
-* .chainfile.js: file for all the configuration for chinchay.
-
+* .chainfile.js: This file holds all of the configurations for chinchay.
+<br/>
 Go ahead and create this file.
 
 
 In the .chainfile.js add the following:
+
+
 ```javascript
 const path = require('path');
 
@@ -210,8 +213,8 @@ module.exports = {
   knex:  path.join(__dirname, 'knex.js')
 };
 ```
-
-Here we are defining which directories will hold the  the models, the controllers, the views and the routes.
+<br/>
+Here we are defining which directories will hold the models, the controllers, the views and the routes.
 
 Install chinchay:
 ```
