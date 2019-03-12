@@ -159,18 +159,18 @@ Will return a JSON representing the object with id=1:
 
 
 #### GET /api/relation_name/find
-
+<br/>
 ##### **Description:**
-Returns an array with all the entries matching the given query. If the query its empty it will return all the entries.
+Returns an array with all the entries matching the given query. If the query is empty it will return all the entries.
 ##### **Simple Queries:**
 Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
 
-&nbsp;&nbsp; **1. Get all:**     
+&nbsp;**1. Get all:**     
     If no query is defined, it will return all the elements.
-      ````javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find');
-      ````
-      <br/>
+    ```javascript
+    Requestify.get('http://localhost:3000/api/relation_name/find');
+    ```
+    <br/>
 
     Will return an array with all the entries:
 
@@ -233,14 +233,14 @@ Here are some examples of how to work with simple queries: The query will filter
 
 
 &nbsp;&nbsp; **1. Filter with query:**     
-    This is the simplest but powerful way of querying, the query will filter with the given format _key=value_.
+  This is the simplest but powerful way of querying, the query will filter with the given format _key=value_.
 
-    Therefore, the request:
+  Therefore, the request:
 
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
   ```
-
+  <br/>
   Will return an array of all the entries were price=100:
 
   ```JSON
