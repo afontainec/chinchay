@@ -177,7 +177,7 @@ Here are some examples of how to work with simple queries: The query will filter
 
     Will return an array with all the entries:
 
-    ```JSON
+    ```javascript
     {
       "message": "Busqueda encontrada exitosamente",
       "data": [{
@@ -285,6 +285,7 @@ and the following:
 ```javascript
 Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=other');
 ```
+<br/>
 
     Will return an array of all the entries were price=100 and name="other":
 ```javascript
@@ -306,7 +307,7 @@ Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=othe
       }],
 }
 ```
-
+<br/>
 
 
 ##### **Complex Queries:**  
@@ -323,11 +324,11 @@ Here are some examples of how to work with more complex queries. In the query yo
 
   price=">",90 will translate to `WHERE  price = '">", 90'`
 
-
-The following:              
+Therefore, the following:              
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=[">", 105]');
   ```
+  <br/>
 
   Will return an array of all the entries where price > 105 :
 ```JSON
@@ -349,11 +350,13 @@ The following:
     }],
 }
 ```
+<br/>
 
-The following:              
+And the following:              
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=["in",[110,100]]');
   ```
+  <br/>
 
   Will return an array of all the entries where price = 110 or price = 100 :
 ```JSON
@@ -401,6 +404,7 @@ The following:
     }],
 }
 ```
+<br/>
 
 ##### **Raw Query:**  
 
