@@ -9,11 +9,19 @@ Do not get stuck making complex SQL queries. Chinchay makes that part easy using
 
 First things first, we need a Node.js app with express,	knex and postgresql. So go ahead and create it, if you are lost or have no idea what are we talking about, no worries, follow our step-by-step [CLI Tutorial](/chinchay/clitutorial).
 
-Once you have your app nice and ready, lets add the Chinchay Dependency, run `npm install chinchay -s` and `npm install chinchay -g`. The **-g** its really important for the CLI to work.
+Once you have your app nice and ready, lets add the Chinchay Dependency, run:
+```
+$ npm install chinchay -s
+$ npm install chinchay -g
+```
+<br/>
+The **-g** its really important for the CLI to work.
 
 Now its time for magic,  run the command:
-```$ chinchay new relation_name
 ```
+$ chinchay new relation_name
+```
+<br/>
 
 Where _relation_name_ is the name of the relation you want to set the CRUD operations.
 
@@ -30,9 +38,14 @@ var relation_nameAPI = require('./routes/relation_nameAPI');
 app.use('/', relation_name);
 app.use('/', relation_nameAPI);
 ```
+<br/>
 
-
-You can run `npm start` and	 navigate to http://localhost:3000/relation_name to start working with your Chinchay app!
+You can run:
+```
+$ npm start
+```
+ <br/>
+ Browse to [http://localhost:3000/relation_name](http://localhost:3000/relation_name) to start working with your Chinchay app!
 
 
 ### Working with the generated API: {#generated-api}
