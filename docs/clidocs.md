@@ -281,34 +281,35 @@ Here are some examples of how to work with simple queries: The query will filter
   ```
   <br/>
 
-and the following:              
+  and the following:              
 
-```javascript
-Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=other');
-```
-<br/>
+  ```javascript
+  Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=other');
+  ```
+  <br/>
 
     Will return an array of all the entries were price=100 and name="other":
-```javascript
-{
-"message": "Busqueda encontrada exitosamente",
-"data": [ {
-      "id": 3,
-      "name": "other",
-      "price": 100,
-      "created_at": "2018-11-21T12:06:04.065Z",
-      "updated_at": "2018-11-21T12:06:04.065Z",
-      "links": [
-            { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
-            { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
-            { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
-            { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-            { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-            { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-      }],
-}
-```
-<br/>
+
+  ```javascript
+  {
+  "message": "Busqueda encontrada exitosamente",
+  "data": [ {
+        "id": 3,
+        "name": "other",
+        "price": 100,
+        "created_at": "2018-11-21T12:06:04.065Z",
+        "updated_at": "2018-11-21T12:06:04.065Z",
+        "links": [
+              { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+              { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+              { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+              { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+              { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+              { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+        }],
+  }
+  ```
+  <br/>
 
 
 ##### **Complex Queries:**  
