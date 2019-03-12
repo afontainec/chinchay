@@ -408,7 +408,7 @@ And the following:
 
 ##### **Raw Query:**  
 
-With simple queries and complex queries you can work around most cases, however, sometimes its just not enough. Chinchay allows have a fully configurable querying option. You may add a _rawWhere_ to your query. Whatever you pass in the raw where will go explicitly as it is in the where,  *be careful, it can lead to SQL injection*. To work with SQL injections you can also pass an array, where the first argument are is the command and the second the values to insert.
+With simple queries and complex queries you can work around most cases, however, sometimes its just not enough. Chinchay have a fully configurable querying option. You may add a _rawWhere_ to your query. Whatever you pass in the raw where will go explicitly as it is in the where,  *be careful, it can lead to SQL injection*. To work with SQL injections you can also pass an array, where the first argument is the command and the second the values to insert.
 
 For instance, the following:
 
