@@ -67,7 +67,7 @@ Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is t
 <br/>
 Will save in the database an entry were _name="this is the name"_ and _price=100_ in the relation _relation_name_. The Return is as follows:
 
-```JSON
+```javascript
 {
   "message": "Elemento guardado exitosamente",
   "data": {
@@ -97,7 +97,7 @@ Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the n
 
 Will save in the database an entry,  were _name="this is the name"_ and _price=null_, in the relation _relation_name_. The response is:
 
-```JSON
+```javascript
 {
   "message": "Elemento guardado exitosamente",
   "data": {
@@ -135,7 +135,7 @@ Requestify.get('http://localhost:3000/api/relation_name/1');
 
 Will return a JSON representing the object with id=1:
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": {
@@ -288,7 +288,7 @@ Here are some examples of how to work with simple queries: The query will filter
   ```
   <br/>
 
-    Will return an array of all the entries were price=100 and name="other":
+  Will return an array of all the entries were price=100 and name="other":
 
   ```javascript
   {
@@ -333,7 +333,7 @@ Therefore, the following:
   <br/>
 
   Will return an array of all the entries where price > 105 :
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [ {
@@ -352,6 +352,7 @@ Therefore, the following:
     }],
 }
 ```
+
 <br/>
 
 And the following:              
@@ -361,7 +362,7 @@ And the following:
   <br/>
 
   Will return an array of all the entries where price = 110 or price = 100 :
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [ {
@@ -421,7 +422,7 @@ Requestify.get("http://localhost:3000/api/coffee/find?rawWhere=name = 'expensive
 <br/>
 
 Will return all the entries where _name_ = 'other' or _name_ = 'expensive'.
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [ {
@@ -463,7 +464,7 @@ And this will have the same return:
 Requestify.get(`http://localhost:3000/api/coffee/find?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [ {
@@ -510,7 +511,7 @@ Requestify.get("http://localhost:3000/api/coffee/find?columns=name");
 ```
 
 Will return all the entries giving only the name.
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -561,7 +562,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","name"]`);
 
 Will return all the entries giving their name and id, with all the hateoas correctly compiled.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -623,7 +624,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","created_at"
 
 Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/11/2018. Note it will only return the id and created_at.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -648,7 +649,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=id&
 
 It will get the first two entries ids ordered by id.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -679,7 +680,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=["i
 
 It will get the second and third entries ids ordered by id in descending order:
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -713,7 +714,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=EXTRACT(
 
 Will extract the month. Note it also brings all the attributes, if you just want to extract the month, you should also add the _clearSelect_ option.
 
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [{
@@ -740,7 +741,7 @@ Same request, with clearSelect and with rawSelect as an array:
 Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRACT(MONTH from ??) as month", "created_at"]&clearSelect=true`);
 ```
 
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [{
@@ -771,7 +772,7 @@ Requestify.get('http://localhost:3000/api/relation_name/count?price=100');
 
 Will return:
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": "2"
@@ -784,7 +785,7 @@ Will return:
 Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]');
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": 1
@@ -797,7 +798,7 @@ Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]')
 Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": 2
@@ -812,7 +813,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or na
 Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": 1
@@ -830,7 +831,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name`);
 
 Will return how many entries are there per each name.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [
@@ -856,7 +857,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name&orderBy=coun
 ```
 
 Will return the save results as before but ordered by count in ascending order.
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -883,7 +884,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=minute&rawSelect=
 
 Will return how many entries were created grouped by the minute of there creation.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -916,7 +917,7 @@ Will change in the database the entry with id = 2 in the relation relation_name 
 
 It will return the updated entry:
 
-```JSON
+```javascript
 {
   "message": "Elemento actualizado exitosamente",
   "data": {
@@ -944,7 +945,7 @@ Requestify.post('http://localhost:3000/api/relation_name/2/edit', {price: 90});
 
 Will change in the database the entry with id = 2 in the relation relation_name the value price to 80 and leave the name intact.
 
-```JSON
+```javascript
 {
   "message": "Elemento actualizado exitosamente",
   "data": {
@@ -976,7 +977,7 @@ The following:
 
 Will delete in the database the entry with id = 2, and return the deleted element.
 
-```JSON
+```javascript
 {
   "message": "Elemento eliminado exitosamente",
   "data": {
