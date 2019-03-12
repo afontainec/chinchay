@@ -50,15 +50,15 @@ $ npm start
 
 ### Working with the generated API: {#generated-api}
 
-Chinchay will build a full api so you can start working with your CRUD operation. Here is a list of the URL created and examples of how to work with them:
+Chinchay will build a fully functional api so you can start working with your CRUD operation. Here is a list of the URL created and examples of how to work with them:
 
-
+<br/>
 #### POST /api/relation_name/new
 <br/>
 ##### **Description:**
  Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
 ##### **Example:**
-  For this examples, we will assume that the relation has a column _name_ of type string and a column _price_ of type integer.
+  _NOTE:_ For all the examples, we will assume that the relation has a column _name_ of type string and a column _price_ of type integer. This should be defined in the [migration file](#migration).
 
 The following:              
 ```javascript
@@ -118,6 +118,8 @@ Will save in the database an entry,  were _name="this is the name"_ and _price=n
 }
 ```
 <br/>
+In both cases, the return is an JSON object with a message and a data attribute with a JSON object representing the saved entry.
+<br/>
 
 #### GET /api/relation_name/:id
 <br/>
@@ -157,18 +159,18 @@ Will return a JSON representing the object with id=1:
 
 
 #### GET /api/relation_name/find
-
+<br/>
 ##### **Description:**
-Returns an array with all the entries matching the given query. If the query its empty it will return all the entries.
+Returns an array with all the entries matching the given query. If the query is empty it will return all the entries.
 ##### **Simple Queries:**
 Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
 
-&nbsp; &nbsp; 1. Get all:     
+&nbsp;**1. Get all:**     
     If no query is defined, it will return all the elements.
-      ````javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find');
-      ````
-      <br/>
+    ```javascript
+    Requestify.get('http://localhost:3000/api/relation_name/find');
+    ```
+    <br/>
 
     Will return an array with all the entries:
 
@@ -227,16 +229,18 @@ Here are some examples of how to work with simple queries: The query will filter
             ],
     }
     ```
+    <br/>
 
-2. Filter with query:   
-    This is the simplest by powerful way of querying, the query will filter with the given format _key=value_.
 
-    Therefore, the request:
+&nbsp;&nbsp; **1. Filter with query:**     
+  This is the simplest but powerful way of querying, the query will filter with the given format _key=value_.
+
+  Therefore, the request:
 
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
   ```
-
+  <br/>
   Will return an array of all the entries were price=100:
 
   ```JSON
