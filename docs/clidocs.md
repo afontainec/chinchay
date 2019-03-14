@@ -9,11 +9,19 @@ Do not get stuck making complex SQL queries. Chinchay makes that part easy using
 
 First things first, we need a Node.js app with express,	knex and postgresql. So go ahead and create it, if you are lost or have no idea what are we talking about, no worries, follow our step-by-step [CLI Tutorial](/chinchay/clitutorial).
 
-Once you have your app nice and ready, lets add the Chinchay Dependency, run `npm install chinchay -s` and `npm install chinchay -g`. The **-g** its really important for the CLI to work.
+Once you have your app nice and ready, lets add the Chinchay Dependency, run:
+```
+$ npm install chinchay -s
+$ npm install chinchay -g
+```
+<br/>
+The **-g** its really important for the CLI to work.
 
 Now its time for magic,  run the command:
-```$ chinchay new relation_name
 ```
+$ chinchay new relation_name
+```
+<br/>
 
 Where _relation_name_ is the name of the relation you want to set the CRUD operations.
 
@@ -30,30 +38,36 @@ var relation_nameAPI = require('./routes/relation_nameAPI');
 app.use('/', relation_name);
 app.use('/', relation_nameAPI);
 ```
+<br/>
 
-
-You can run `npm start` and	 navigate to http://localhost:3000/relation_name to start working with your Chinchay app!
+You can run:
+```
+$ npm start
+```
+ <br/>
+ Browse to [http://localhost:3000/relation_name](http://localhost:3000/relation_name) to start working with your Chinchay app!
 
 
 ### Working with the generated API: {#generated-api}
 
-Chinchay will build a full api so you can start working with your CRUD operation. Here is a list of the URL created and examples of how to work with them:
+Chinchay will build a fully functional api so you can start working with your CRUD operation. Here is a list of the URL created and examples of how to work with them:
 
-
+<br/>
 #### POST /api/relation_name/new
-
+<br/>
 ##### **Description:**
  Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
 ##### **Example:**
-  For this examples, we will assume that the relation has a column _name_ of type string and a column _price_ of type integer.
+  _NOTE:_ For all the examples, we will assume that the relation has a column _name_ of type string and a column _price_ of type integer. This should be defined in the [migration file](#migration).
 
 The following:              
 ```javascript
 Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
 ```
+<br/>
+Will save in the database an entry were _name="this is the name"_ and _price=100_ in the relation _relation_name_. The Return is as follows:
 
-Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=100. The Return is as follows:
-```JSON
+```javascript
 {
   "message": "Elemento guardado exitosamente",
   "data": {
@@ -73,15 +87,17 @@ Will save in the database an entry in the relation relation_name the values with
   }
 }
 ```
+<br/>
 
 The following:              
 ```javascript
 Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the name"});
 ```
+<br/>
 
-Will save in the database an entry in the relation relation_name the values with name="this is the name" and price=null. The response is:
+Will save in the database an entry,  were _name="this is the name"_ and _price=null_, in the relation _relation_name_. The response is:
 
-```JSON
+```javascript
 {
   "message": "Elemento guardado exitosamente",
   "data": {
@@ -101,22 +117,25 @@ Will save in the database an entry in the relation relation_name the values with
   }
 }
 ```
-
+<br/>
+In both cases, the return is an JSON object with a message and a data attribute with a JSON object representing the saved entry.
+<br/>
 
 #### GET /api/relation_name/:id
-
+<br/>
 ##### **Description:**
-Returns a JSON object representing the object with id = :id. If it does not exists reports the error.
+Returns a JSON object representing the object with id = :id. If there is no such entry, it reports the error.
 ##### **Example:**
 
 The following:              
 ```javascript
 Requestify.get('http://localhost:3000/api/relation_name/1');
 ```
+<br/>
 
-Will return a JSON representing the object with id=1 within the data key:
+Will return a JSON representing the object with id=1:
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": {
@@ -136,90 +155,99 @@ Will return a JSON representing the object with id=1 within the data key:
   }
 }
 ```
+<br/>
 
 
 #### GET /api/relation_name/find
-
+<br/>
 ##### **Description:**
-Returns an array with all the entries matching the given query. If the query its empty it will return all the entries.
+Returns an array with all the entries matching the given query. If the query is empty it will return all the entries.
 ##### **Simple Queries:**
 Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
 
-1. Get all:     
-    If no query is defined, it will return all the elements.
-      ````javascript
-      Requestify.get('http://localhost:3000/api/relation_name/find');
-      ````
+&nbsp;**1. Get all:**  
 
-    Will return an array with all the entries:
+  If no query is defined, it will return all the elements.
 
-    ```JSON
-{
-  "message": "Busqueda encontrada exitosamente",
-  "data": [{
-          "id": 1,
-          "name": "this is the name",
-          "price": 100,
-          "created_at": "2018-11-21T11:54:42.840Z",
-          "updated_at": "2018-11-21T11:54:42.840Z",
-          "links": [ { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
-            { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
-            { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
-            { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-            { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-            { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-          }, {
-            "id": 2,
-            "name": "this is the name",
-            "price": null,
-            "created_at": "2018-11-21T11:57:02.767Z",
-            "updated_at": "2018-11-21T11:57:02.767Z",
-            "links": [ { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
-              { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
-              { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
-              { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-              { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-              { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-          }, {
-            "id": 3,
-            "name": "other",
-            "price": 100,
-            "created_at": "2018-11-21T12:06:04.065Z",
-            "updated_at": "2018-11-21T12:06:04.065Z",
-            "links": [ { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
-              { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
-              { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
-              { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-              { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-              { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-          }, {
-            "id": 4,
-            "name": "expensive",
-            "price": 110,
-            "created_at": "2018-11-21T12:06:22.400Z",
-            "updated_at": "2018-11-21T12:06:22.400Z",
-            "links": [ { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
-              { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
-              { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
-              { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-              { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-              { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-          }],
-}
-    ```
+  Therefore, the request:
 
-2. Filter with query:   
-    This is the simplest by powerful way of querying, the query will filter with the given format _key=value_.
+  ```javascript
+  Requestify.get('http://localhost:3000/api/relation_name/find');
+  ```
+  <br/>
 
-    Therefore, the request:
+  Will return an array with all the entries:
+
+  ```javascript
+  {
+    "message": "Busqueda encontrada exitosamente",
+    "data": [{
+      "id": 1,
+      "name": "this is the name",
+      "price": 100,
+      "created_at": "2018-11-21T11:54:42.840Z",
+      "updated_at": "2018-11-21T11:54:42.840Z",
+      "links": [ { "rel": "self", "href": "/api/coffee/1", "type": "GET" },
+        { "rel": "edit", "href": "/api/coffee/1/edit", "type": "POST" },
+        { "rel": "delete", "href": "/api/coffee/1/delete", "type": "DELETE" },
+        { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+        { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+        { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }, {
+        "id": 2,
+        "name": "this is the name",
+        "price": null,
+        "created_at": "2018-11-21T11:57:02.767Z",
+        "updated_at": "2018-11-21T11:57:02.767Z",
+        "links": [ { "rel": "self", "href": "/api/coffee/2", "type": "GET" },
+          { "rel": "edit", "href": "/api/coffee/2/edit", "type": "POST" },
+          { "rel": "delete", "href": "/api/coffee/2/delete", "type": "DELETE" },
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }, {
+        "id": 3,
+        "name": "other",
+        "price": 100,
+        "created_at": "2018-11-21T12:06:04.065Z",
+        "updated_at": "2018-11-21T12:06:04.065Z",
+        "links": [ { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+          { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+          { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }, {
+        "id": 4,
+        "name": "expensive",
+        "price": 110,
+        "created_at": "2018-11-21T12:06:22.400Z",
+        "updated_at": "2018-11-21T12:06:22.400Z",
+        "links": [ { "rel": "self", "href": "/api/coffee/4", "type": "GET" },
+          { "rel": "edit", "href": "/api/coffee/4/edit", "type": "POST" },
+          { "rel": "delete", "href": "/api/coffee/4/delete", "type": "DELETE" },
+          { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+          { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+          { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+      }
+    ],
+  }
+  ```
+  <br/>
+
+
+&nbsp;**2. Filter with query:**     
+  This is the simplest but powerful way of querying, the query will filter with the given format _key=value_.
+
+  Therefore, the request:
 
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
   ```
+  <br/>
+  Will return an array of all the entries were _price=100_:
 
-  Will return an array of all the entries were price=100:
-
-  ```JSON
+  ```javascript
   {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -251,35 +279,37 @@ Here are some examples of how to work with simple queries: The query will filter
       }],
     }
   ```
+  <br/>
 
+  and the following:              
 
-and the following:              
+  ```javascript
+  Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=other');
+  ```
+  <br/>
 
-```javascript
-Requestify.get('http://localhost:3000/api/relation_name/find?price=100&name=other');
-```
+  Will return an array of all the entries were price=100 and name="other":
 
-    Will return an array of all the entries were price=100 and name="other":
-```JSON
-{
-"message": "Busqueda encontrada exitosamente",
-"data": [ {
-      "id": 3,
-      "name": "other",
-      "price": 100,
-      "created_at": "2018-11-21T12:06:04.065Z",
-      "updated_at": "2018-11-21T12:06:04.065Z",
-      "links": [
-            { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
-            { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
-            { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
-            { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
-            { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
-            { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
-      }],
-}
-```
-
+  ```javascript
+  {
+  "message": "Busqueda encontrada exitosamente",
+  "data": [ {
+        "id": 3,
+        "name": "other",
+        "price": 100,
+        "created_at": "2018-11-21T12:06:04.065Z",
+        "updated_at": "2018-11-21T12:06:04.065Z",
+        "links": [
+              { "rel": "self", "href": "/api/coffee/3", "type": "GET" },
+              { "rel": "edit", "href": "/api/coffee/3/edit", "type": "POST" },
+              { "rel": "delete", "href": "/api/coffee/3/delete", "type": "DELETE" },
+              { "rel": "new", "href": "/api/coffee/new", "type": "POST" },
+              { "rel": "all", "href": "/api/coffee/find", "type": "GET" },
+              { "rel": "count", "href": "/api/coffee/count", "type": "GET" }],
+        }],
+  }
+  ```
+  <br/>
 
 
 ##### **Complex Queries:**  
@@ -296,14 +326,14 @@ Here are some examples of how to work with more complex queries. In the query yo
 
   price=">",90 will translate to `WHERE  price = '">", 90'`
 
-
-The following:              
+Therefore, the following:              
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=[">", 105]');
   ```
+  <br/>
 
   Will return an array of all the entries where price > 105 :
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [ {
@@ -323,13 +353,16 @@ The following:
 }
 ```
 
-The following:              
+<br/>
+
+And the following:              
   ```javascript
   Requestify.get('http://localhost:3000/api/relation_name/find?price=["in",[110,100]]');
   ```
+  <br/>
 
   Will return an array of all the entries where price = 110 or price = 100 :
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [ {
@@ -374,10 +407,11 @@ The following:
     }],
 }
 ```
+<br/>
 
 ##### **Raw Query:**  
 
-With simple queries and complex queries you can work around most cases, however, sometimes its just not enough. Chinchay allows have a fully configurable querying option. You may add a _rawWhere_ to your query. Whatever you pass in the raw where will go explicitly as it is in the where,  *be careful, it can lead to SQL injection*. To work with SQL injections you can also pass an array, where the first argument are is the command and the second the values to insert.
+With simple queries and complex queries you can work around most cases, however, sometimes its just not enough. Chinchay have a fully configurable querying option. You may add a _rawWhere_ to your query. Whatever you pass in the raw where will go explicitly as it is in the where,  *be careful, it can lead to SQL injection*. To work with SQL injections you can also pass an array, where the first argument is the command and the second the values to insert.
 
 For instance, the following:
 
@@ -385,8 +419,10 @@ For instance, the following:
 Requestify.get("http://localhost:3000/api/coffee/find?rawWhere=name = 'expensive' or name = 'other'");
 ```
 
-Will return all the entries where name = 'other' or name = 'expensive'.
-```JSON
+<br/>
+
+Will return all the entries where _name_ = 'other' or _name_ = 'expensive'.
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [ {
@@ -428,7 +464,7 @@ And this will have the same return:
 Requestify.get(`http://localhost:3000/api/coffee/find?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [ {
@@ -475,7 +511,7 @@ Requestify.get("http://localhost:3000/api/coffee/find?columns=name");
 ```
 
 Will return all the entries giving only the name.
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -526,7 +562,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","name"]`);
 
 Will return all the entries giving their name and id, with all the hateoas correctly compiled.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -588,7 +624,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","created_at"
 
 Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/11/2018. Note it will only return the id and created_at.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -613,7 +649,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=id&
 
 It will get the first two entries ids ordered by id.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -644,7 +680,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=["i
 
 It will get the second and third entries ids ordered by id in descending order:
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -678,7 +714,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=EXTRACT(
 
 Will extract the month. Note it also brings all the attributes, if you just want to extract the month, you should also add the _clearSelect_ option.
 
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [{
@@ -705,7 +741,7 @@ Same request, with clearSelect and with rawSelect as an array:
 Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRACT(MONTH from ??) as month", "created_at"]&clearSelect=true`);
 ```
 
-```JSON
+```javascript
 {
 "message": "Busqueda encontrada exitosamente",
 "data": [{
@@ -736,7 +772,7 @@ Requestify.get('http://localhost:3000/api/relation_name/count?price=100');
 
 Will return:
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": "2"
@@ -749,7 +785,7 @@ Will return:
 Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]');
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": 1
@@ -762,7 +798,7 @@ Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]')
 Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": 2
@@ -777,7 +813,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or na
 Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
 ```
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": 1
@@ -795,7 +831,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name`);
 
 Will return how many entries are there per each name.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [
@@ -821,7 +857,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name&orderBy=coun
 ```
 
 Will return the save results as before but ordered by count in ascending order.
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -848,7 +884,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=minute&rawSelect=
 
 Will return how many entries were created grouped by the minute of there creation.
 
-```JSON
+```javascript
 {
   "message": "Busqueda encontrada exitosamente",
   "data": [{
@@ -881,7 +917,7 @@ Will change in the database the entry with id = 2 in the relation relation_name 
 
 It will return the updated entry:
 
-```JSON
+```javascript
 {
   "message": "Elemento actualizado exitosamente",
   "data": {
@@ -909,7 +945,7 @@ Requestify.post('http://localhost:3000/api/relation_name/2/edit', {price: 90});
 
 Will change in the database the entry with id = 2 in the relation relation_name the value price to 80 and leave the name intact.
 
-```JSON
+```javascript
 {
   "message": "Elemento actualizado exitosamente",
   "data": {
@@ -941,7 +977,7 @@ The following:
 
 Will delete in the database the entry with id = 2, and return the deleted element.
 
-```JSON
+```javascript
 {
   "message": "Elemento eliminado exitosamente",
   "data": {

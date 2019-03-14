@@ -588,7 +588,7 @@ class Table {
     return typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'));
   }
 
-  static extractOptions(query) {
+  static extractOptions(query, securityMode) {
     const options = {};
     const queryKeys = Object.keys(query);
     for (let i = 0; i < OPTIONS_KEYS.length; i++) {
@@ -600,6 +600,17 @@ class Table {
         }
         options[key] = elem;
         delete query[key];
+      }
+    }
+    if (securityMode) Table.removeRawOptions(options);
+    return options;
+  }
+
+  static removeRawOptions(options) {
+    options = options || {};
+    for (let i = 0; i < OPTIONS_KEYS.length; i++) {
+      if (OPTIONS_KEYS[i].includes('raw')) {
+        delete options[OPTIONS_KEYS[i]];
       }
     }
     return options;
