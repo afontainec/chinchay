@@ -865,7 +865,7 @@ Returns:
 
 ##### **Advanced Options:**
 
-###### **Start Date and End Date:**
+##### **&nbsp;Start Date and End Date:**
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
@@ -880,7 +880,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:5
 ```
 <br/>
 
-###### **Group by and order By:**
+##### **&nbsp;Group by and order By:**
 
 There is an extra option that was not present in the find examples: _groupBy_. You can group your answer according to an attribute.
 For instance:
@@ -937,7 +937,7 @@ Will return the save results as before but ordered by count in ascending order.
 ```
 <br/>
 
-###### **rawSelect:**
+##### **&nbsp;rawSelect:**
 
 There rawSelect option its also valid. However, be caution when using it because sometimes it will not be valid if its does not came with a group By.
 Here an example:
