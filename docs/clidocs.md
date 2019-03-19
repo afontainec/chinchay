@@ -652,7 +652,7 @@ Will return all the entries giving their name and id, with all the hateoas corre
 
 It just does not end here! There are some more options to do your querying even more complete!
 
-###### **Start Date and End Date:**  
+##### **&nbsp;Start Date and End Date:**  
 
 You can specify a range of dates to query. It will filter all the values where startDate < created_at < endDate. If startDate it is not defined it will query since dawn of time, whereas if endDate is not defined it will query till the end of time.
 
@@ -680,7 +680,7 @@ Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/
 ```
 <br/>
 
-###### **order By, limit and offset:**
+##### **&nbsp;order By, limit and offset:**
 
 There are more options, for instance:
 ```javascript
@@ -748,7 +748,7 @@ It will get the second and third entries ids ordered by id in descending order:
 <br/>
 
 
-###### **rawSelect:**
+##### **&nbsp;rawSelect:**
 
 RawSelect allows you to be even more specific on what you want to ask for. It can be given as a string or an array for sql injection. Fo instance:
 
