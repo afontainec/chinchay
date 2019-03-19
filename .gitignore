@@ -3,3 +3,4 @@ knexfile.js
 knexfile_other.js
 zdebug.js
 chinchapp/*
+.nyc_output
