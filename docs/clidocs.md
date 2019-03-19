@@ -52,7 +52,18 @@ exports.down = function (knex) {
 <br/>
  Don't forget to run: `$ knex migrate:latest`
 
-Lastly we add our routes to the app.js file:
+Lastly we add our routes to the app.js file, in the general case add the following lines:
+
+
+```javascript
+var relation_name = require('./routes/relation_name');
+var relation_nameAPI = require('./routes/relation_nameAPI');
+app.use('/', relation_name);
+app.use('/', relation_nameAPI);
+```
+<br/>
+
+In our case, using the _coffee_ relation, those lines should be:
 
 ```javascript
 var coffee = require('./routes/coffee');
@@ -62,12 +73,12 @@ app.use('/', coffeeAPI);
 ```
 <br/>
 
-You can run:
+To view are app, run:
 ```
 $ npm start
 ```
  <br/>
- Browse to [http://localhost:3000/coffee](http://localhost:3000/coffee) to start working with your Chinchay app!
+ And browse to [http://localhost:3000/coffee](http://localhost:3000/coffee) to start working with your Chinchay app!
 
 
 ### Working with the generated API: {#generated-api}
@@ -80,14 +91,14 @@ Chinchay will build a fully functional api so you can start working with your CR
 ##### **Description:**
  Receives a JSON object and, in the database, inserts an entry with values defined in the JSON. It will return whether it was successful or not, and the saved entry.
 ##### **Example:**
-  _NOTE:_ For all the examples, we will assume that the relation has a column _name_ of type string and a column _price_ of type integer. This should be defined in the [migration file](#migration).
+  _NOTE:_ For this, and *all* the examples we are using the _coffee_ relation we created, if another one was used, change accordingly.
 
 The following:              
 ```javascript
-Requestify.post('http://localhost:3000/api/relation_name/new', {name: "this is the name", price: 100});
+Requestify.post('http://localhost:3000/api/coffee/new', {name: "this is the name", price: 100});
 ```
 <br/>
-Will save in the database an entry were _name="this is the name"_ and _price=100_ in the relation _relation_name_. The Return is as follows:
+Will save in the database an entry were _name="this is the name"_ and _price=100_ in the relation _coffee_. The Return is as follows:
 
 ```javascript
 {
@@ -113,11 +124,11 @@ Will save in the database an entry were _name="this is the name"_ and _price=100
 
 The following:              
 ```javascript
-Requestify.post('http://localhost:3000/api/relation_name', {name: "this is the name"});
+Requestify.post('http://localhost:3000/api/coffee', {name: "this is the name"});
 ```
 <br/>
 
-Will save in the database an entry,  were _name="this is the name"_ and _price=null_, in the relation _relation_name_. The response is:
+Will save in the database an entry,  were _name="this is the name"_ and _price=null_, in the relation _coffee_. The response is:
 
 ```javascript
 {
@@ -140,18 +151,19 @@ Will save in the database an entry,  were _name="this is the name"_ and _price=n
 }
 ```
 <br/>
-In both cases, the return is an JSON object with a message and a data attribute with a JSON object representing the saved entry.
+In both cases, the return is an JSON object with a _message_ and a _data_ property with a JSON object representing the saved entry.
 <br/>
 
 #### GET /api/relation_name/:id
 <br/>
+
 ##### **Description:**
 Returns a JSON object representing the object with id = :id. If there is no such entry, it reports the error.
 ##### **Example:**
 
 The following:              
 ```javascript
-Requestify.get('http://localhost:3000/api/relation_name/1');
+Requestify.get('http://localhost:3000/api/coffee/1');
 ```
 <br/>
 
@@ -183,7 +195,7 @@ Will return a JSON representing the object with id=1:
 #### GET /api/relation_name/find
 <br/>
 ##### **Description:**
-Returns an array with all the entries matching the given query. If the query is empty it will return all the entries.
+Returns an array with all the entries matching the given query.
 ##### **Simple Queries:**
 Here are some examples of how to work with simple queries: The query will filter with the given format _key=value_.
 
@@ -194,7 +206,7 @@ Here are some examples of how to work with simple queries: The query will filter
   Therefore, the request:
 
   ```javascript
-  Requestify.get('http://localhost:3000/api/relation_name/find');
+  Requestify.get('http://localhost:3000/api/coffee/find');
   ```
   <br/>
 
@@ -264,7 +276,7 @@ Here are some examples of how to work with simple queries: The query will filter
   Therefore, the request:
 
   ```javascript
-  Requestify.get('http://localhost:3000/api/relation_name/find?price=100');
+  Requestify.get('http://localhost:3000/api/coffee/find?price=100');
   ```
   <br/>
   Will return an array of all the entries were _price=100_:
@@ -350,7 +362,7 @@ Here are some examples of how to work with more complex queries. In the query yo
 
 Therefore, the following:              
   ```javascript
-  Requestify.get('http://localhost:3000/api/relation_name/find?price=[">", 105]');
+  Requestify.get('http://localhost:3000/api/coffee/find?price=[">", 105]');
   ```
   <br/>
 
