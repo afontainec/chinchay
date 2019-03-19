@@ -23,20 +23,42 @@ $ chinchay new relation_name
 ```
 <br/>
 
-Where _relation_name_ is the name of the relation you want to set the CRUD operations.
+Where _relation_name_ is the name of the relation you want to set the CRUD operations. For this documentations with a relation named _coffee_. Therefore, the command would be:
+```
+$ chinchay new coffee
+```
+<br/>
 
-This command will create 2 route files, 1 controller, 1 model, 4 views files and 1 migration file. We will explain how to workaround each file created. You can modify the directory where they were saved by creating a .chainfile.js, feel free to go to [chainfile section](#.chainfile) for more information.
+This command will create 2 route files, 1 controller, 1 model, 4 views files and 1 migration file. We will explain how to workaround each file. You can modify the directory where they were saved by creating a .chainfile.js, feel free to go to [chainfile section](#.chainfile) for more information.
 
 
-We need to declare the schema of our relation, we do this in the migration file. Go ahead and do so, if you don't have a clue of what are we talking about, check our [migration section](#migration). Don't forget to run: `$ knex migrate:latest`
+We need to declare the schema of our relation, we do this in the migration file. Go ahead and do so, if you don't have a clue of what are we talking about, check our [migration section](#migration). In our case, we will use the following schema, but feel free to use another one!
+```javascript
+exports.up = function (knex) {
+  return knex.schema.createTable('coffee', (table) => {
+    // Incremental id
+    table.increments();
+    table.string('name').notNullable();
+    table.integer('price');
+    // created_at and updated_at
+    table.timestamps();
+  });
+};
 
-Lastly we add to the app.js file the routes by adding the following lines:
+exports.down = function (knex) {
+  return knex.schema.dropTable('coffee');
+};
+```
+<br/>
+ Don't forget to run: `$ knex migrate:latest`
+
+Lastly we add our routes to the app.js file:
 
 ```javascript
-var relation_name = require('./routes/relation_name');
-var relation_nameAPI = require('./routes/relation_nameAPI');
-app.use('/', relation_name);
-app.use('/', relation_nameAPI);
+var coffee = require('./routes/coffee');
+var coffeeAPI = require('./routes/coffeeAPI');
+app.use('/', coffee);
+app.use('/', coffeeAPI);
 ```
 <br/>
 
@@ -45,7 +67,7 @@ You can run:
 $ npm start
 ```
  <br/>
- Browse to [http://localhost:3000/relation_name](http://localhost:3000/relation_name) to start working with your Chinchay app!
+ Browse to [http://localhost:3000/coffee](http://localhost:3000/coffee) to start working with your Chinchay app!
 
 
 ### Working with the generated API: {#generated-api}
