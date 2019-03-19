@@ -452,7 +452,6 @@ For instance, the following:
 ```javascript
 Requestify.get("http://localhost:3000/api/coffee/find?rawWhere=name = 'expensive' or name = 'other'");
 ```
-
 <br/>
 
 Will return all the entries where _name_ = 'other' or _name_ = 'expensive'.
@@ -488,7 +487,7 @@ Will return all the entries where _name_ = 'other' or _name_ = 'expensive'.
   }],
 }
 ```
-
+<br/>
 
 However, if you want to specify in an array-format you could run the following command:
 
@@ -497,6 +496,7 @@ And this will have the same return:
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
 ```
+<br/>
 
 ```javascript
 {
@@ -530,6 +530,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?rawWhere=["name = ? or nam
   }],
 }
 ```
+<br/>
 
 
 
@@ -543,6 +544,7 @@ For instance, the following:
 ```javascript
 Requestify.get("http://localhost:3000/api/coffee/find?columns=name");
 ```
+<br/>
 
 Will return all the entries giving only the name.
 ```javascript
@@ -587,12 +589,14 @@ Will return all the entries giving only the name.
   }],
 }
 ```
+<br/>
 
 *NOTE:* Hateoas was unable to insert the id in the hyperlinks (href attribute) because the id column was not asked for. You need to ask for the id attribute for the correct link. For instance:
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","name"]`);
 ```
+<br/>
 
 Will return all the entries giving their name and id, with all the hateoas correctly compiled.
 
@@ -641,8 +645,8 @@ Will return all the entries giving their name and id, with all the hateoas corre
     }
   ],
 }
-
 ```
+<br/>
 
 ##### **Advance Options:**  
 
@@ -655,6 +659,7 @@ You can specify a range of dates to query. It will filter all the values where s
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id","created_at"]&startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
 ```
+<br/>
 
 Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/11/2018. Note it will only return the id and created_at.
 
@@ -673,6 +678,7 @@ Will return all the entries created between 11:55 AM 21/11/2018 and 12:00 PM 21/
     }],
 }
 ```
+<br/>
 
 ###### **order By, limit and offset:**
 
@@ -680,6 +686,7 @@ There are more options, for instance:
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=id&limit=2`);
 ```
+<br/>
 
 It will get the first two entries ids ordered by id.
 
@@ -705,12 +712,14 @@ It will get the first two entries ids ordered by id.
     }],
 }
 ```
+<br/>
 
 Moreover, you can set orderBy as an array, not only specifying the column to order by but also if its ascending (asc) or descending (desc). To do so, orderBy is defined as column to order and then the direction that can either be: "asc" or "desc". for instance:
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=["id","desc"]&limit=2`);
 ```
+<br/>
 
 It will get the second and third entries ids ordered by id in descending order:
 
@@ -736,6 +745,7 @@ It will get the second and third entries ids ordered by id in descending order:
     }],
 }
 ```
+<br/>
 
 
 ###### **rawSelect:**
@@ -745,6 +755,7 @@ RawSelect allows you to be even more specific on what you want to ask for. It ca
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=EXTRACT(MONTH FROM created_at) as month`);
 ```
+<br/>
 
 Will extract the month. Note it also brings all the attributes, if you just want to extract the month, you should also add the _clearSelect_ option.
 
@@ -768,12 +779,14 @@ Will extract the month. Note it also brings all the attributes, if you just want
     }],
 }
 ```
+<br/>
 
 Same request, with clearSelect and with rawSelect as an array:
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRACT(MONTH from ??) as month", "created_at"]&clearSelect=true`);
 ```
+<br/>
 
 ```javascript
 {
@@ -790,6 +803,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRAC
     }],
 }
 ```
+<br/>
 
 
 #### GET /relation_name/count
@@ -801,8 +815,9 @@ This would allow you to count how many entries are there. Extremely useful for a
 ##### **Simple Queries:**
 
 ```javascript
-Requestify.get('http://localhost:3000/api/relation_name/count?price=100');
+Requestify.get('http://localhost:3000/api/coffee/count?price=100');
 ```
+<br/>
 
 Will return:
 
@@ -812,12 +827,16 @@ Will return:
   "data": "2"
 }
 ```
+<br/>
 
 ##### **Complex Queries:**
 
 ```javascript
-Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]');
+Requestify.get('http://localhost:3000/api/coffee/count?price=[">", 105]');
 ```
+<br/>
+
+Returns:
 
 ```javascript
 {
@@ -825,12 +844,16 @@ Requestify.get('http://localhost:3000/api/relation_name/count?price=[">", 105]')
   "data": 1
 }
 ```
+<br/>
 
 ##### **Raw Query:**
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or name = ? ", ["expensive", "other"]]`);
 ```
+<br/>
+
+Returns:
 
 ```javascript
 {
@@ -838,6 +861,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or na
   "data": 2
 }
 ```
+<br/>
 
 ##### **Advanced Options:**
 
@@ -846,6 +870,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?rawWhere=["name = ? or na
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:55:00.000Z&endDate=2018-11-21T12:00:00.000Z`);
 ```
+<br/>
 
 ```javascript
 {
@@ -853,6 +878,7 @@ Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:5
   "data": 1
 }
 ```
+<br/>
 
 ###### **Group by and order By:**
 
@@ -862,6 +888,7 @@ For instance:
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name`);
 ```
+<br/>
 
 Will return how many entries are there per each name.
 
@@ -883,12 +910,14 @@ Will return how many entries are there per each name.
   }],
 }
 ```
+<br/>
 
 You can also order this answers:
 
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=name&orderBy=count`);
 ```
+<br/>
 
 Will return the save results as before but ordered by count in ascending order.
 ```javascript
@@ -906,6 +935,7 @@ Will return the save results as before but ordered by count in ascending order.
     }],
 }
 ```
+<br/>
 
 ###### **rawSelect:**
 
@@ -915,6 +945,7 @@ Here an example:
 ```javascript
 Requestify.get(`http://localhost:3000/api/coffee/count?groupBy=minute&rawSelect=EXTRACT(minutes from created_at) as minutes`);
 ```
+<br/>
 
 Will return how many entries were created grouped by the minute of there creation.
 
@@ -933,6 +964,7 @@ Will return how many entries were created grouped by the minute of there creatio
   }],
 }
 ```
+<br/>
 
 
 #### PUT PATCH POST /relation_name/:id/edit
@@ -944,8 +976,9 @@ This URL can be called either with PUT, PATCH or POST. It receives a JSON object
 
 The following:              
 ```javascript
-Requestify.post('http://localhost:3000/api/relation_name/2/edit', {name: 'this is an updated name', price: 80});
+Requestify.post('http://localhost:3000/api/coffee/2/edit', {name: 'this is an updated name', price: 80});
 ```
+<br/>
 
 Will change in the database the entry with id = 2 in the relation relation_name the values with name and price to "this is an updated name" and 80.
 
@@ -970,12 +1003,14 @@ It will return the updated entry:
   }
 }
 ```
+<br/>
 
 
 The following:              
 ```javascript
-Requestify.post('http://localhost:3000/api/relation_name/2/edit', {price: 90});
+Requestify.post('http://localhost:3000/api/coffee/2/edit', {price: 90});
 ```
+<br/>
 
 Will change in the database the entry with id = 2 in the relation relation_name the value price to 80 and leave the name intact.
 
@@ -998,6 +1033,7 @@ Will change in the database the entry with id = 2 in the relation relation_name 
   }
 }
 ```
+<br/>
 
 
 #### DELETE /relation_name/:id
@@ -1008,6 +1044,7 @@ The following:
 ```javascript
   Requestify.delete('http://localhost:3000/api/relation_name/2');
 ```
+<br/>
 
 Will delete in the database the entry with id = 2, and return the deleted element.
 
@@ -1030,6 +1067,7 @@ Will delete in the database the entry with id = 2, and return the deleted elemen
   }
 }
 ```
+<br/>
 
 ### Working with the generated web app:{#web-app}
 
