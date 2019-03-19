@@ -1071,7 +1071,7 @@ Will delete in the database the entry with id = 2, and return the deleted elemen
 ```
 <br/>
 
-### Working with the generated web app:{#web-app}
+### Working with the generated web app: {#web-app}
 
 Chinchay gives you a fully-functional API to play around. But also it provides a web app to create, edit, and view your entries. This web app is just a frontend that makes API calls to the [generated API](#generated-api)
 
