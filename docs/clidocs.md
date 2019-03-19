@@ -872,6 +872,8 @@ Requestify.get(`http://localhost:3000/api/coffee/count?startDate=2018-11-21T11:5
 ```
 <br/>
 
+Returns:
+
 ```javascript
 {
   "message": "Busqueda encontrada exitosamente",
