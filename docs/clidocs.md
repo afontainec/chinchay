@@ -154,7 +154,7 @@ Will save in the database an entry,  were _name="this is the name"_ and _price=n
 In both cases, the return is an JSON object with a _message_ and a _data_ property with a JSON object representing the saved entry.
 <br/>
 
-#### GET /api/relation_name/:id
+#### GET /api/relation_name/:id {#find-by-id-api}
 <br/>
 
 ##### **Description:**
@@ -192,7 +192,7 @@ Will return a JSON representing the object with id=1:
 <br/>
 
 
-#### GET /api/relation_name/find
+#### GET /api/relation_name/find {#find-api}
 <br/>
 ##### **Description:**
 Returns an array with all the entries matching the given query.
@@ -806,7 +806,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRAC
 <br/>
 
 
-#### GET /relation_name/count
+#### GET /relation_name/count {#count-api}
 
 ##### **Description:**
 
@@ -1222,13 +1222,38 @@ The four files created are the following:
 <br/>
 
 #### Controller
-The command will generate one controller file within the directory specified in the [chainfile](#chainfile). By default, it will be in the directory: `./controllers/`. This file  _sticks_ all together. It is called from the [Router](#routes), extract the information from the [Model](#model) and render the [views](#views).
+The command will generate one controller file within the directory specified in the [chainfile](#chainfile). By default, it will be in the directory: `./controllers/`. This file  _sticks_ all together. It is called from the [Router](#routes), then calls the [Model](#model) to get the requested information and then send the information back to the client either in the [views](#views) or in JSON objects.
 
-Before it extracts the information from the [Model](#model) it adapts the request. Information is passed by three different ways:
+Before it calls the [Model](#model) it extract from the request what is being asked for. This information is passed in three different ways:
 
 1. Params: This are the _parameters_ of the request. To know there value you need to do: ` req.params `. They are defined within the URL. For instance, if the [show](#web_show) url is _/relation_name/:id_, meaning that to view the entry with id = 1 you have to visit the url _/relation_name/1_. The controller knows which entry to extract by looking in to the params, i.e: ` req.params.id `.
 2. . Query:  This is the _query_ of the request. To know its value you need to do: ` req.query `.This is the information given after the URL, it is separated from the URL by a '?' character.  For instance:  _/api/relation_name/find?price=100_ has the query: _price=100_. ThThe use of the query varies, but usually is used to filter what to be shown.
-3. Body: This is the _body_ of the request. To know its value you need to do: ` req.body `. This are not defined in the URL, they are given in the body. Usually is used to give more sensible or complex information. Note than the GET request cannot receive a body property. 
+3. Body: This is the _body_ of the request. To know its value you need to do: ` req.body `. This are not defined in the URL, they are given in the body. Usually is used to give more sensible or complex information. Note than the GET request cannot receive a body property.
+
+It the case of the API calls: [find](#find-api), [find by id](#find-by-id-api) and [count](#count-api), the information is passed by the query and the its split into tree different objects: query, options and columns. If you are curious of what this is and how it works, visit the [Model Documentation]((/chinchay/models).
+
+After the models are called information is send back to the client. In the case of the [web app](#web-app) this is done by calling the method ` res.render() `. This function receives two parameters, the first one is the file's path. The second one is all the information you what to pass to the _ejs_ in order to render, for instance in the case of [web show](#web show) an object called _result_ is passed. This object is JSON representing the entry to be displayed.
+
+In the case of the [API](#generated-api) the information is passed out as a JSON. This JSON is build by the [httpResponse]((/chinchay/httpresponse). Feel free to visit its [documentation]((/chinchay/httpresponse) for more information. In a nutshell, the success functions receives three parameters, first a message to be given out, the the key used for the information and finally the values that key should have. Therefore:
+
+```javascript
+  httpResponse.success('This is the message', 'key', 'here goes the data');
+```
+<br/>
+Will return:
+```javascript
+  {
+    message: 'This is the message',
+    key: 'here goes the data'
+  }
+```
+<br/>
+
+
+#### HATEOAS
+
+#### Error object
+
 
 #### Model
 
