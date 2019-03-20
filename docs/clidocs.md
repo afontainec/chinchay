@@ -1077,12 +1077,12 @@ Chinchay gives you a fully-functional API to play around. But also it provides a
 
 #### web index
 
-If you navigate to http://localhost:3000/relation_name you will see a table were every row is one entry from the database.
+If you navigate to [http://localhost:3000/relation_name](http://localhost:3000/relation_name) ([http://localhost:3000/coffee](http://localhost:3000/coffee) in our case) you will see a table were every row is one entry from the database.
 On every column you can click [show](#web show) to view a page that render that particular entry or [edit](#web edit) to redirect to a page where you can edit that entry.
 
 On the bottom you have a [new](#web new) button to go and create a new entry!
 
-It will render the file named index.ejs, view the [views section](#views) for more details.
+The file renderer is named index.ejs, view the [views section](#views) for more details.
 
 #### web new
 
