@@ -1219,8 +1219,16 @@ The four files created are the following:
 2. edit.js: File to render a form to edit a given entry. As input it receives a JSON object representing the object to edit. Note line 12 is filtering that you cannot set the id, created_at nor updated_at. This is the file rendered when the [web edit](#web edit) URL is visited.
 3. index.js: File that shows a table with all the entries from the relation Render in [web index](#web index). Receives an Array of JSON objects, each object representing an entry on the database. This is the file rendered when the [web index](#web index) URL is visited.
 4. show.js: File renders a table to show the value of every variable of the object. Receives a JSON object representing the entry to show. This is the file rendered when the [web show](#web show) URL is visited.
+<br/>
 
 #### Controller
+The command will generate one controller file within the directory specified in the [chainfile](#chainfile). By default, it will be in the directory: `./controllers/`. This file  _sticks_ all together. It is called from the [Router](#routes), extract the information from the [Model](#model) and render the [views](#views).
+
+Before it extracts the information from the [Model](#model) it adapts the request. Information is passed by three different ways:
+
+1. Params: This are the _parameters_ of the request. To know there value you need to do: ` req.params `. They are defined within the URL. For instance, if the [show](#web_show) url is _/relation_name/:id_, meaning that to view the entry with id = 1 you have to visit the url _/relation_name/1_. The controller knows which entry to extract by looking in to the params, i.e: ` req.params.id `.
+2. . Query:  This is the _query_ of the request. To know its value you need to do: ` req.query `.This is the information given after the URL, it is separated from the URL by a '?' character.  For instance:  _/api/relation_name/find?price=100_ has the query: _price=100_. ThThe use of the query varies, but usually is used to filter what to be shown.
+3. Body: This is the _body_ of the request. To know its value you need to do: ` req.body `. This are not defined in the URL, they are given in the body. Usually is used to give more sensible or complex information. Note than the GET request cannot receive a body property. 
 
 #### Model
 
