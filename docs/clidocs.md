@@ -1119,30 +1119,35 @@ Where relation_name is the name of the relation you want to work with.
 A migration file will be created on the directory specified in the knexfile. If you are unfamiliar of how knexfile or knex works see the [knex documentation](https://knexjs.org/).
 
 But, in a glance, knex uses migrations to make changes to the database schema. For every change you want to make, you create a migration file.
-This file has two main methods: _up_ and _down_. The change to the database must be included in the _up_ method where in the _down_ method code to reverse the change should be provided. Therefore you can go back and forth a migration running the _down_ and _up_ method.
+This file has two main methods: _up_ and _down_. The change to the database must be included in the _up_ method, whereas the _down_ method should contain code to reverse the change. Therefore you can go back and forth a migration running the _down_ and _up_ method.
 The main commands that knex uses here are:
 
 ```
 $ knex migrate:latest
 ```
+<br/>
 This will run all the _up_ methods of the migration files. It will register which migrations has ran, therefore if you create more migration and then run this command again, only the new migrations will be run.
 ```
 $ knex migrate:rollback
 ```
+<br/>
 This will run all the _down_ methods of the migration files. Its kind of an "undo" for the previous command.
 ```
 $ knex migrate:make migration_name
 ```
+<br/>
 This will create a new migration file called _migration_name_.
 
 When you run:
 ```
 $ chinchay new relation_name
 ```
+<br/>
 A migration file is created as if you had ran:
 ```
 $ knex migrate:make relation_name
 ```
+<br/>
 
 By default this file is as follows:
 
@@ -1161,7 +1166,7 @@ exports.down = function (knex) {
   return knex.schema.dropTable('relation_name');
 };
 ```
-
+<br/>
 It will create a table with an incremental id and a created_at and updated_at columns. You can edit this file as you wish, for example:
 
 ```javascript
@@ -1180,6 +1185,7 @@ exports.down = function (knex) {
   return knex.schema.dropTable('relation_name');
 };
 ```
+<br/>
 
 Go to the [knex documentation](https://knexjs.org/) for more info of how to work around migrations.
 
@@ -1199,6 +1205,7 @@ var relation_nameAPI = require('./routes/relation_nameAPI');
 app.use('/', relation_name);
 app.use('/', relation_nameAPI);
 ```
+<br/>
 
 #### Views
 
@@ -1208,10 +1215,10 @@ Each files uses ejs to generate the html file. Feel free to visit the [ejs websi
 
 The four files created are the following:
 
-1. create.js: File to render a form to create a new entry. render in [web new](#web new). As input it receives a JSON object representing an empty instance of the relation. Note line 12 is filtering that you cannot set the id, created_at nor updated_at.
-2. edit.js: File to render a form to edit a given entry. render in [web edit](#web edit). As input it receives a JSON object representing the object to edit. Note line 12 is filtering that you cannot set the id, created_at nor updated_at.
-3. index.js: File that shows a table with all the entries from the relation Render in [web index](#web index). Receives an Array of JSON objects, each object representing an entry on the database.
-4. show.js: File renders a table to show the value of every variable of the object. render in [web show](#web show). Receives a JSON object representing the entry to show.
+1. create.js: File to render a form to create a new entry. As input it receives a JSON object representing an empty instance of the relation. Note line 12 is filtering that you cannot set the id, created_at nor updated_at. This is the file rendered when the [web new](#web new) URL is visited.
+2. edit.js: File to render a form to edit a given entry. As input it receives a JSON object representing the object to edit. Note line 12 is filtering that you cannot set the id, created_at nor updated_at. This is the file rendered when the [web edit](#web edit) URL is visited.
+3. index.js: File that shows a table with all the entries from the relation Render in [web index](#web index). Receives an Array of JSON objects, each object representing an entry on the database. This is the file rendered when the [web index](#web index) URL is visited.
+4. show.js: File renders a table to show the value of every variable of the object. Receives a JSON object representing the entry to show. This is the file rendered when the [web show](#web show) URL is visited.
 
 #### Controller
 
@@ -1227,16 +1234,16 @@ const path = require('path');
 
 module.exports = {
   models: {
-    directory: path.join(process.cwd(), '/chinchapp/models')
+    directory: path.join(process.cwd(), 'models')
   },
   controllers: {
-    directory: path.join(process.cwd(), '/chinchapp/controllers')
+    directory: path.join(process.cwd(), 'controllers')
   },
   views: {
-    directory: path.join(process.cwd(), '/chinchapp/views')
+    directory: path.join(process.cwd(), 'views')
   },
   routes: {
-    directory: path.join(process.cwd(), '/chinchapp/routes')
+    directory: path.join(process.cwd(), 'routes')
   },
   knex:  path.join(process.cwd(), 'knex.js')
 };
