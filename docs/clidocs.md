@@ -1270,12 +1270,7 @@ In an development environment will return:
 ```
 <br/>
 
-
-
-
-#### HATEOAS
-
-#### Error object
+Note that most of the api calls, also return a _links_ property. This links follows the [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) component of a [REST application architecture](https://en.wikipedia.org/wiki/Representational_state_transfer). This mean it gives out all the links necessary to browse through the API. You can see how they are defined in the `javascript initializeHATEOAS() ` function. For more information on this, feel free to go to the [HateoasGenerator documentation](/chinchay/hateoasgenerator).
 
 
 #### Model
