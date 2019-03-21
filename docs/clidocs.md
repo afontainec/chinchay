@@ -1234,7 +1234,7 @@ It the case of the API calls: [find](#find-api), [find by id](#find-by-id-api) a
 
 After the models are called information is send back to the client. In the case of the [web app](#web-app) this is done by calling the method ` res.render() `. This function receives two parameters, the first one is the file's path. The second one is all the information you what to pass to the _ejs_ in order to render, for instance in the case of [web show](#web show) an object called _result_ is passed. This object is JSON representing the entry to be displayed.
 
-In the case of the [API](#generated-api) the information is passed out as a JSON. This JSON is build by the [httpResponse]((/chinchay/httpresponse). Feel free to visit its [documentation]((/chinchay/httpresponse) for more information. In a nutshell, the success functions receives three parameters, first a message to be given out, the the key used for the information and finally the values that key should have. Therefore:
+In the case of the [API](#generated-api) the information is passed out as a JSON. This JSON is build by the [httpResponse]((/codemaster/httpresponse). Feel free to visit its [documentation]((/codemaster/httpresponse) for more information. In a nutshell, the success functions receives three parameters, first a message to be given out, then the key used for the information and finally the values that key should have. Therefore:
 
 ```javascript
   httpResponse.success('This is the message', 'key', 'here goes the data');
@@ -1248,6 +1248,29 @@ Will return:
   }
 ```
 <br/>
+
+When an error occurs, the model response with an [Message object](/codemaster/message) of the [Codemaster](https://github.com/afontainec/codemaster) package. This message has three properties:
+
+1. code: It uses [the Http Codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) to inform what "type" of error.
+2. message: A message to inform what is the error.
+3. fullMessage: This is the complete error.
+
+With this message error, the response is build by calling httpResponse.error(..). For more information on this method visit [this link]((/codemaster/httpresponse). But in a nutshell, it receives two parameters. The first is the error to be informed to the client. Therefore it should be easy to understand for everyone. The second parameter is used for development environment. Its the full error that has been thrown. This is to help developers understand why it fell. However, in production environments, it will not be added. Therefore:
+
+```javascript
+  httpResponse.error('The entry you are looking does not exist', 'No entry with id = 3 was found in table "coffee"');
+```
+<br/>
+In an development environment will return:
+```javascript
+  {
+    error: 'The entry you are looking does not exist',
+    fullError: 'No entry with id = 3 was found in table "coffee"'
+  }
+```
+<br/>
+
+
 
 
 #### HATEOAS
