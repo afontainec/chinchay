@@ -1275,6 +1275,7 @@ Note that most of the api calls, also return a _links_ property. This links foll
 
 #### Model
 
+Lastly, a model file is created. We *strongly* recommend to visit the [Model Documentation](/chinchay/models) to fully understand how to work with it. However, the file created its a [Singleton](https://www.dofactory.com/javascript/singleton-design-pattern) that manages all the queries to a certain relation. It extends the Table class and it has a constructor where it is specified the name of the table it should query to. If you need customize model functions, in this file you should add them.
 
 ### .chainfile.js {#chainfile}
 
