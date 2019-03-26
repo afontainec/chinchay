@@ -23,11 +23,11 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
 
   it('With query', async () => { // eslint-disable-line
     const results = await Coffee.find({
-      is_active: true,
+      price: 100,
     });
-    assert.equal(results.length, 3);
+    assert.equal(results.length, 2);
     for (let i = 0; i < results.length; i++) {
-      assert.isTrue(results[i].is_active);
+      assert.equal(results[i].price, 100);
     }
   });
 
@@ -47,7 +47,7 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
     assert.equal(results.length, 4);
     for (let i = 0; i < results.length; i++) {
       const keys = Object.keys(results[i]);
-      assert.equal(keys.length, 7);
+      assert.equal(keys.length, 5);
     }
   });
 });
@@ -96,7 +96,7 @@ describe('Malicious happy path', () => { // eslint-disable-line
     assert.equal(results.length, 4);
     for (let i = 0; i < results.length; i++) {
       const keys = Object.keys(results[i]);
-      assert.equal(keys.length, 7);
+      assert.equal(keys.length, 5);
     }
   });
 });
@@ -109,7 +109,7 @@ describe('with advance settings: group by', () => { // eslint-disable-line
   // cannot do a group by
   it('Give group by', (done) => { // eslint-disable-line
     Coffee.find({}, 'all', {
-      groupBy: 'is_active',
+      groupBy: 'name',
     }).then(() => {
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
@@ -138,11 +138,11 @@ describe('with advance settings: order by', () => { // eslint-disable-line
   });
   it('With order by', async () => { // eslint-disable-line
     const results = await Coffee.find({}, 'all', {
-      orderBy: ['daily_visits', 'desc'],
+      orderBy: ['created_at', 'desc'],
     });
     assert.equal(results.length, 4);
     for (let i = 1; i < results.length; i++) {
-      assert.isTrue(results[i - 1].daily_visits >= results[i].daily_visits);
+      assert.isTrue(results[i - 1].created_at >= results[i].created_at);
     }
   });
 
@@ -161,33 +161,33 @@ describe('with advance settings: order by', () => { // eslint-disable-line
   // orders as asc was given
   it('With invalid order by: no desc or asc given', async () => { // eslint-disable-line
     const results = await Coffee.find({}, 'all', {
-      orderBy: ['daily_visits'],
+      orderBy: ['created_at'],
     });
     assert.equal(results.length, 4);
     for (let i = 1; i < results.length; i++) {
-      assert.isTrue(results[i - 1].daily_visits <= results[i].daily_visits);
+      assert.isTrue(results[i - 1].created_at <= results[i].created_at);
     }
   });
 
   // orders as asc was given
   it('With invalid order by: given as string', async () => { // eslint-disable-line
     const results = await Coffee.find({}, 'all', {
-      orderBy: 'daily_visits',
+      orderBy: 'created_at',
     });
     assert.equal(results.length, 4);
     for (let i = 1; i < results.length; i++) {
-      assert.isTrue(results[i - 1].daily_visits <= results[i].daily_visits);
+      assert.isTrue(results[i - 1].created_at <= results[i].created_at);
     }
   });
 
   // orders as asc was given
   it('With invalid order by: nor asc nor desc', async () => { // eslint-disable-line
     const results = await Coffee.find({}, 'all', {
-      orderBy: ['daily_visits', 'not valid'],
+      orderBy: ['created_at', 'not valid'],
     });
     assert.equal(results.length, 4);
     for (let i = 1; i < results.length; i++) {
-      assert.isTrue(results[i - 1].daily_visits <= results[i].daily_visits);
+      assert.isTrue(results[i - 1].created_at <= results[i].created_at);
     }
   });
 });
@@ -198,7 +198,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
   });
 
   it('With start date', async () => { // eslint-disable-line
-    const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
+    const date = new Date('2018-11-21T12:06:00.000Z');
     const results = await Coffee.find({}, 'all', {
       startDate: date,
     });
@@ -209,7 +209,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
   });
 
   it('With end date', async () => { // eslint-disable-line
-    const date = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
+    const date = new Date('2018-11-21T12:06:10.000Z');
     const results = await Coffee.find({}, 'all', {
       endDate: date,
     });
@@ -220,8 +220,8 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
   });
 
   it('With start day and end date', async () => { // eslint-disable-line
-    const startDate = new Date(new Date().getTime() - (5 * 24 * 60 * 60 * 1000));
-    const endDate = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
+    const startDate = new Date('2018-11-21T11:55:55.000Z');
+    const endDate = new Date('2018-11-21T12:06:10.000Z');
     const results = await Coffee.find({}, 'all', {
       endDate,
       startDate,
