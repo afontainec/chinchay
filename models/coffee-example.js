@@ -3,7 +3,7 @@ const Table = require('../index').Table; // eslint-disabled-this-line no-unused-
 
 class Places extends Table {
   constructor() {
-    const table_name = 'places';
+    const table_name = 'coffee';
     super(table_name);
   }
 }

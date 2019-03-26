@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 // Require the dev-dependencies
 const chai = require('chai'); // eslint-disable-line
 const knex = require('../../../knex');
-const Places = require('../../../models/places-example');
+const Coffee = require('../../../models/coffee-example');
 
 
 const assert = chai.assert; //eslint-disable-line
@@ -20,7 +20,7 @@ describe('TABLE GATEWAY: FIND WITH COMPLEX WHERE', () => { // eslint-disable-lin
     const q = { is_active: true };
     const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
     q.created_at = ['>=', date];
-    const results = await Places.find(q);
+    const results = await Coffee.find(q);
     assert.equal(results.length, 2);
     for (let i = 0; i < results.length; i++) {
       const created = new Date(results[i].created_at);
@@ -32,7 +32,7 @@ describe('TABLE GATEWAY: FIND WITH COMPLEX WHERE', () => { // eslint-disable-lin
     const q = {};
     const ids = [1, 4];
     q.id = ['in', ids];
-    const results = await Places.find(q);
+    const results = await Coffee.find(q);
     delete q.id;
     assert.equal(results.length, 2);
     for (let i = 0; i < results.length; i++) {
@@ -44,7 +44,7 @@ describe('TABLE GATEWAY: FIND WITH COMPLEX WHERE', () => { // eslint-disable-lin
     const q = {};
     const id = 3;
     q.id = ['<>', id];
-    const results = await Places.find(q);
+    const results = await Coffee.find(q);
     assert.equal(results.length, 3);
     for (let i = 0; i < results.length; i++) {
       assert.isFalse(results[i].id === id);
@@ -62,7 +62,7 @@ describe('Malicious', () => { // eslint-disable-line
     const q = {};
     const id = 3;
     q.id = ['<>', id, 'something else'];
-    const results = await Places.find(q);
+    const results = await Coffee.find(q);
     assert.equal(results.length, 3);
     for (let i = 0; i < results.length; i++) {
       assert.isFalse(results[i].id === id);
@@ -73,7 +73,7 @@ describe('Malicious', () => { // eslint-disable-line
   it('Query has less than 2 elements in array', async () => { // eslint-disable-line
     const q = {};
     q.id = ['<>'];
-    const results = await Places.find(q);
+    const results = await Coffee.find(q);
     assert.equal(results.length, 4);
   });
 
@@ -82,7 +82,7 @@ describe('Malicious', () => { // eslint-disable-line
     const q = {};
     const id = 3;
     q.id = [id, 'something else'];
-    Places.find(q).then(() => {
+    Coffee.find(q).then(() => {
       done('it should not get here');
     }).catch(() => {
       done();

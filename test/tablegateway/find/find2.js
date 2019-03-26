@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 // Require the dev-dependencies
 const chai = require('chai'); // eslint-disable-line
 const knex = require('../../../knex');
-const Places = require('../../../models/places-example');
+const Coffee = require('../../../models/coffee-example');
 
 
 const assert = chai.assert; //eslint-disable-line
@@ -17,12 +17,12 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
   });
 
   it('Empty query', async () => { // eslint-disable-line
-    const results = await Places.find({});
+    const results = await Coffee.find({});
     assert.equal(results.length, 4);
   });
 
   it('With query', async () => { // eslint-disable-line
-    const results = await Places.find({
+    const results = await Coffee.find({
       is_active: true,
     });
     assert.equal(results.length, 3);
@@ -32,7 +32,7 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
   });
 
   it('With columns', async () => { // eslint-disable-line
-    const results = await Places.find({}, ['id', 'name']);
+    const results = await Coffee.find({}, ['id', 'name']);
     assert.equal(results.length, 4);
     for (let i = 0; i < results.length; i++) {
       const keys = Object.keys(results[i]);
@@ -43,7 +43,7 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
   });
 
   it('With columns = all', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all');
+    const results = await Coffee.find({}, 'all');
     assert.equal(results.length, 4);
     for (let i = 0; i < results.length; i++) {
       const keys = Object.keys(results[i]);
@@ -58,17 +58,17 @@ describe('Malicious happy path', () => { // eslint-disable-line
   });
 
   it('Query is undefined', async () => { // eslint-disable-line
-    const results = await Places.find();
+    const results = await Coffee.find();
     assert.equal(results.length, 4);
   });
 
   it('Query is not a valid json', async () => { // eslint-disable-line
-    const results = await Places.find();
+    const results = await Coffee.find();
     assert.equal(results.length, 4);
   });
 
   it('Query with invalid attr', (done) => { // eslint-disable-line
-    Places.find({
+    Coffee.find({
       invalid: 'ues',
     }).then(() => {
       done('SHOULD NOT GET HERE');
@@ -80,7 +80,7 @@ describe('Malicious happy path', () => { // eslint-disable-line
   });
 
   it('Columns with invalid column name', (done) => { // eslint-disable-line
-    Places.find({}, ['all']).then(() => {
+    Coffee.find({}, ['all']).then(() => {
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
@@ -90,7 +90,7 @@ describe('Malicious happy path', () => { // eslint-disable-line
   });
 
   it('Columns invalid json', async () => { // eslint-disable-line
-    const results = await Places.find({}, {
+    const results = await Coffee.find({}, {
       look: 'to me',
     });
     assert.equal(results.length, 4);
@@ -108,7 +108,7 @@ describe('with advance settings: group by', () => { // eslint-disable-line
 
   // cannot do a group by
   it('Give group by', (done) => { // eslint-disable-line
-    Places.find({}, 'all', {
+    Coffee.find({}, 'all', {
       groupBy: 'is_active',
     }).then(() => {
       done('SHOULD NOT GET HERE');
@@ -120,7 +120,7 @@ describe('with advance settings: group by', () => { // eslint-disable-line
   });
 
   it('invalid group by', (done) => { // eslint-disable-line
-    Places.find({}, 'all', {
+    Coffee.find({}, 'all', {
       groupBy: 'unexistant',
     }).then(() => {
       done('SHOULD NOT GET HERE');
@@ -137,7 +137,7 @@ describe('with advance settings: order by', () => { // eslint-disable-line
     await knex.seed.run();
   });
   it('With order by', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       orderBy: ['daily_visits', 'desc'],
     });
     assert.equal(results.length, 4);
@@ -147,7 +147,7 @@ describe('with advance settings: order by', () => { // eslint-disable-line
   });
 
   it('With invalid order by', (done) => { // eslint-disable-line
-    Places.find({}, 'all', {
+    Coffee.find({}, 'all', {
       orderBy: ['unexistant', 'asc'],
     }).then(() => {
       done('SHOULD NOT GET HERE');
@@ -160,7 +160,7 @@ describe('with advance settings: order by', () => { // eslint-disable-line
 
   // orders as asc was given
   it('With invalid order by: no desc or asc given', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       orderBy: ['daily_visits'],
     });
     assert.equal(results.length, 4);
@@ -171,7 +171,7 @@ describe('with advance settings: order by', () => { // eslint-disable-line
 
   // orders as asc was given
   it('With invalid order by: given as string', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       orderBy: 'daily_visits',
     });
     assert.equal(results.length, 4);
@@ -182,7 +182,7 @@ describe('with advance settings: order by', () => { // eslint-disable-line
 
   // orders as asc was given
   it('With invalid order by: nor asc nor desc', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       orderBy: ['daily_visits', 'not valid'],
     });
     assert.equal(results.length, 4);
@@ -199,7 +199,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
 
   it('With start date', async () => { // eslint-disable-line
     const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       startDate: date,
     });
     assert.equal(results.length, 2);
@@ -210,7 +210,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
 
   it('With end date', async () => { // eslint-disable-line
     const date = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       endDate: date,
     });
     assert.equal(results.length, 3);
@@ -222,7 +222,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
   it('With start day and end date', async () => { // eslint-disable-line
     const startDate = new Date(new Date().getTime() - (5 * 24 * 60 * 60 * 1000));
     const endDate = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       endDate,
       startDate,
     });
@@ -235,7 +235,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
 
   it('invalid start date', (done) => { // eslint-disable-line
     const date = 'this is not a date';
-    Places.find({}, 'all', {
+    Coffee.find({}, 'all', {
       startDate: date,
     }).then(() => {
       done('SHOULD NOT GET HERE');
@@ -253,7 +253,7 @@ describe('with advance settings: offset', () => { // eslint-disable-line
   });
 
   it('with limit', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       limit: 2,
     });
     assert.equal(results.length, 2);
@@ -261,7 +261,7 @@ describe('with advance settings: offset', () => { // eslint-disable-line
 
   // as if no limit was given
   it('with invalid limit', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       limit: 'yes',
     });
     assert.equal(results.length, 4);
@@ -269,7 +269,7 @@ describe('with advance settings: offset', () => { // eslint-disable-line
 
   // as if no limit was given
   it('with invalid limit: negative value', (done) => { // eslint-disable-line
-    Places.find({}, 'all', {
+    Coffee.find({}, 'all', {
       limit: -1,
     }).then(() => {
       done('SHOULD NOT GET HERE');
@@ -281,14 +281,14 @@ describe('with advance settings: offset', () => { // eslint-disable-line
   });
 
   it('with offset', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       offset: 1,
     });
     assert.equal(results.length, 3);
   });
 
   it('with invalid offset', (done) => { // eslint-disable-line
-    Places.find({}, 'all', {
+    Coffee.find({}, 'all', {
       offset: -1,
     }).then(() => {
       done('SHOULD NOT GET HERE');
@@ -306,7 +306,7 @@ describe('with advance settings: raw select', () => { // eslint-disable-line
   });
 
   it('with rawSelect', async () => { // eslint-disable-line
-    const results = await Places.find({}, 'all', {
+    const results = await Coffee.find({}, 'all', {
       rawSelect: 'EXTRACT(doy from created_at) as date',
     });
     assert.equal(results.length, 4);
@@ -318,7 +318,7 @@ describe('with advance settings: raw select', () => { // eslint-disable-line
   });
 
   it('with rawSelect && columns == undefined', async () => { // eslint-disable-line
-    const results = await Places.find({}, undefined, {
+    const results = await Coffee.find({}, undefined, {
       rawSelect: 'EXTRACT(doy from created_at) as date',
     });
     assert.equal(results.length, 4);
@@ -330,7 +330,7 @@ describe('with advance settings: raw select', () => { // eslint-disable-line
   });
 
   it('with rawSelect && columns == ["id", "name"]', async () => { // eslint-disable-line
-    const results = await Places.find({}, ['id', 'name'], {
+    const results = await Coffee.find({}, ['id', 'name'], {
       rawSelect: 'EXTRACT(doy from created_at) as date',
     });
     assert.equal(results.length, 4);
@@ -342,7 +342,7 @@ describe('with advance settings: raw select', () => { // eslint-disable-line
   });
 
   it('with rawSelect && columns == ["id", "name"] && clearSelect', async () => { // eslint-disable-line
-    const results = await Places.find({}, ['id', 'name'], {
+    const results = await Coffee.find({}, ['id', 'name'], {
       clearSelect: true,
       rawSelect: 'EXTRACT(doy from created_at) as date',
     });
@@ -355,7 +355,7 @@ describe('with advance settings: raw select', () => { // eslint-disable-line
   });
 
   it('with invalid rawSelect', (done) => { // eslint-disable-line
-    Places.find({}, 'all', {
+    Coffee.find({}, 'all', {
       rawSelect: 'this should fail',
     }).then(() => {
       done('SHOULD NOT GET HERE');
