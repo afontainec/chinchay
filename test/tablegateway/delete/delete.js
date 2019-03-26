@@ -43,20 +43,4 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
       assert.equal(results, all);
     });
   });
-
-  describe('with advance queries', () => { // eslint-disable-line
-    before(async () => { // eslint-disable-line
-      await knex.seed.run();
-    });
-
-    it('delete lower than', async () => { // eslint-disable-line
-      await Coffee.delete({
-        daily_visits: ['<', 3000],
-      });
-      const results = await Coffee.count({
-        daily_visits: ['<', 3000],
-      });
-      assert.equal(results, 0);
-    });
-  });
 });

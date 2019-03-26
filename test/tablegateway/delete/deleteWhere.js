@@ -18,7 +18,7 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
 
   it('With query', async () => { // eslint-disable-line
     const results = await Coffee.deleteWhere({
-      daily_visits: 500,
+      price: 110,
     });
     assert.equal(results.length, 1);
   });
@@ -46,7 +46,7 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
     it('There is no entry that matches that query', async () => { // eslint-disable-line
       const all = await Coffee.count();
       await Coffee.deleteWhere({
-        daily_visits: -500,
+        price: -500,
       });
       const results = await Coffee.count();
       assert.equal(results, all);
@@ -59,11 +59,11 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
     });
 
     it('delete lower than', async () => { // eslint-disable-line
-      await Coffee.deleteWhere({
-        daily_visits: ['<', 3000],
+      await Coffee.delete({
+        price: ['<', 105],
       });
       const results = await Coffee.count({
-        daily_visits: ['<', 3000],
+        price: ['<', 105],
       });
       assert.equal(results, 0);
     });
