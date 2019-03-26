@@ -21,9 +21,9 @@ describe('TABLE GATEWAY: COUNT WITH COMPLEX WHERE', () => { // eslint-disable-li
   });
 
   it('Query with array: >=', async () => { // eslint-disable-line
-    const q = { is_active: true };
-    const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
-    q.created_at = ['>=', date];
+    const q = { price: 100 };
+    const date = new Date('2018-11-21T12:06:10.065Z');
+    q.created_at = ['<=', date];
     const results = await Coffee.count(q);
     assert.equal(results, 2);
   });
