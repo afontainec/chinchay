@@ -23,9 +23,9 @@ describe('TABLE GATEWAY: count', () => { // eslint-disable-line
 
   it('With query', async () => { // eslint-disable-line
     const results = await Coffee.count({
-      is_active: true,
+      price: 100,
     });
-    assert.equal(results, 3);
+    assert.equal(results, 2);
   });
 });
 
@@ -64,26 +64,31 @@ describe('with advance settings: group by', () => { // eslint-disable-line
 
   it('Give group by', async () => { // eslint-disable-line
     const coffee = await Coffee.count({}, {
-      groupBy: 'is_active',
+      groupBy: 'name',
     });
-    assert.equal(coffee.length, 2);
+    assert.equal(coffee.length, 3);
+    const counts = {
+      'this is the name': 2,
+      other: 1,
+      expensive: 1,
+    };
     for (let i = 0; i < coffee.length; i++) {
       const keys = Object.keys(coffee[i]);
-      assert.isTrue(keys.indexOf('is_active') > -1);
+      assert.isTrue(keys.indexOf('name') > -1);
       assert.isTrue(keys.indexOf('count') > -1);
-      const c = coffee[i].is_active ? 3 : 1;
+      const c = counts[coffee[i].name];
       assert.equal(coffee[i].count, c);
     }
   });
 
   it('Give group by: array', async () => { // eslint-disable-line
     const coffee = await Coffee.count({}, {
-      groupBy: ['is_active', 'id'],
+      groupBy: ['price', 'id'],
     });
     assert.equal(coffee.length, 4);
     for (let i = 0; i < coffee.length; i++) {
       const keys = Object.keys(coffee[i]);
-      assert.isTrue(keys.indexOf('is_active') > -1);
+      assert.isTrue(keys.indexOf('price') > -1);
       assert.isTrue(keys.indexOf('id') > -1);
       assert.equal(coffee[i].count, 1);
     }
@@ -137,10 +142,10 @@ describe('with advance settings: order by', () => { // eslint-disable-line
   });
   it('With order by', async () => { // eslint-disable-line
     const results = await Coffee.count({}, {
-      groupBy: 'is_active',
+      groupBy: 'name',
       orderBy: ['count', 'desc'],
     });
-    assert.equal(results.length, 2);
+    assert.equal(results.length, 3);
     for (let i = 1; i < results.length; i++) {
       assert.isTrue(results[i - 1].count >= results[i].count);
     }
@@ -165,7 +170,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
   });
 
   it('With start date', async () => { // eslint-disable-line
-    const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
+    const date = new Date('2018-11-21T12:00:00.000Z');
     const results = await Coffee.count({}, {
       startDate: date,
     });
@@ -173,7 +178,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
   });
 
   it('With end date', async () => { // eslint-disable-line
-    const date = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
+    const date = new Date('2018-11-21T12:06:05.000Z');
     const results = await Coffee.count({}, {
       endDate: date,
     });
