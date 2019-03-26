@@ -19,10 +19,10 @@ describe('TABLE GATEWAY: Do not pass columns: assumes columns are all ', () => {
 
   it('', async () => { // eslint-disable-line
     const coffee = await Coffee.find({}, {
-      rawWhere: 'daily_visits in (500, 2020)',
+      rawWhere: 'price in (100, 105)',
     });
     const completeCoffee = await Coffee.find({}, 'all', {
-      rawWhere: 'daily_visits in (500, 2020)',
+      rawWhere: 'price in (100, 105)',
     });
 
     assert.equal(coffee.length, completeCoffee.length);

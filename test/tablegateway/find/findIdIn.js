@@ -27,10 +27,10 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
 
   it('Existing ids with columns and query',  async () => { // eslint-disable-line
     const ids = [1, 2, 3, 4];
-    const results = await Coffee.findIdIn(ids, ['id', 'name', 'is_active'], { is_active: true });
-    assert.equal(results.length, 3);
+    const results = await Coffee.findIdIn(ids, ['id', 'name', 'price'], { price: 100 });
+    assert.equal(results.length, 2);
     for (let i = 0; i < results.length; i++) {
-      assert.equal(results[i].is_active, true);
+      assert.equal(results[i].price, 100);
       assert.equal(Object.keys(results[i]).length, 3);
       assert.isTrue(ids.indexOf(results[i].id) > -1);
     }
