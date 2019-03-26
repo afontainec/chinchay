@@ -21,6 +21,7 @@ describe('TABLE GATEWAY: set knex', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line
     await ClearDB.seed(knex);
     await ClearDB.seed(otherKnex);
+    await otherKnex.migrate.latest();
   });
 
   it('Set knex in constructor ',  async () => { // eslint-disable-line

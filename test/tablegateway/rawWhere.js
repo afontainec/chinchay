@@ -18,10 +18,10 @@ describe('TABLE GATEWAY: add rawWhere', () => { // eslint-disable-line
   });
 
   it('it a string',  async () => { // eslint-disable-line
-    const coffee = await Coffee.find({}, 'all', { rawWhere: 'daily_visits in (500, 2020)' });
+    const coffee = await Coffee.find({}, 'all', { rawWhere: 'price in (100, 110)' });
     assert.equal(coffee.length, 3);
     for (let i = 0; i < coffee.length; i++) {
-      assert.isTrue([500, 2020].indexOf(coffee[i].daily_visits) > -1);
+      assert.isTrue([100, 110].indexOf(coffee[i].price) > -1);
     }
   });
 
@@ -31,10 +31,10 @@ describe('TABLE GATEWAY: add rawWhere', () => { // eslint-disable-line
   });
 
   it('it is an array',  async () => { // eslint-disable-line
-    const coffee = await Coffee.find({}, 'all', { rawWhere: ['daily_visits = ANY(?::int[])', [[500, 2020]]] });
+    const coffee = await Coffee.find({}, 'all', { rawWhere: ['price = ANY(?::int[])', [[100, 110]]] });
     assert.equal(coffee.length, 3);
     for (let i = 0; i < coffee.length; i++) {
-      assert.isTrue([500, 2020].indexOf(coffee[i].daily_visits) > -1);
+      assert.isTrue([100, 110].indexOf(coffee[i].price) > -1);
     }
   });
 });

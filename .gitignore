@@ -1,5 +1,4 @@
 node_modules/*
-knexfile_other.js
 zdebug.js
 chinchapp/*
 .nyc_output
