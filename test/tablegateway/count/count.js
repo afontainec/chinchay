@@ -99,12 +99,12 @@ describe('with advance settings: group by', () => { // eslint-disable-line
     options.rawSelect = 'created_at::DATE as date, EXTRACT (hour from (created_at)) as hour';
     options.groupBy = ['date', 'hour'];
     const coffee = await Coffee.count({}, options);
-    assert.equal(coffee.length, 4);
+    assert.equal(coffee.length, 2);
     for (let i = 0; i < coffee.length; i++) {
       const keys = Object.keys(coffee[i]);
       assert.isTrue(keys.indexOf('date') > -1);
       assert.isTrue(keys.indexOf('hour') > -1);
-      assert.equal(coffee[i].count, 1);
+      assert.equal(coffee[i].count, 2);
     }
   });
 
@@ -126,12 +126,12 @@ describe('with advance settings: group by', () => { // eslint-disable-line
       rawSelect: '(created_at)::DATE as d',
       groupBy: 'd',
     });
-    assert.equal(coffee.length, 4);
+    assert.equal(coffee.length, 1);
     for (let i = 0; i < coffee.length; i++) {
       const keys = Object.keys(coffee[i]);
       assert.isTrue(keys.indexOf('d') > -1);
       assert.isTrue(keys.indexOf('count') > -1);
-      assert.equal(coffee[i].count, 1);
+      assert.equal(coffee[i].count, 4);
     }
   });
 });
@@ -153,7 +153,7 @@ describe('with advance settings: order by', () => { // eslint-disable-line
 
   it('With invalid order by', (done) => { // eslint-disable-line
     Coffee.count({}, {
-      orderBy: ['daily_visits', 'asc'],
+      orderBy: ['price', 'asc'],
     }).then(() => {
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
@@ -186,8 +186,8 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
   });
 
   it('With start day and end date', async () => { // eslint-disable-line
-    const startDate = new Date(new Date().getTime() - (5 * 24 * 60 * 60 * 1000));
-    const endDate = new Date(new Date().getTime() - (1 * 24 * 60 * 60 * 1000));
+    const startDate = new Date('2018-11-21T12:00:00.000Z');
+    const endDate = new Date('2018-11-21T12:06:05.000Z');
     const results = await Coffee.count({}, {
       endDate,
       startDate,
@@ -216,7 +216,7 @@ describe('with advance settings: countDistinct', () => { // eslint-disable-line
 
   it('With countDistinct', async () => { // eslint-disable-line
     const results = await Coffee.count({}, {
-      countDistinct: 'daily_visits',
+      countDistinct: 'name',
     });
     assert.equal(results, 3);
   });
