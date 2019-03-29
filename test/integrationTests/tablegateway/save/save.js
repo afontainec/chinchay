@@ -12,36 +12,35 @@ const assert = chai.assert; //eslint-disable-line
 
 
 // Our parent block
-describe('TABLE GATEWAY: new', () => { // eslint-disable-line
+describe('TABLE GATEWAY: save', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line
     await knex.seed.run();
   });
 
-  it('Get instance', async () => { // eslint-disable-line
-    const entry = await Coffee.new();
-    const expected = {
-      id: null,
-      name: null,
-      price: null,
-      created_at: null,
-      updated_at: null,
+  it('save instance', async () => { // eslint-disable-line
+    const entry = {
+      name: 'name',
+      price: 120,
     };
-    assert.deepEqual(entry, expected);
+    const saved = await Coffee.save(entry);
+    const fromDB = await Coffee.findById(saved.id);
+    assert.isDefined(fromDB);
+    assert.equal(entry.name, fromDB.name);
+    assert.equal(entry.price, fromDB.price);
+    assert.instanceOf(fromDB.created_at, Date);
+    assert.instanceOf(fromDB.updated_at, Date);
   });
 
-  describe('unexistant table', () => { // eslint-disable-line
-    before(async () => { // eslint-disable-line
-      await knex.seed.run();
-    });
-
-    it('Get instance', (done) => { // eslint-disable-line
-      const tableName = 'does_not_exist';
-      const Unexistant = new Table(tableName);
-      Unexistant.new().then(() => {
-        done(new Error('Should not get here'));
-      }).catch(() => {
-        done();
-      });
+  it('unexistant property', (done) => { // eslint-disable-line
+    const entry = {
+      name: 'name',
+      price: 120,
+      other: 'not exist',
+    };
+    Coffee.save(entry).then(() => {
+      done(new Error('Should not get here'));
+    }).catch(() => {
+      done();
     });
   });
 });
