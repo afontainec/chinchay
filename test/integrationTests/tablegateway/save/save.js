@@ -5,7 +5,6 @@ process.env.NODE_ENV = 'test';
 const chai = require('chai'); // eslint-disable-line
 const knex = require('../../../../knex');
 const Coffee = require('../../../../models/coffee-example');
-const Table = require('../../../../models/table');
 
 
 const assert = chai.assert; //eslint-disable-line
