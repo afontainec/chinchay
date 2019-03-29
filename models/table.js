@@ -552,6 +552,7 @@ class Table {
   }
 
   static removeUnSetableAttributes(attributes) {
+    if (!attributes) return;
     delete attributes.id;
     delete attributes.created_at;
     delete attributes.updated_at;
