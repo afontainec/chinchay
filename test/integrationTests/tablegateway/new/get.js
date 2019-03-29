@@ -18,7 +18,13 @@ describe('TABLE GATEWAY: new', () => { // eslint-disable-line
 
   it('Get instance', async () => { // eslint-disable-line
     const entry = await Coffee.new();
-    console.log(entry);
-    throw new Error('NOT IMPLEMENTED');
+    const expected = {
+      id: null,
+      name: null,
+      price: null,
+      created_at: null,
+      updated_at: null,
+    };
+    assert.deepEqual(entry, expected);
   });
 });
