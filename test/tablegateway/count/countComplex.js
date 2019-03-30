@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 // Require the dev-dependencies
 const chai = require('chai'); // eslint-disable-line
 const knex = require('../../../knex');
-const Places = require('../../../models/places-example');
+const Coffee = require('../../../models/coffee-example');
 
 // NOTE Access hace algo raro, arreglar
 // NOTE hay algunos que pasan un arreglo de columnas, para queries mas complejas
@@ -21,10 +21,10 @@ describe('TABLE GATEWAY: COUNT WITH COMPLEX WHERE', () => { // eslint-disable-li
   });
 
   it('Query with array: >=', async () => { // eslint-disable-line
-    const q = { is_active: true };
-    const date = new Date(new Date().getTime() - (3 * 24 * 60 * 60 * 1000));
-    q.created_at = ['>=', date];
-    const results = await Places.count(q);
+    const q = { price: 100 };
+    const date = new Date('2018-11-21T12:06:10.065Z');
+    q.created_at = ['<=', date];
+    const results = await Coffee.count(q);
     assert.equal(results, 2);
   });
 
@@ -32,7 +32,7 @@ describe('TABLE GATEWAY: COUNT WITH COMPLEX WHERE', () => { // eslint-disable-li
     const q = {};
     const ids = [1, 4];
     q.id = ['in', ids];
-    const results = await Places.count(q);
+    const results = await Coffee.count(q);
     delete q.id;
     assert.equal(results, 2);
   });
@@ -41,7 +41,7 @@ describe('TABLE GATEWAY: COUNT WITH COMPLEX WHERE', () => { // eslint-disable-li
     const q = {};
     const id = 3;
     q.id = ['<>', id];
-    const results = await Places.count(q);
+    const results = await Coffee.count(q);
     assert.equal(results, 3);
   });
 });

@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 // Require the dev-dependencies
 const chai = require('chai'); // eslint-disable-line
 const knex = require('../../../knex');
-const Places = require('../../../models/places-example');
+const Coffee = require('../../../models/coffee-example');
 
 
 const assert = chai.assert; //eslint-disable-line
@@ -18,14 +18,14 @@ describe('TABLE GATEWAY: Do not pass columns: assumes columns are all ', () => {
   });
 
   it('', async () => { // eslint-disable-line
-    const places = await Places.find({}, {
-      rawWhere: 'daily_visits in (500, 2020)',
+    const coffee = await Coffee.find({}, {
+      rawWhere: 'price in (100, 105)',
     });
-    const completePlaces = await Places.find({}, 'all', {
-      rawWhere: 'daily_visits in (500, 2020)',
+    const completeCoffee = await Coffee.find({}, 'all', {
+      rawWhere: 'price in (100, 105)',
     });
 
-    assert.equal(places.length, completePlaces.length);
-    assert.deepEqual(places, completePlaces);
+    assert.equal(coffee.length, completeCoffee.length);
+    assert.deepEqual(coffee, completeCoffee);
   });
 });

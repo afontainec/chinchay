@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 // Require the dev-dependencies
 const chai = require('chai'); // eslint-disable-line
 const knex = require('../../../knex');
-const Places = require('../../../models/places-example');
+const Coffee = require('../../../models/coffee-example');
 
 
 const assert = chai.assert; //eslint-disable-line
@@ -18,7 +18,7 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
 
   it('Existing ids', async () => { // eslint-disable-line
     const ids = [1, 2];
-    const results = await Places.findIdIn(ids);
+    const results = await Coffee.findIdIn(ids);
     assert.equal(results.length, 2);
     for (let i = 0; i < results.length; i++) {
       assert.isTrue(ids.indexOf(results[i].id) > -1);
@@ -27,10 +27,10 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
 
   it('Existing ids with columns and query',  async () => { // eslint-disable-line
     const ids = [1, 2, 3, 4];
-    const results = await Places.findIdIn(ids, ['id', 'name', 'is_active'], { is_active: true });
-    assert.equal(results.length, 3);
+    const results = await Coffee.findIdIn(ids, ['id', 'name', 'price'], { price: 100 });
+    assert.equal(results.length, 2);
     for (let i = 0; i < results.length; i++) {
-      assert.equal(results[i].is_active, true);
+      assert.equal(results[i].price, 100);
       assert.equal(Object.keys(results[i]).length, 3);
       assert.isTrue(ids.indexOf(results[i].id) > -1);
     }
@@ -38,13 +38,13 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
 
   it('Malicious: a given id', async () => { // eslint-disable-line
     const ids = 1;
-    const results = await Places.findIdIn(ids);
+    const results = await Coffee.findIdIn(ids);
     assert.equal(results.length, 1);
     assert.equal(results[0].id, ids);
   });
 
   it('Malicious: array of string', (done) => { // eslint-disable-line
-    Places.findIdIn(['does not exist']).then(() => {
+    Coffee.findIdIn(['does not exist']).then(() => {
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
@@ -54,7 +54,7 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
   });
 
   it('Malicious: not valid id', (done) => { // eslint-disable-line
-    Places.findIdIn('wabalaba').then(() => {
+    Coffee.findIdIn('wabalaba').then(() => {
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
