@@ -64,25 +64,39 @@ class Table {
 
   save(originalEntry) {
     const errorString = 'Something went wrong';
+    const f = async () => {
+      const entry = Utils.cloneJSON(originalEntry);
+      const isSave = true;
+      const parsed = await this.parseAttributesForUpsert(entry, isSave);
+      const query = this.saveQuery(parsed);
+      const saved = await query;
+      if (!saved || saved.length === 0) throw new Error(errorString);
+      return saved[0];
+    };
+    return f();
     // make a clone so if we delete stuff from entry it does not modify the original one
-    const entry = Utils.cloneJSON(originalEntry);
-    return new Promise((resolve, reject) => {
-      this.parseAttributesForUpsert(entry, true)
-        .then((attributes) => {
-          this.table().insert(attributes).returning('*').then((entry) => {
-              // check if attributes is an array
-            if (!entry || entry.length === 0) {
-              return reject(errorString);
-            }
-            resolve(entry[0]);
-          })
-            .catch((err) => { //eslint-disable-line
-              reject(errorString);
-            });
-        }).catch((err) => {
-          reject(err);
-        });
-    });
+    // const entry = Utils.cloneJSON(originalEntry);
+    // return new Promise((resolve, reject) => {
+    //   this.parseAttributesForUpsert(entry, true)
+    //     .then((attributes) => {
+    //       this.table().insert(attributes).returning('*').then((entry) => {
+    //           // check if attributes is an array
+    //         if (!entry || entry.length === 0) {
+    //           return reject(errorString);
+    //         }
+    //         resolve(entry[0]);
+    //       })
+    //         .catch((err) => { //eslint-disable-line
+    //           reject(errorString);
+    //         });
+    //     }).catch((err) => {
+    //       reject(err);
+    //     });
+    // });
+  }
+
+  saveQuery(entry) {
+    return this.table().insert(entry).returning('*');
   }
 
   update(id, originalAttributes) {
