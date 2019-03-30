@@ -44,25 +44,17 @@ class Table {
   // ################################################
 
   new() {
-    const table_name = this.table_name;
-    return new Promise((resolve, reject) => {
-      this.knex('information_schema.columns').select('column_name').where({
-        table_name,
-      }).then((attributes) => {
-          // check if attributes is an array
-        if (!attributes || attributes.length === 0) {
-          return reject(`Hubo un error creando un nuevo objeto: ${table_name}`);
-        }
-        const entry = {};
-        attributes.forEach((attribute) => {
-          entry[attribute.column_name] = null;
-        });
-        resolve(entry);
-      })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+    const f = async () => {
+      const columns = await this.getAttributesNames();
+      const noColumns = !columns || columns.length === 0;
+      if (noColumns) throw new Error('Hubo un error creando un nuevo Objeto');
+      const entry = {};
+      for (let i = 0; i < columns.length; i++) {
+        entry[columns[i]] = null;
+      }
+      return entry;
+    };
+    return f();
   }
 
   save(originalEntry) {
