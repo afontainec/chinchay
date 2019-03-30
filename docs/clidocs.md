@@ -154,7 +154,7 @@ Will save in the database an entry,  were _name="this is the name"_ and _price=n
 In both cases, the return is an JSON object with a _message_ and a _data_ property with a JSON object representing the saved entry.
 <br/>
 
-#### GET /api/relation_name/:id
+#### GET /api/relation_name/:id {#find-by-id-api}
 <br/>
 
 ##### **Description:**
@@ -192,7 +192,7 @@ Will return a JSON representing the object with id=1:
 <br/>
 
 
-#### GET /api/relation_name/find
+#### GET /api/relation_name/find {#find-api}
 <br/>
 ##### **Description:**
 Returns an array with all the entries matching the given query.
@@ -806,7 +806,7 @@ Requestify.get(`http://localhost:3000/api/coffee/find?limit=1&rawSelect=["EXTRAC
 <br/>
 
 
-#### GET /relation_name/count
+#### GET /relation_name/count {#count-api}
 
 ##### **Description:**
 
@@ -1077,12 +1077,12 @@ Chinchay gives you a fully-functional API to play around. But also it provides a
 
 #### web index
 
-If you navigate to http://localhost:3000/relation_name you will see a table were every row is one entry from the database.
+If you navigate to [http://localhost:3000/relation_name](http://localhost:3000/relation_name) ([http://localhost:3000/coffee](http://localhost:3000/coffee) in our case) you will see a table were every row is one entry from the database.
 On every column you can click [show](#web show) to view a page that render that particular entry or [edit](#web edit) to redirect to a page where you can edit that entry.
 
 On the bottom you have a [new](#web new) button to go and create a new entry!
 
-It will render the file named index.ejs, view the [views section](#views) for more details.
+The file renderer is named index.ejs, view the [views section](#views) for more details.
 
 #### web new
 
@@ -1119,30 +1119,35 @@ Where relation_name is the name of the relation you want to work with.
 A migration file will be created on the directory specified in the knexfile. If you are unfamiliar of how knexfile or knex works see the [knex documentation](https://knexjs.org/).
 
 But, in a glance, knex uses migrations to make changes to the database schema. For every change you want to make, you create a migration file.
-This file has two main methods: _up_ and _down_. The change to the database must be included in the _up_ method where in the _down_ method code to reverse the change should be provided. Therefore you can go back and forth a migration running the _down_ and _up_ method.
+This file has two main methods: _up_ and _down_. The change to the database must be included in the _up_ method, whereas the _down_ method should contain code to reverse the change. Therefore you can go back and forth a migration running the _down_ and _up_ method.
 The main commands that knex uses here are:
 
 ```
 $ knex migrate:latest
 ```
+<br/>
 This will run all the _up_ methods of the migration files. It will register which migrations has ran, therefore if you create more migration and then run this command again, only the new migrations will be run.
 ```
 $ knex migrate:rollback
 ```
+<br/>
 This will run all the _down_ methods of the migration files. Its kind of an "undo" for the previous command.
 ```
 $ knex migrate:make migration_name
 ```
+<br/>
 This will create a new migration file called _migration_name_.
 
 When you run:
 ```
 $ chinchay new relation_name
 ```
+<br/>
 A migration file is created as if you had ran:
 ```
 $ knex migrate:make relation_name
 ```
+<br/>
 
 By default this file is as follows:
 
@@ -1161,7 +1166,7 @@ exports.down = function (knex) {
   return knex.schema.dropTable('relation_name');
 };
 ```
-
+<br/>
 It will create a table with an incremental id and a created_at and updated_at columns. You can edit this file as you wish, for example:
 
 ```javascript
@@ -1180,6 +1185,7 @@ exports.down = function (knex) {
   return knex.schema.dropTable('relation_name');
 };
 ```
+<br/>
 
 Go to the [knex documentation](https://knexjs.org/) for more info of how to work around migrations.
 
@@ -1199,6 +1205,7 @@ var relation_nameAPI = require('./routes/relation_nameAPI');
 app.use('/', relation_name);
 app.use('/', relation_nameAPI);
 ```
+<br/>
 
 #### Views
 
@@ -1208,15 +1215,67 @@ Each files uses ejs to generate the html file. Feel free to visit the [ejs websi
 
 The four files created are the following:
 
-1. create.js: File to render a form to create a new entry. render in [web new](#web new). As input it receives a JSON object representing an empty instance of the relation. Note line 12 is filtering that you cannot set the id, created_at nor updated_at.
-2. edit.js: File to render a form to edit a given entry. render in [web edit](#web edit). As input it receives a JSON object representing the object to edit. Note line 12 is filtering that you cannot set the id, created_at nor updated_at.
-3. index.js: File that shows a table with all the entries from the relation Render in [web index](#web index). Receives an Array of JSON objects, each object representing an entry on the database.
-4. show.js: File renders a table to show the value of every variable of the object. render in [web show](#web show). Receives a JSON object representing the entry to show.
+1. create.js: File to render a form to create a new entry. As input it receives a JSON object representing an empty instance of the relation. Note line 12 is filtering that you cannot set the id, created_at nor updated_at. This is the file rendered when the [web new](#web new) URL is visited.
+2. edit.js: File to render a form to edit a given entry. As input it receives a JSON object representing the object to edit. Note line 12 is filtering that you cannot set the id, created_at nor updated_at. This is the file rendered when the [web edit](#web edit) URL is visited.
+3. index.js: File that shows a table with all the entries from the relation Render in [web index](#web index). Receives an Array of JSON objects, each object representing an entry on the database. This is the file rendered when the [web index](#web index) URL is visited.
+4. show.js: File renders a table to show the value of every variable of the object. Receives a JSON object representing the entry to show. This is the file rendered when the [web show](#web show) URL is visited.
+<br/>
 
 #### Controller
+The command will generate one controller file within the directory specified in the [chainfile](#chainfile). By default, it will be in the directory: `./controllers/`. This file  _sticks_ all together. It is called from the [Router](#routes), then calls the [Model](#model) to get the requested information and then send the information back to the client either in the [views](#views) or in JSON objects.
+
+Before it calls the [Model](#model) it extract from the request what is being asked for. This information is passed in three different ways:
+
+1. Params: This are the _parameters_ of the request. To know there value you need to do: ` req.params `. They are defined within the URL. For instance, if the [show](#web_show) url is _/relation_name/:id_, meaning that to view the entry with id = 1 you have to visit the url _/relation_name/1_. The controller knows which entry to extract by looking in to the params, i.e: ` req.params.id `.
+2. . Query:  This is the _query_ of the request. To know its value you need to do: ` req.query `.This is the information given after the URL, it is separated from the URL by a '?' character.  For instance:  _/api/relation_name/find?price=100_ has the query: _price=100_. ThThe use of the query varies, but usually is used to filter what to be shown.
+3. Body: This is the _body_ of the request. To know its value you need to do: ` req.body `. This are not defined in the URL, they are given in the body. Usually is used to give more sensible or complex information. Note than the GET request cannot receive a body property.
+
+It the case of the API calls: [find](#find-api), [find by id](#find-by-id-api) and [count](#count-api), the information is passed by the query and the its split into tree different objects: query, options and columns. If you are curious of what this is and how it works, visit the [Model Documentation]((/chinchay/models).
+
+After the models are called information is send back to the client. In the case of the [web app](#web-app) this is done by calling the method ` res.render() `. This function receives two parameters, the first one is the file's path. The second one is all the information you what to pass to the _ejs_ in order to render, for instance in the case of [web show](#web show) an object called _result_ is passed. This object is JSON representing the entry to be displayed.
+
+In the case of the [API](#generated-api) the information is passed out as a JSON. This JSON is build by the [httpResponse]((/codemaster/httpresponse). Feel free to visit its [documentation]((/codemaster/httpresponse) for more information. In a nutshell, the success functions receives three parameters, first a message to be given out, then the key used for the information and finally the values that key should have. Therefore:
+
+```javascript
+  httpResponse.success('This is the message', 'key', 'here goes the data');
+```
+<br/>
+Will return:
+```javascript
+  {
+    message: 'This is the message',
+    key: 'here goes the data'
+  }
+```
+<br/>
+
+When an error occurs, the model response with an [Message object](/codemaster/message) of the [Codemaster](https://github.com/afontainec/codemaster) package. This message has three properties:
+
+1. code: It uses [the Http Codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) to inform what "type" of error.
+2. message: A message to inform what is the error.
+3. fullMessage: This is the complete error.
+
+With this message error, the response is build by calling httpResponse.error(..). For more information on this method visit [this link]((/codemaster/httpresponse). But in a nutshell, it receives two parameters. The first is the error to be informed to the client. Therefore it should be easy to understand for everyone. The second parameter is used for development environment. Its the full error that has been thrown. This is to help developers understand why it fell. However, in production environments, it will not be added. Therefore:
+
+```javascript
+  httpResponse.error('The entry you are looking does not exist', 'No entry with id = 3 was found in table "coffee"');
+```
+<br/>
+In an development environment will return:
+```javascript
+  {
+    error: 'The entry you are looking does not exist',
+    fullError: 'No entry with id = 3 was found in table "coffee"'
+  }
+```
+<br/>
+
+Note that most of the api calls, also return a _links_ property. This links follows the [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) component of a [REST application architecture](https://en.wikipedia.org/wiki/Representational_state_transfer). This mean it gives out all the links necessary to browse through the API. You can see how they are defined in the `javascript initializeHATEOAS() ` function. For more information on this, feel free to go to the [HateoasGenerator documentation](/chinchay/hateoasgenerator).
+
 
 #### Model
 
+Lastly, a model file is created. We *strongly* recommend to visit the [Model Documentation](/chinchay/models) to fully understand how to work with it. However, the file created its a [Singleton](https://www.dofactory.com/javascript/singleton-design-pattern) that manages all the queries to a certain relation. It extends the Table class and it has a constructor where it is specified the name of the table it should query to. If you need customize model functions, in this file you should add them.
 
 ### .chainfile.js {#chainfile}
 
@@ -1227,16 +1286,16 @@ const path = require('path');
 
 module.exports = {
   models: {
-    directory: path.join(process.cwd(), '/chinchapp/models')
+    directory: path.join(process.cwd(), 'models')
   },
   controllers: {
-    directory: path.join(process.cwd(), '/chinchapp/controllers')
+    directory: path.join(process.cwd(), 'controllers')
   },
   views: {
-    directory: path.join(process.cwd(), '/chinchapp/views')
+    directory: path.join(process.cwd(), 'views')
   },
   routes: {
-    directory: path.join(process.cwd(), '/chinchapp/routes')
+    directory: path.join(process.cwd(), 'routes')
   },
   knex:  path.join(process.cwd(), 'knex.js')
 };

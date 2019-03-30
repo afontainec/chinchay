@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');// eslint-disable-line
-const HateoasGenerator = require('../..').Hateoas;
+const HateoasGenerator = require('../../..').Hateoas;
 
 const HATEOAS = new HateoasGenerator();
 
@@ -21,16 +21,16 @@ describe('HATEOAS: get', () => { // eslint-disable-line
   });
 
   it('add Link and get correct',  (done) => { // eslint-disable-line
-    HATEOAS.addLink('index', '/places', 'GET');
-    HATEOAS.addLink('otherindex', '/places');
+    HATEOAS.addLink('index', '/coffee', 'GET');
+    HATEOAS.addLink('otherindex', '/coffee');
     const array = HATEOAS.get();
     assert.isArray(array);
     assert.equal(array.length, 2);
     assert.equal(array[0].rel, 'index');
-    assert.equal(array[0].href, '/places');
+    assert.equal(array[0].href, '/coffee');
     assert.equal(array[0].type, 'GET');
     assert.equal(array[1].rel, 'otherindex');
-    assert.equal(array[1].href, '/places');
+    assert.equal(array[1].href, '/coffee');
     assert.equal(array[1].type, 'GET');
     done();
   });
@@ -41,7 +41,7 @@ describe('HATEOAS: get', () => { // eslint-disable-line
     assert.isArray(array);
     assert.equal(array.length, 1);
     assert.equal(array[0].rel, 'index');
-    assert.equal(array[0].href, '/places');
+    assert.equal(array[0].href, '/coffee');
     assert.equal(array[0].type, 'GET');
     done();
   });
@@ -52,32 +52,32 @@ describe('HATEOAS: get', () => { // eslint-disable-line
     assert.isArray(array);
     assert.equal(array.length, 1);
     assert.equal(array[0].rel, 'index');
-    assert.equal(array[0].href, '/places');
+    assert.equal(array[0].href, '/coffee');
     assert.equal(array[0].type, 'GET');
     done();
   });
 
   it('override link',  (done) => { // eslint-disable-line
-    HATEOAS.addLink('index', '/api/places');
+    HATEOAS.addLink('index', '/api/coffee');
     const array = HATEOAS.get();
     assert.isArray(array);
     assert.equal(array.length, 1);
     assert.equal(array[0].rel, 'index');
-    assert.equal(array[0].href, '/api/places');
+    assert.equal(array[0].href, '/api/coffee');
     assert.equal(array[0].type, 'GET');
     done();
   });
 
   it('override link',  (done) => { // eslint-disable-line
-    HATEOAS.addLink('self', '/api/places/:id');
+    HATEOAS.addLink('self', '/api/coffee/:id');
     const array = HATEOAS.get({ id: 1 });
     assert.isArray(array);
     assert.equal(array.length, 2);
     assert.equal(array[0].rel, 'index');
-    assert.equal(array[0].href, '/api/places');
+    assert.equal(array[0].href, '/api/coffee');
     assert.equal(array[0].type, 'GET');
     assert.equal(array[1].rel, 'self');
-    assert.equal(array[1].href, '/api/places/1');
+    assert.equal(array[1].href, '/api/coffee/1');
     assert.equal(array[1].type, 'GET');
     done();
   });
