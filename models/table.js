@@ -398,8 +398,8 @@ class Table {
   // 'Private' methods (static)
   // ################################################
 
-  // eslint-disable-next-line
   static addTimestamps(attr, isNew) {
+    if (!attr) return;
     if (isNew) {
       attr.created_at = new Date();
     }
