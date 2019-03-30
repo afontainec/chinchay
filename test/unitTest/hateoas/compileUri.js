@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');// eslint-disable-line
-const HateoasGenerator = require('../..').Hateoas;
+const HateoasGenerator = require('../../..').Hateoas;
 
 const HATEOAS = new HateoasGenerator();
 

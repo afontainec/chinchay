@@ -3,13 +3,13 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const chai = require('chai');  // eslint-disable-line
-const knex = require('../knex');
-const otherKnex = require('../otherKnex');
-const Table = require('..').Table;
+const knex = require('../../../../knex');
+const otherKnex = require('../../../../otherKnex');
+const Table = require('../../../..').Table;
 
 let Coffee = new Table('coffee', otherKnex);
 const BeforeCoffee = new Table('coffee');
-const ClearDB = require('../db/seeds/test/00-cleardb');
+const ClearDB = require('../../../../db/seeds/test/00-cleardb');
 
 
 const assert = chai.assert; //eslint-disable-line
