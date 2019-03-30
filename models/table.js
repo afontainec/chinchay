@@ -48,13 +48,18 @@ class Table {
       const columns = await this.getAttributesNames();
       const noColumns = !columns || columns.length === 0;
       if (noColumns) throw new Error('Hubo un error creando un nuevo Objeto');
-      const entry = {};
-      for (let i = 0; i < columns.length; i++) {
-        entry[columns[i]] = null;
-      }
-      return entry;
+      return Table.buildEntryFromColumns(columns);
     };
     return f();
+  }
+
+  static buildEntryFromColumns(columns) {
+    if (!columns) return {};
+    const entry = {};
+    for (let i = 0; i < columns.length; i++) {
+      entry[columns[i]] = null;
+    }
+    return entry;
   }
 
   save(originalEntry) {
