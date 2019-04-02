@@ -83,36 +83,62 @@ class Table {
     return this.table().insert(entry).returning('*');
   }
 
-  update(id, originalAttributes) {
-    const attr = Utils.cloneJSON(originalAttributes);
-    const errorString = 'Something went wrong';
-    return new Promise((resolve, reject) => {
-      this.findById(id).then(() => {
-        if (attr && attr.id && id !== attr.id) {
-          return reject('Given IDs differ');
-        }
-        this.parseAttributesForUpsert(attr, false).then((attributes) => {
-          this.table().where({
-            id,
-          }).update(attributes).returning('*')
-            .then((entry) => {
-              // check if attributes is an array
-              if (!entry || entry.length === 0) {
-                return reject(errorString);
-              }
-              resolve(entry[0]);
-            })
-            .catch(() => {
-              reject(errorString);
-            });
-        }).catch((err) => {
-          reject(err);
-        });
-      }).catch((err) => {
-        reject(err);
-      });
-    });
+  update(input, newValues, options) {
+    const whereQuery = typeof input === 'object' ? input : { id: input };
+    return this.updateWhere(whereQuery, newValues, options);
   }
+
+  updateWhere(whereQuery, newValues, options) {
+    const values = Utils.cloneJSON(newValues);
+    const query = this.updateQuery(whereQuery, values, options);
+    if (Table.returnAsQuery(options)) return query;
+    return Table.fetchUpdateQuery(query);
+  }
+
+  updateQuery(whereQuery, values, options) {
+    let query = this.table();
+    query = this.addUpdate(query, values, whereQuery, options);
+    query = this.addWhere(query, whereQuery, options);
+    query = this.addAdvancedOptions(query, options);
+    return query;
+  }
+
+  addUpdate(query, values) {
+    if (!query || !values || !query.update) return query;
+    query.update(values, '*');
+    return query;
+  }
+
+  // update(id, originalAttributes) {
+  //   const attr = Utils.cloneJSON(originalAttributes);
+  //   const errorString = 'Something went wrong';
+  //   return new Promise((resolve, reject) => {
+  //     this.findById(id).then(() => {
+  //       if (attr && attr.id && id !== attr.id) {
+  //         return reject('Given IDs differ');
+  //       }
+  //       this.parseAttributesForUpsert(attr, false).then((attributes) => {
+  //         this.table().where({
+  //           id,
+  //         }).update(attributes).returning('*')
+  //           .then((entry) => {
+  //             // check if attributes is an array
+  //             if (!entry || entry.length === 0) {
+  //               return reject(errorString);
+  //             }
+  //             resolve(entry[0]);
+  //           })
+  //           .catch(() => {
+  //             reject(errorString);
+  //           });
+  //       }).catch((err) => {
+  //         reject(err);
+  //       });
+  //     }).catch((err) => {
+  //       reject(err);
+  //     });
+  //   });
+  // }
 
   delete(input, options) {
     const whereQuery = typeof input === 'object' ? input : { id: input };
