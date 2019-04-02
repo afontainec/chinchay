@@ -14,7 +14,8 @@ describe('TABLE GATEWAY: update Query', () => { // eslint-disable-line
     const options = { startDate: '2019/01/01' };
     const query = Coffee.updateQuery(where, values, options);
     const string = query.toString();
-    assert.equal(string, 'update "coffee" set "name" = \'changed\' where "id" = 1 and "created_at" > \'2019/01/01\' returning *');
+    assert.isTrue(string.startsWith('update "coffee" set "name" = \'changed\', "updated_at" ='));
+    assert.isTrue(string.endsWith(' where "id" = 1 and "created_at" > \'2019/01/01\' returning *'));
     done();
   });
 });
