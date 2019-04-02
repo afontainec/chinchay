@@ -4,7 +4,8 @@
   "description": "Building MVC files for express and knex.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive --timeout 20000 test/"
+    "test": "nyc mocha --recursive --timeout 20000 test/unitTest --exit",
+    "fulltest": "nyc mocha --recursive --timeout 20000 test/ --exit"
   },
   "bin": {
     "chinchay": "./cliApp/lector.js"
