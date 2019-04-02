@@ -92,7 +92,7 @@ class Table {
     const values = Utils.cloneJSON(newValues);
     const query = this.updateQuery(whereQuery, values, options);
     if (Table.returnAsQuery(options)) return query;
-    return Table.fetchUpdateQuery(query, newValues, whereQuery);
+    return this.fetchUpdateQuery(query, newValues, whereQuery);
   }
 
   updateQuery(whereQuery, values, options) {
@@ -112,36 +112,19 @@ class Table {
     return query;
   }
 
-  // update(id, originalAttributes) {
-  //   const attr = Utils.cloneJSON(originalAttributes);
-  //   const errorString = 'Something went wrong';
-  //   return new Promise((resolve, reject) => {
-  //     this.findById(id).then(() => {
-  //       if (attr && attr.id && id !== attr.id) {
-  //         return reject('Given IDs differ');
-  //       }
-  //       this.parseAttributesForUpsert(attr, false).then((attributes) => {
-  //         this.table().where({
-  //           id,
-  //         }).update(attributes).returning('*')
-  //           .then((entry) => {
-  //             // check if attributes is an array
-  //             if (!entry || entry.length === 0) {
-  //               return reject(errorString);
-  //             }
-  //             resolve(entry[0]);
-  //           })
-  //           .catch(() => {
-  //             reject(errorString);
-  //           });
-  //       }).catch((err) => {
-  //         reject(err);
-  //       });
-  //     }).catch((err) => {
-  //       reject(err);
-  //     });
-  //   });
-  // }
+  fetchUpdateQuery(query, newValues, whereQuery) {
+    return new Promise((resolve, reject) => {
+      const idsDiffer = whereQuery.id && newValues && newValues.id && whereQuery.id !== newValues.id;
+      if (idsDiffer) return reject(Message.new(400, 'Given Id differ', 'Given Id differ'));
+      const getUpdatables = this.find(whereQuery);
+      const filterColumns = this.parseAttributesForUpsert(newValues);
+      Promise.all([getUpdatables, filterColumns]).then(() => {
+        return resolve(Table.fetchQuery(query));
+      }).catch(() => {
+        reject(Message.new(400, 'Error: Nothing to update or unexistant column', 'Error: Nothing to update or unexistant column'));
+      });
+    });
+  }
 
   delete(input, options) {
     const whereQuery = typeof input === 'object' ? input : { id: input };
@@ -272,7 +255,7 @@ class Table {
 
   addWhere(query, whereQuery, options) {
     options = options || {};
-    if ((typeof whereQuery) !== 'object') whereQuery = {};
+    if ((typeof whereQuery) !== 'object' || whereQuery === null) whereQuery = {};
     const especialQuery = this.filterEspecialQuery(whereQuery);
     query.where(whereQuery);
     for (let i = 0; i < especialQuery.length; i++) {
@@ -536,13 +519,6 @@ class Table {
     });
   }
 
-  static fetchUpdateQuery(query, newValues, whereQuery) {
-    return new Promise((resolve, reject) => {
-      const idsDiffer = whereQuery.id && newValues && newValues.id && whereQuery.id !== newValues.id;
-      if (idsDiffer) return reject(Message.new(400, 'Given Id differ', 'Given Id differ'));
-      return resolve(Table.fetchQuery(query));
-    });
-  }
 
   static returnAsQuery(options) {
     options = options || {};
