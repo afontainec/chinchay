@@ -92,7 +92,7 @@ class Table {
     const values = Utils.cloneJSON(newValues);
     const query = this.updateQuery(whereQuery, values, options);
     if (Table.returnAsQuery(options)) return query;
-    return Table.fetchUpdateQuery(query);
+    return Table.fetchUpdateQuery(query, newValues, whereQuery);
   }
 
   updateQuery(whereQuery, values, options) {
@@ -105,6 +105,9 @@ class Table {
 
   addUpdate(query, values) {
     if (!query || !values || !query.update) return query;
+    const isNew = false;
+    Table.removeUnSetableAttributes(values);
+    Table.addTimestamps(values, isNew);
     query.update(values, '*');
     return query;
   }
@@ -530,6 +533,14 @@ class Table {
       }).catch((err) => {
         reject(Table.makeError(err.routine));
       });
+    });
+  }
+
+  static fetchUpdateQuery(query, newValues, whereQuery) {
+    return new Promise((resolve, reject) => {
+      const idsDiffer = whereQuery.id && newValues && newValues.id && whereQuery.id !== newValues.id;
+      if (idsDiffer) return reject(Message.new(400, 'Given Id differ', 'Given Id differ'));
+      return resolve(Table.fetchQuery(query));
     });
   }
 

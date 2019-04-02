@@ -13,7 +13,8 @@ describe('TABLE GATEWAY: add update', () => { // eslint-disable-line
     const values = { price: 10 };
     query = Coffee.addUpdate(query, values);
     const string = query.toString();
-    assert.equal(string, 'update "coffee" set "price" = 10 returning *');
+    assert.isTrue(string.startsWith('update "coffee" set "price" = 10, "updated_at" ='));
+    assert.isTrue(string.endsWith('returning *'));
     done();
   });
 
