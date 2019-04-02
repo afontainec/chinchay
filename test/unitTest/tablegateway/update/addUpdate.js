@@ -6,7 +6,7 @@ const assert = require('chai').assert;
 const Coffee = require('../../../../models/coffee-example');
 
 // Our parent block
-describe('TABLE GATEWAY: add timestamps', () => { // eslint-disable-line
+describe('TABLE GATEWAY: add update', () => { // eslint-disable-line
 
   it('query is knex object ',  (done) => { // eslint-disable-line
     let query = Coffee.table();

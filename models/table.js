@@ -97,7 +97,7 @@ class Table {
 
   updateQuery(whereQuery, values, options) {
     let query = this.table();
-    query = this.addUpdate(query, values, whereQuery, options);
+    query = this.addUpdate(query, values);
     query = this.addWhere(query, whereQuery, options);
     query = this.addAdvancedOptions(query, options);
     return query;
