@@ -446,6 +446,7 @@ class Table {
   }
 
   static columnsNamesToArray(input) {
+    input = input || [];
     const array = [];
     for (let i = 0; i < input.length; i++) {
       array.push(input[i].column_name);
