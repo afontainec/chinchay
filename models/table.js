@@ -289,33 +289,13 @@ class Table {
   }
 
   getAttributesNames() {
-    // const f = async () => {
-    //   const query = this.columnsNamesQuery();
-    //   const results = await Table.fetch(query);
-    //   if (!results || results.length === 0) throw new Error(`Hubo un error creando un nuevo objeto: ${this.table_name}`);
-    // };
-    // return f();
-
-
-    const tableName = this.table_name;
-    return new Promise((resolve, reject) => {
-      this.knex('information_schema.columns').select('column_name').where({
-        table_name: tableName,
-      }).then((results) => {
-          // check if results is an array
-        if (!results || results.length === 0) {
-          return reject(`Hubo un error creando un nuevo objeto: ${tableName}`);
-        }
-        const attributes = [];
-        results.forEach((attribute) => {
-          attributes.push(attribute.column_name);
-        });
-        resolve(attributes);
-      })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+    const f = async () => {
+      const query = this.columnsNamesQuery();
+      const results = await Table.fetchQuery(query);
+      if (!results || results.length === 0) throw new Error(`Hubo un error creando un nuevo objeto: ${this.table_name}`);
+      return Table.columnsNamesToArray(results);
+    };
+    return f();
   }
 
   // // TODO: USE FIND TO MAKE THIS QUERY
@@ -465,6 +445,58 @@ class Table {
     return entry;
   }
 
+  static columnsNamesToArray(input) {
+    const array = [];
+    for (let i = 0; i < input.length; i++) {
+      array.push(input[i].column_name);
+    }
+    return array;
+  }
+
+  static extractColumns(query) {
+    if (query.columns) {
+      let col = query.columns;
+      if (Table.isStringArray(col)) {
+        col = JSON.parse(col);
+      } else if (typeof col === 'string') {
+        col = [col];
+      }
+      delete query.columns;
+      return col;
+    }
+    return 'all';
+  }
+
+  static extractQuery(query) {
+    const keys = Object.keys(query);
+    for (let i = 0; i < keys.length; i++) {
+      const k = keys[i];
+      const elem = query[k];
+      if (typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'))) {
+        query[k] = JSON.parse(elem);
+      }
+    }
+    return query;
+  }
+
+  static extractOptions(query, securityMode) {
+    const options = {};
+    const queryKeys = Object.keys(query);
+    for (let i = 0; i < OPTIONS_KEYS.length; i++) {
+      const key = OPTIONS_KEYS[i];
+      if (queryKeys.indexOf(key) > -1) {
+        let elem = query[key];
+        if (Table.isStringArray(elem)) {
+          elem = JSON.parse(elem);
+        }
+        options[key] = elem;
+        delete query[key];
+      }
+    }
+    if (securityMode) Table.removeRawOptions(options);
+    return options;
+  }
+
   static getDefaultKnex() {
     return knex;
   }
@@ -611,22 +643,15 @@ class Table {
     return typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'));
   }
 
-  static extractOptions(query, securityMode) {
-    const options = {};
-    const queryKeys = Object.keys(query);
-    for (let i = 0; i < OPTIONS_KEYS.length; i++) {
-      const key = OPTIONS_KEYS[i];
-      if (queryKeys.indexOf(key) > -1) {
-        let elem = query[key];
-        if (Table.isStringArray(elem)) {
-          elem = JSON.parse(elem);
-        }
-        options[key] = elem;
-        delete query[key];
-      }
-    }
-    if (securityMode) Table.removeRawOptions(options);
-    return options;
+
+  static mergeRawSelect(rawSelect, input) {
+    const q = knex.queryBuilder();
+    Table.addRawSelect(q, rawSelect);
+    let string = q.toString();
+    Table.addRawSelect(q, input);
+    string = q.toString();
+    string = string.substring(7, string.length);
+    return string;
   }
 
   static removeRawOptions(options) {
@@ -637,42 +662,6 @@ class Table {
       }
     }
     return options;
-  }
-
-  static extractColumns(query) {
-    if (query.columns) {
-      let col = query.columns;
-      if (Table.isStringArray(col)) {
-        col = JSON.parse(col);
-      } else if (typeof col === 'string') {
-        col = [col];
-      }
-      delete query.columns;
-      return col;
-    }
-    return 'all';
-  }
-
-  static extractQuery(query) {
-    const keys = Object.keys(query);
-    for (let i = 0; i < keys.length; i++) {
-      const k = keys[i];
-      const elem = query[k];
-      if (typeof elem === 'string' && (elem.startsWith('[') || elem.startsWith('{'))) {
-        query[k] = JSON.parse(elem);
-      }
-    }
-    return query;
-  }
-
-  static mergeRawSelect(rawSelect, input) {
-    const q = knex.queryBuilder();
-    Table.addRawSelect(q, rawSelect);
-    let string = q.toString();
-    Table.addRawSelect(q, input);
-    string = q.toString();
-    string = string.substring(7, string.length);
-    return string;
   }
 }
 
