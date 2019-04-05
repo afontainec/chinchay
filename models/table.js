@@ -188,12 +188,6 @@ class Table {
     return this.find({}, columns, options);
   }
 
-  parseToSend(entry) {
-    return new Promise((resolve) => {
-      resolve(entry);
-    });
-  }
-
   find(whereQuery, columns, options) {
     if (!options && Utils.isJSON(columns)) {
       options = columns;
@@ -239,11 +233,22 @@ class Table {
   // Miscelaneous
   // ################################################
 
-
-  makeQuery(query, selectType, whereQuery, columns, options) {
-    this.addSelect(selectType, query, columns, options);
-    query = this.addWhere(query, whereQuery, options);
-    query = this.addAdvancedOptions(query, options);
+  addAdvancedOptions(query, options) {
+    if ((typeof options) !== 'object') return query;
+    if (options.groupBy) {
+      query = Table.addGroupBy(query, options.groupBy);
+    }
+    if (options.orderBy) {
+      if (Array.isArray(options.orderBy)) query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
+      else query = Table.addOrderBy(query, options.orderBy);
+    }
+    if (options.limit) {
+      query = Table.addLimit(query, options.limit);
+    }
+    if (options.offset) {
+      query = Table.addOffset(query, options.offset);
+    }
+    query = Table.addTimeInterval(query, options.startDate, options.endDate);
     return query;
   }
 
@@ -299,6 +304,12 @@ class Table {
     return query;
   }
 
+  buildQuery(selectType, whereQuery, columns, options) {
+    let query = this.table();
+    query = this.makeQuery(query, selectType, whereQuery, columns, options);
+    return query;
+  }
+
   filterEspecialQuery(whereQuery) {
     const keys = Object.keys(whereQuery);
     const especialQuery = [];
@@ -311,25 +322,6 @@ class Table {
       }
     }
     return especialQuery;
-  }
-
-  addAdvancedOptions(query, options) {
-    if ((typeof options) !== 'object') return query;
-    if (options.groupBy) {
-      query = Table.addGroupBy(query, options.groupBy);
-    }
-    if (options.orderBy) {
-      if (Array.isArray(options.orderBy)) query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
-      else query = Table.addOrderBy(query, options.orderBy);
-    }
-    if (options.limit) {
-      query = Table.addLimit(query, options.limit);
-    }
-    if (options.offset) {
-      query = Table.addOffset(query, options.offset);
-    }
-    query = Table.addTimeInterval(query, options.startDate, options.endDate);
-    return query;
   }
 
   columnsNamesQuery() {
@@ -383,10 +375,17 @@ class Table {
     });
   }
 
-  buildQuery(selectType, whereQuery, columns, options) {
-    let query = this.table();
-    query = this.makeQuery(query, selectType, whereQuery, columns, options);
+  makeQuery(query, selectType, whereQuery, columns, options) {
+    this.addSelect(selectType, query, columns, options);
+    query = this.addWhere(query, whereQuery, options);
+    query = this.addAdvancedOptions(query, options);
     return query;
+  }
+
+  parseToSend(entry) {
+    return new Promise((resolve) => {
+      resolve(entry);
+    });
   }
 
 
