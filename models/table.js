@@ -22,14 +22,6 @@ class Table {
     return this.knex(this.table_name);
   }
 
-  static setDefaultKnex(elem) {
-    knex = elem;
-  }
-
-  static getDefaultKnex() {
-    return knex;
-  }
-
   setKnex(elem) {
     this.knex = elem;
   }
@@ -54,15 +46,6 @@ class Table {
       return Table.buildEntryFromColumns(columns);
     };
     return f();
-  }
-
-  static buildEntryFromColumns(columns) {
-    if (!columns) return {};
-    const entry = {};
-    for (let i = 0; i < columns.length; i++) {
-      entry[columns[i]] = null;
-    }
-    return entry;
   }
 
   save(originalEntry) {
@@ -300,6 +283,41 @@ class Table {
     return query;
   }
 
+  columnsNamesQuery() {
+    const query = { table_name: this.table_name };
+    return this.knex('information_schema.columns').select('column_name').where(query);
+  }
+
+  getAttributesNames() {
+    // const f = async () => {
+    //   const query = this.columnsNamesQuery();
+    //   const results = await Table.fetch(query);
+    //   if (!results || results.length === 0) throw new Error(`Hubo un error creando un nuevo objeto: ${this.table_name}`);
+    // };
+    // return f();
+
+
+    const tableName = this.table_name;
+    return new Promise((resolve, reject) => {
+      this.knex('information_schema.columns').select('column_name').where({
+        table_name: tableName,
+      }).then((results) => {
+          // check if results is an array
+        if (!results || results.length === 0) {
+          return reject(`Hubo un error creando un nuevo objeto: ${tableName}`);
+        }
+        const attributes = [];
+        results.forEach((attribute) => {
+          attributes.push(attribute.column_name);
+        });
+        resolve(attributes);
+      })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
   // // TODO: USE FIND TO MAKE THIS QUERY
   getFirstDate(attr) {
     return new Promise((resolve, reject) => {
@@ -312,28 +330,6 @@ class Table {
         })
         .catch((error) => {
           reject(error);
-        });
-    });
-  }
-
-  getAttributesNames() {
-    const table_name = this.table_name;
-    return new Promise((resolve, reject) => {
-      this.knex('information_schema.columns').select('column_name').where({
-        table_name,
-      }).then((results) => {
-          // check if results is an array
-        if (!results || results.length === 0) {
-          return reject(`Hubo un error creando un nuevo objeto: ${table_name}`);
-        }
-        const attributes = [];
-        results.forEach((attribute) => {
-          attributes.push(attribute.column_name);
-        });
-        resolve(attributes);
-      })
-        .catch((err) => {
-          reject(err);
         });
     });
   }
@@ -405,32 +401,6 @@ class Table {
   // 'Private' methods (static)
   // ################################################
 
-  static addTimestamps(attr, isNew) {
-    if (!attr) return;
-    if (isNew) {
-      attr.created_at = new Date();
-    }
-    attr.updated_at = new Date();
-  }
-
-  static getSelectString(query) {
-    const str = query.toString();
-    let withinParentesis = false;
-    for (let i = 0; i < str.length; i++) {
-      const s = str.substring(i);
-      if (s[0] === '(') withinParentesis = true;
-      if (s[0] === ')') withinParentesis = false;
-      if (!withinParentesis && s.substring(0, 4) === 'from') {
-        return str.substring(6, i);
-      }
-    }
-    return 'Query badly parsed';
-  }
-
-  static hasColumnInSelect(query, column) {
-    const selectStr = Table.getSelectString(query);
-    return selectStr.indexOf(` ${column} `) > -1 || selectStr.indexOf(` ${column},`) > -1 || selectStr.indexOf(`,${column} `) > -1 || selectStr.indexOf(`"${column}"`) > -1;
-  }
 
   static addColumn(query, column) {
     if (!Table.hasColumnInSelect(query, column)) {
@@ -467,6 +437,14 @@ class Table {
     return query;
   }
 
+  static addTimestamps(attr, isNew) {
+    if (!attr) return;
+    if (isNew) {
+      attr.created_at = new Date();
+    }
+    attr.updated_at = new Date();
+  }
+
   static addRawWhere(query, where) {
     if (where) {
       if (Array.isArray(where)) {
@@ -476,6 +454,42 @@ class Table {
       }
     }
     return query;
+  }
+
+  static buildEntryFromColumns(columns) {
+    if (!columns) return {};
+    const entry = {};
+    for (let i = 0; i < columns.length; i++) {
+      entry[columns[i]] = null;
+    }
+    return entry;
+  }
+
+  static getDefaultKnex() {
+    return knex;
+  }
+
+  static getSelectString(query) {
+    const str = query.toString();
+    let withinParentesis = false;
+    for (let i = 0; i < str.length; i++) {
+      const s = str.substring(i);
+      if (s[0] === '(') withinParentesis = true;
+      if (s[0] === ')') withinParentesis = false;
+      if (!withinParentesis && s.substring(0, 4) === 'from') {
+        return str.substring(6, i);
+      }
+    }
+    return 'Query badly parsed';
+  }
+
+  static hasColumnInSelect(query, column) {
+    const selectStr = Table.getSelectString(query);
+    return selectStr.indexOf(` ${column} `) > -1 || selectStr.indexOf(` ${column},`) > -1 || selectStr.indexOf(`,${column} `) > -1 || selectStr.indexOf(`"${column}"`) > -1;
+  }
+
+  static setDefaultKnex(elem) {
+    knex = elem;
   }
 
   static addOrderBy(query, column, order) {
