@@ -32,12 +32,75 @@ class Table {
 
 
   // ################################################
-  // CUD FROM CRUD
+  // COUNT
   // ################################################
 
-  // const query = this.deleteQuery(whereQuery, options);
-  // if (Table.returnAsQuery(options)) return query;
-  // return Table.fetchQuery(query);
+  count(whereQuery, options) {
+    const f = async (query, groupBy) => {
+      const results = await Table.fetchQuery(query);
+      if (!groupBy) {
+        return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
+      }
+      for (let i = 0; i < results.length; i++) {
+        if (results[i].count) {
+          results[i].count = parseInt(results[i].count, 10);
+        }
+      }
+      return results;
+    };
+    options = options || {};
+    const groupBy = options.groupBy;
+    const query = this.countQuery(whereQuery, options);
+    if (Table.returnAsQuery(options)) return query;
+    return f(query, groupBy);
+  }
+
+  countQuery(whereQuery, options) {
+    return this.buildQuery('count', whereQuery, 'all', options);
+  }
+
+  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
+  countGroupBy(groupBy, whereQuery, columns, options) {
+    options = options || {};
+    options.groupBy = groupBy;
+    return this.count(whereQuery, columns, options);
+  }
+
+  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
+  countIn(target, validOptions, query, options) {
+    query = query || {};
+    if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
+    else {
+      query[target] = validOptions;
+    }
+    return this.count(query, options);
+  }
+
+
+  // ################################################
+  // DELETE
+  // ################################################
+  delete(input, options) {
+    const whereQuery = typeof input === 'object' ? input : { id: input };
+    return this.deleteWhere(whereQuery, options);
+  }
+
+
+  deleteWhere(whereQuery, options) {
+    const query = this.deleteQuery(whereQuery, options);
+    if (Table.returnAsQuery(options)) return query;
+    return Table.fetchQuery(query);
+  }
+
+  deleteQuery(whereQuery, options) {
+    return this.buildQuery('delete', whereQuery, 'all', options);
+  }
+
+
+  // ################################################
+  // NEW
+  // ################################################
+
   new() {
     const f = async () => {
       const columns = await this.getAttributesNames();
@@ -47,6 +110,10 @@ class Table {
     };
     return f();
   }
+
+  // ################################################
+  // SAVE
+  // ################################################
 
   save(originalEntry) {
     const errorString = 'Something went wrong';
@@ -66,16 +133,13 @@ class Table {
     return this.table().insert(entry).returning('*');
   }
 
+  // ################################################
+  // UDATE
+  // ################################################
+
   update(input, newValues, options) {
     const whereQuery = typeof input === 'object' ? input : { id: input };
     return this.updateWhere(whereQuery, newValues, options);
-  }
-
-  updateWhere(whereQuery, newValues, options) {
-    const values = Utils.cloneJSON(newValues);
-    const query = this.updateQuery(whereQuery, values, options);
-    if (Table.returnAsQuery(options)) return query;
-    return this.fetchUpdateQuery(query, newValues, whereQuery);
   }
 
   updateQuery(whereQuery, values, options) {
@@ -84,6 +148,13 @@ class Table {
     query = this.addWhere(query, whereQuery, options);
     query = this.addAdvancedOptions(query, options);
     return query;
+  }
+
+  updateWhere(whereQuery, newValues, options) {
+    const values = Utils.cloneJSON(newValues);
+    const query = this.updateQuery(whereQuery, values, options);
+    if (Table.returnAsQuery(options)) return query;
+    return this.fetchUpdateQuery(query, newValues, whereQuery);
   }
 
   addUpdate(query, values) {
@@ -107,22 +178,6 @@ class Table {
         reject(Message.new(400, 'Error: Nothing to update or unexistant column', 'Error: Nothing to update or unexistant column'));
       });
     });
-  }
-
-  delete(input, options) {
-    const whereQuery = typeof input === 'object' ? input : { id: input };
-    return this.deleteWhere(whereQuery, options);
-  }
-
-
-  deleteWhere(whereQuery, options) {
-    const query = this.deleteQuery(whereQuery, options);
-    if (Table.returnAsQuery(options)) return query;
-    return Table.fetchQuery(query);
-  }
-
-  deleteQuery(whereQuery, options) {
-    return this.buildQuery('delete', whereQuery, 'all', options);
   }
 
 
@@ -184,12 +239,6 @@ class Table {
   // Miscelaneous
   // ################################################
 
-
-  buildQuery(selectType, whereQuery, columns, options) {
-    let query = this.table();
-    query = this.makeQuery(query, selectType, whereQuery, columns, options);
-    return query;
-  }
 
   makeQuery(query, selectType, whereQuery, columns, options) {
     this.addSelect(selectType, query, columns, options);
@@ -334,48 +383,12 @@ class Table {
     });
   }
 
-  // COUNT
-
-  count(whereQuery, options) {
-    const f = async (query, groupBy) => {
-      const results = await Table.fetchQuery(query);
-      if (!groupBy) {
-        return Object.keys(results[0]).length === 1 ? results[0].count : results[0];
-      }
-      for (let i = 0; i < results.length; i++) {
-        if (results[i].count) {
-          results[i].count = parseInt(results[i].count, 10);
-        }
-      }
-      return results;
-    };
-    options = options || {};
-    const groupBy = options.groupBy;
-    const query = this.countQuery(whereQuery, options);
-    if (Table.returnAsQuery(options)) return query;
-    return f(query, groupBy);
+  buildQuery(selectType, whereQuery, columns, options) {
+    let query = this.table();
+    query = this.makeQuery(query, selectType, whereQuery, columns, options);
+    return query;
   }
 
-  countQuery(whereQuery, options) {
-    return this.buildQuery('count', whereQuery, 'all', options);
-  }
-
-  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
-  countGroupBy(groupBy, whereQuery, columns, options) {
-    options = options || {};
-    options.groupBy = groupBy;
-    return this.count(whereQuery, columns, options);
-  }
-
-  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
-  countIn(target, validOptions, query, options) {
-    query = query || {};
-    if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
-    else {
-      query[target] = validOptions;
-    }
-    return this.count(query, options);
-  }
 
   // ################################################
   // 'Private' methods (static)
