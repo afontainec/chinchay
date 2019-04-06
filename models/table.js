@@ -230,7 +230,7 @@ class Table {
 
 
   // ################################################
-  // Miscelaneous
+  // BUILD QUERY
   // ################################################
 
   addAdvancedOptions(query, options) {
@@ -310,6 +310,11 @@ class Table {
     return query;
   }
 
+  columnsNamesQuery() {
+    const query = { table_name: this.table_name };
+    return this.knex('information_schema.columns').select('column_name').where(query);
+  }
+
   filterEspecialQuery(whereQuery) {
     const keys = Object.keys(whereQuery);
     const especialQuery = [];
@@ -324,10 +329,17 @@ class Table {
     return especialQuery;
   }
 
-  columnsNamesQuery() {
-    const query = { table_name: this.table_name };
-    return this.knex('information_schema.columns').select('column_name').where(query);
+  makeQuery(query, selectType, whereQuery, columns, options) {
+    this.addSelect(selectType, query, columns, options);
+    query = this.addWhere(query, whereQuery, options);
+    query = this.addAdvancedOptions(query, options);
+    return query;
   }
+
+  // ################################################
+  // MISCELANEOUS
+  // ################################################
+
 
   getAttributesNames() {
     const f = async () => {
@@ -355,6 +367,39 @@ class Table {
     });
   }
 
+  // Makes sure not to go searching for wierd stuff
+  filterAttributes(attributes) {
+    return new Promise((resolve, reject) => {
+      if (!Utils.isJSON(attributes)) {
+        return reject('Parameter should be a valid json');
+      }
+
+      this.getAttributesNames().then((attributeNames) => {
+        const filteredAttributes = {};
+        for (let i = 0; i < attributeNames.length; i++) {
+          const attributeName = attributeNames[i];
+          if (attributeName in attributes) {
+            filteredAttributes[attributeName] = attributes[attributeName];
+              // remove the key
+            delete attributes[attributeName];
+          }
+        }
+          // if there are still keys left its because there where attributes that do not correspond
+        if (Object.keys(attributes).length !== 0) {
+          let attr = '';
+          for (let i = 0; i < Object.keys(attributes).length; i++) {
+            attr += ` ${Object.keys(attributes)[i]}.`;
+          }
+          return reject(`Cannot add attribute: ${attr}`);
+        }
+        return resolve(filteredAttributes);
+      })
+        .catch((err) => {
+          return reject(err);
+        });
+    });
+  }
+
   filterColumns(columns) {
     return new Promise((resolve, reject) => {
       if (!Array.isArray(columns)) {
@@ -373,13 +418,6 @@ class Table {
         reject(err);
       });
     });
-  }
-
-  makeQuery(query, selectType, whereQuery, columns, options) {
-    this.addSelect(selectType, query, columns, options);
-    query = this.addWhere(query, whereQuery, options);
-    query = this.addAdvancedOptions(query, options);
-    return query;
   }
 
   parseToSend(entry) {
@@ -584,39 +622,6 @@ class Table {
     return options.returnAsQuery;
   }
 
-
-  // Makes sure not to go searching for wierd stuff
-  filterAttributes(attributes) {
-    return new Promise((resolve, reject) => {
-      if (!Utils.isJSON(attributes)) {
-        return reject('Parameter should be a valid json');
-      }
-
-      this.getAttributesNames().then((attributeNames) => {
-        const filteredAttributes = {};
-        for (let i = 0; i < attributeNames.length; i++) {
-          const attributeName = attributeNames[i];
-          if (attributeName in attributes) {
-            filteredAttributes[attributeName] = attributes[attributeName];
-              // remove the key
-            delete attributes[attributeName];
-          }
-        }
-          // if there are still keys left its because there where attributes that do not correspond
-        if (Object.keys(attributes).length !== 0) {
-          let attr = '';
-          for (let i = 0; i < Object.keys(attributes).length; i++) {
-            attr += ` ${Object.keys(attributes)[i]}.`;
-          }
-          return reject(`Cannot add attribute: ${attr}`);
-        }
-        return resolve(filteredAttributes);
-      })
-        .catch((err) => {
-          return reject(err);
-        });
-    });
-  }
 
   static removeUnSetableAttributes(attributes) {
     if (!attributes) return;
