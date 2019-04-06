@@ -1,0 +1,48 @@
+// During the test the env variable is set to test
+process.env.NODE_ENV = 'test';
+
+// Require the dev-dependencies
+const chai = require('chai'); // eslint-disable-line
+const knex = require('../../../../knex');
+const Table = require('../../../../models/table');
+
+const assert = chai.assert; //eslint-disable-line
+
+const validColumns = ['valid', 'price', 'name'];
+
+// Our parent block
+describe('TABLE GATEWAY: containsUnexistingProperties', () => { // eslint-disable-line
+  before(async () => { // eslint-disable-line
+    await knex.seed.run();
+  });
+
+  it('has unexistant property', async () => { // eslint-disable-line
+    const entry = {
+      no: 'yes',
+      price: 100,
+    };
+    const contains = await Table.containsUnexistingProperties(validColumns, entry);
+    assert.isTrue(contains);
+  });
+
+  it('does not have unexistant property', async () => { // eslint-disable-line
+    const entry = {
+      price: 100,
+    };
+    const contains = await Table.containsUnexistingProperties(validColumns, entry);
+    assert.isFalse(contains);
+  });
+
+  it('input is not an array', async () => { // eslint-disable-line
+    const contains = await Table.containsUnexistingProperties(validColumns, 'entry');
+    assert.isFalse(contains);
+  });
+
+  it('valid Columns is null', async () => { // eslint-disable-line
+    const entry = {
+      price: 100,
+    };
+    const contains = await Table.containsUnexistingProperties(null, entry);
+    assert.isFalse(contains);
+  });
+});
