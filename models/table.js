@@ -696,6 +696,7 @@ class Table {
   }
 
   static removeUnexistingColumns(validColumns, array) {
+    if (!Array.isArray(validColumns) || !Array.isArray(array)) return [];
     const filtered = [];
     for (let i = 0; i < array.length; i++) {
       const column = array[i];

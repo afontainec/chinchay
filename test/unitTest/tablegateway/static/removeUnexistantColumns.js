@@ -4,20 +4,21 @@ process.env.NODE_ENV = 'test';
 // Require the dev-dependencies
 const chai = require('chai'); // eslint-disable-line
 const knex = require('../../../../knex');
-const Coffee = require('../../../../models/coffee-example');
+const Table = require('../../../../models/table');
 
 const assert = chai.assert; //eslint-disable-line
 
+const validColumns = ['valid', 'price', 'name'];
 
 // Our parent block
-describe('TABLE GATEWAY: filter columns', () => { // eslint-disable-line
+describe('TABLE GATEWAY: removeUnexistingColumns', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line
     await knex.seed.run();
   });
 
-  it('remove unexistant columns', async () => { // eslint-disable-line
+  it('should filter', async () => { // eslint-disable-line
     const entry = ['price', 'name', 'get out'];
-    const filtered = await Coffee.filterColumns(entry);
+    const filtered = await Table.removeUnexistingColumns(validColumns, entry);
     assert.isArray(filtered);
     assert.equal(filtered.length, 2);
     assert.isTrue(filtered.indexOf('price') > -1);
@@ -25,7 +26,12 @@ describe('TABLE GATEWAY: filter columns', () => { // eslint-disable-line
   });
 
   it('input is not an array', async () => { // eslint-disable-line
-    const filtered = await Coffee.filterColumns('entry');
+    const filtered = await Table.removeUnexistingColumns(validColumns, 'entry');
+    assert.deepEqual(filtered, []);
+  });
+
+  it('valid Columns is null', async () => { // eslint-disable-line
+    const filtered = await Table.removeUnexistingColumns(null, ['price']);
     assert.deepEqual(filtered, []);
   });
 });
