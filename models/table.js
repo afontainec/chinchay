@@ -103,7 +103,7 @@ class Table {
 
   new() {
     const f = async () => {
-      const columns = await this.getAttributesNames();
+      const columns = await this.columnsNames();
       const noColumns = !columns || columns.length === 0;
       if (noColumns) throw new Error('Hubo un error creando un nuevo Objeto');
       return Table.buildEntryFromColumns(columns);
@@ -403,26 +403,6 @@ class Table {
         });
     });
   }
-
-  // filterColumns(columns) {
-  //   return new Promise((resolve, reject) => {
-  //     if (!Array.isArray(columns)) {
-  //       resolve([]);
-  //       return;
-  //     }
-  //     this.getAttributesNames().then((attributes) => {
-  //       const thisTableColumns = [];
-  //       for (let i = 0; i < attributes.length; i++) {
-  //         if (columns.indexOf(attributes[i]) > -1) {
-  //           thisTableColumns.push(attributes[i]);
-  //         }
-  //       }
-  //       resolve(thisTableColumns);
-  //     }).catch((err) => {
-  //       reject(err);
-  //     });
-  //   });
-  // }
 
   filterColumns(columns) {
     const f = async () => {
