@@ -371,37 +371,14 @@ class Table {
     });
   }
 
-  // Makes sure not to go searching for wierd stuff
   filterAttributes(attributes) {
-    return new Promise((resolve, reject) => {
-      if (!Utils.isJSON(attributes)) {
-        return reject('Parameter should be a valid json');
-      }
-
-      this.getAttributesNames().then((attributeNames) => {
-        const filteredAttributes = {};
-        for (let i = 0; i < attributeNames.length; i++) {
-          const attributeName = attributeNames[i];
-          if (attributeName in attributes) {
-            filteredAttributes[attributeName] = attributes[attributeName];
-              // remove the key
-            delete attributes[attributeName];
-          }
-        }
-          // if there are still keys left its because there where attributes that do not correspond
-        if (Object.keys(attributes).length !== 0) {
-          let attr = '';
-          for (let i = 0; i < Object.keys(attributes).length; i++) {
-            attr += ` ${Object.keys(attributes)[i]}.`;
-          }
-          return reject(`Cannot add attribute: ${attr}`);
-        }
-        return resolve(filteredAttributes);
-      })
-        .catch((err) => {
-          return reject(err);
-        });
-    });
+    const f = async () => {
+      if (!Utils.isJSON(attributes)) throw new Error(Message.new(400, 'Parameter should be a json', 'Parameter should be a json'));
+      const columnsNames = await this.columnsNames();
+      if (Table.containsUnexistingProperties(columnsNames, attributes)) throw new Error(Message.new(400, 'Intentando agregar columna inexistente', 'Intentando agregar columna inexistente'));
+      return attributes;
+    };
+    return f();
   }
 
   filterColumns(columns) {
@@ -496,6 +473,16 @@ class Table {
     }
     return array;
   }
+
+  static containsUnexistingProperties(validProperties, obj) {
+    if (!Array.isArray(validProperties) || !Utils.isJSON(obj)) return false;
+    const keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+      if (validProperties.indexOf(keys[i]) === -1) return true;
+    }
+    return false;
+  }
+
 
   static extractColumns(query) {
     if (query.columns) {
