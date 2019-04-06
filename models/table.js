@@ -340,8 +340,7 @@ class Table {
   // MISCELANEOUS
   // ################################################
 
-
-  getAttributesNames() {
+  columnsNames() {
     const f = async () => {
       const query = this.columnsNamesQuery();
       const results = await Table.fetchQuery(query);
@@ -349,6 +348,11 @@ class Table {
       return Table.columnsNamesToArray(results);
     };
     return f();
+  }
+
+  getAttributesNames() {
+    console.log('WARNING: The method getAttributesNames is deprecated. prefer columnsNames');
+    return this.columnsNames();
   }
 
   // // TODO: USE FIND TO MAKE THIS QUERY
@@ -400,24 +404,33 @@ class Table {
     });
   }
 
+  // filterColumns(columns) {
+  //   return new Promise((resolve, reject) => {
+  //     if (!Array.isArray(columns)) {
+  //       resolve([]);
+  //       return;
+  //     }
+  //     this.getAttributesNames().then((attributes) => {
+  //       const thisTableColumns = [];
+  //       for (let i = 0; i < attributes.length; i++) {
+  //         if (columns.indexOf(attributes[i]) > -1) {
+  //           thisTableColumns.push(attributes[i]);
+  //         }
+  //       }
+  //       resolve(thisTableColumns);
+  //     }).catch((err) => {
+  //       reject(err);
+  //     });
+  //   });
+  // }
+
   filterColumns(columns) {
-    return new Promise((resolve, reject) => {
-      if (!Array.isArray(columns)) {
-        resolve([]);
-        return;
-      }
-      this.getAttributesNames().then((attributes) => {
-        const thisTableColumns = [];
-        for (let i = 0; i < attributes.length; i++) {
-          if (columns.indexOf(attributes[i]) > -1) {
-            thisTableColumns.push(attributes[i]);
-          }
-        }
-        resolve(thisTableColumns);
-      }).catch((err) => {
-        reject(err);
-      });
-    });
+    const f = async () => {
+      if (!Array.isArray(columns)) return [];
+      const validColumns = await this.columnsNames();
+      return Table.removeUnexistingColumns(validColumns, columns);
+    };
+    return f();
   }
 
   parseToSend(entry) {
@@ -680,6 +693,17 @@ class Table {
       }
     }
     return options;
+  }
+
+  static removeUnexistingColumns(validColumns, array) {
+    const filtered = [];
+    for (let i = 0; i < array.length; i++) {
+      const column = array[i];
+      if (validColumns.indexOf(column) > -1) {
+        filtered.push(column);
+      }
+    }
+    return filtered;
   }
 }
 

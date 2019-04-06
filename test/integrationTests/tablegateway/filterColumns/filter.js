@@ -16,10 +16,13 @@ describe('TABLE GATEWAY: filter columns', () => { // eslint-disable-line
     await knex.seed.run();
   });
 
-  it('filter attributes', async () => { // eslint-disable-line
+  it('remove unexistant columns', async () => { // eslint-disable-line
     const entry = ['price', 'name', 'get out'];
     const filtered = await Coffee.filterColumns(entry);
-    assert.deepEqual(filtered, ['name', 'price']);
+    assert.isArray(filtered);
+    assert.equal(filtered.length, 2);
+    assert.isTrue(filtered.indexOf('price') > -1);
+    assert.isTrue(filtered.indexOf('name') > -1);
   });
 
   it('input is not an array', async () => { // eslint-disable-line
