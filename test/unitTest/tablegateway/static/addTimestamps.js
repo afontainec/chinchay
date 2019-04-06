@@ -2,8 +2,8 @@
 process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
-const assert = require('chai').assert;
-const Table = require('../../../..').Table;
+const { assert } = require('chai');
+const { Table } = require('../../../..');
 
 
 // Our parent block

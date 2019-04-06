@@ -2,13 +2,13 @@
 process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
-const chai = require('chai'); // eslint-disable-line
+const { assert } = require('chai');
 const knex = require('../../../../knex');
 const Coffee = require('../../../../models/coffee-example');
 const Table = require('../../../../models/table');
 
 
-const assert = chai.assert; //eslint-disable-line
+
 
 
 // Our parent block
