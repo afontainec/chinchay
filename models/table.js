@@ -611,23 +611,34 @@ class Table {
   }
 
   parseAttributesForUpsert(attributes, isNew) {
-    return new Promise((resolve, reject) => {
+    const f = async () => {
       Table.removeUnSetableAttributes(attributes);
-      this.filterAttributes(attributes).then((filteredAttributes) => {
-        Table.removeUnSetableAttributes(filteredAttributes);
-
-        if (Utils.isEmptyJSON(filteredAttributes)) {
-          return reject('Paremeter should not be empty');
-        }
-
-        Table.addTimestamps(filteredAttributes, isNew);
-        resolve(filteredAttributes);
-      })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+      attributes = await this.filterAttributes(attributes);
+      if (Utils.isEmptyJSON(attributes)) throw new Error(Message.new(400, 'Parameter should not be empty'));
+      Table.addTimestamps(attributes, isNew);
+      return attributes;
+    };
+    return f();
   }
+
+  // parseAttributesForUpsert(attributes, isNew) {
+  //   return new Promise((resolve, reject) => {
+  //     Table.removeUnSetableAttributes(attributes);
+  //     this.filterAttributes(attributes).then((filteredAttributes) => {
+  //       Table.removeUnSetableAttributes(filteredAttributes);
+  //
+  //       if (Utils.isEmptyJSON(filteredAttributes)) {
+  //         return reject('Paremeter should not be empty');
+  //       }
+  //
+  //       Table.addTimestamps(filteredAttributes, isNew);
+  //       resolve(filteredAttributes);
+  //     })
+  //       .catch((err) => {
+  //         reject(err);
+  //       });
+  //   });
+  // }
 
   static makeError(err) {
     const keys400 = Object.keys(ERROR_400);
