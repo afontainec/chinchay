@@ -1,0 +1,5 @@
+/.circleci/*
+/.git/*
+/.nyc_output/*
+/node_modules/*
+/zdebug.js
