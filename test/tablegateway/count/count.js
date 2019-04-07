@@ -42,16 +42,11 @@ describe('Malicious happy path', () => { // eslint-disable-line
   });
 
   it('Query with invalid attr', (done) => { // eslint-disable-line
-    console.log('-----------------------------------------------');
     Coffee.count({
       invalid: 'ues',
     }).then(() => {
-      console.log('entro aca');
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
-      console.log('se fue pal catch');
-      console.log(err.code);
-      console.log(err);
       assert.equal(err.code, 400);
       assert.equal(err.fullMessage, 'errorMissingColumn');
       done();
