@@ -4,7 +4,7 @@
   "description": "Building MVC files for express and knex.",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha --recursive --timeout 20000 test/unitTest --exit",
+    "test": "nyc mocha --recursive --timeout 20000 test/ --exit",
     "fulltest": "nyc mocha --recursive --timeout 20000 test/ --exit",
     "linter": "eslint -c .eslintrc.js .",
     "coverage": "nyc check-coverage --statements 55 --branches 50 --functions 45 --lines 60"
