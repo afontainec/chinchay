@@ -1,14 +1,14 @@
 language: node_js
 node_js:
  - "node"
-services:
-  - postgresql
+addons:
+  postgresql: "9.5"
 before_script:
   - psql -c 'create database chinchay_test;' -U postgres
   - psql -c 'create database chinchay2;' -U postgres
   - npm i knex -g
   - knex migrate:latest --env test
-  - node knexOtherMigrate.js 
+  - node knexOtherMigrate.js
 script:
   - npm run test
   - npm run coverage
