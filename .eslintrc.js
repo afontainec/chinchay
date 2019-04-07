@@ -2,27 +2,20 @@
 
 module.exports = {
   "extends": "airbnb",
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "angular",
-    "import"
-  ],
+  "plugins": [],
   "rules": {
-    "max-len": 0,
-    "camelcase": 0,
+    "jsx-a11y/href-no-hash": [0],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    camelcase: [1, {properties: "never"}],
+    "arrow-body-style": [1, "always"],
+    "consistent-return": 1,
+    "max-len": [1, { "ignoreComments": true, "ignoreTrailingComments": true, code: 100, "ignoreStrings": true, "ignoreUrls": true, "ignoreTemplateLiterals": true }],
     "no-param-reassign": 0,
-    "consistent-return": 0,
-    "no-plusplus": 0,
+    "strict": 1,
+    "max-lines-per-function": [1, 20],
     "no-use-before-define": 0,
-    "indent": ["error", 2],
-    "no-prototype-builtins": 0,
-    "func-names": 0,
-    "strict": 0,
-    "no-loop-func": 0,
-    "no-shadow": 0,
-    "arrow-body-style": ["error", "always"],
-    "class-methods-use-this": 0,
+    "padded-blocks": 0
+
   },
   "globals": {
     "angular": true

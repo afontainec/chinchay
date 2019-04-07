@@ -1,10 +1,10 @@
-const Table = require('chinchay').Table; // eslint-disabled-this-line no-unused-vars
+const { Table } = require('chinchay');
 
 
 class $MODELNAME$ extends Table {
   constructor() {
-    const table_name = '$TABLE_NAME$';
-    super(table_name);
+    const tableName = '$TABLE_NAME$';
+    super(tableName);
   }
 }
 

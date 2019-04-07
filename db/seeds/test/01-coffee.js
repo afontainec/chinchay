@@ -1,7 +1,7 @@
-'use strict';
+
 const coffees = require('./coffee/samples');
 
-exports.seed = function (knex, Promise) {
+exports.seed = function seed(knex, Promise) {
   const promises = [];
   coffees.forEach((coffee) => {
     promises.push(createPlace(knex, coffee));

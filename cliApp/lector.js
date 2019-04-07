@@ -2,10 +2,10 @@
 /* eslint-disable no-console */
 
 const program = require('commander');
-const intrepeter = require('../cliApp/intrepeter');
 const path = require('path');
-
 const fs = require('fs');
+const intrepeter = require('../cliApp/intrepeter');
+
 
 const content = fs.readFileSync(path.join(__dirname, '../package.json')).toString();
 

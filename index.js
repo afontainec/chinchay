@@ -6,7 +6,7 @@ const Hateoas = require('./models/hateoas');
 
 const chainConfig = getConfig();
 
-const knex = require(chainConfig.knex);
+const knex = require(chainConfig.knex); // eslint-disable-line import/no-dynamic-require
 
 
 function getConfig() {

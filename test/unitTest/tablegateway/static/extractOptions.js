@@ -2,12 +2,11 @@
 process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
-const chai = require('chai'); // eslint-disable-line
-const Table = require('../../../..').Table;
+const { assert } = require('chai');
 const Utils = require('codemaster').utils;
 
+const { Table } = require('../../../..');
 
-const assert = chai.assert; //eslint-disable-line
 
 const query = {
   price: '40',
@@ -36,23 +35,23 @@ describe('TABLE GATEWAY: extractOptions', () => { // eslint-disable-line
   });
 
   it('Extract rawWhere', (done) => { // eslint-disable-line
-    const query = {
+    const q = {
       name: 'some',
       rawWhere: 'price = 60 or price = 40',
     };
-    const extracted = Table.extractOptions(Utils.cloneJSON(query));
+    const extracted = Table.extractOptions(Utils.cloneJSON(q));
     assert.equal(Object.keys(extracted).length, 1);
     assert.exists(extracted.rawWhere);
-    assert.equal(query.rawWhere, extracted.rawWhere);
+    assert.equal(q.rawWhere, extracted.rawWhere);
     done();
   });
 
   it('Extract rawWhere as array', (done) => { // eslint-disable-line
-    const query = {
+    const q = {
       name: 'some',
       rawWhere: '["price = ? or price = 40", 6]',
     };
-    const extracted = Table.extractOptions(Utils.cloneJSON(query));
+    const extracted = Table.extractOptions(Utils.cloneJSON(q));
     assert.equal(Object.keys(extracted).length, 1);
     assert.exists(extracted.rawWhere);
     assert.isArray(extracted.rawWhere);
