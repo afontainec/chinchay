@@ -1,4 +1,4 @@
-# Chinchay ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+# Chinchay [![Build Status](https://travis-ci.com/afontainec/chinchay.svg?branch=master)](https://travis-ci.com/afontainec/chinchay)
 
 Building a web app can be very time consuming and tedious, but Chinchay will help you speed up your development. Use Chichay CLI to automate the CRUD (Create, Read, Update, Delete) operations with a MVC (Model View Controller) architecture pattern. You can easily configure it and modify it. It you are a bit lost, Chinchay does provide a default Structure.
 
