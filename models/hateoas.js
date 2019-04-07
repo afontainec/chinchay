@@ -38,14 +38,14 @@ class HATEOAS {
 
   compileUri(uri, values) {
     values = values || {};
-    const parts = this.divideUri(uri);
+    const parts = HATEOAS.divideUri(uri);
     if (!parts) return uri;
     const replacement = values[parts.middle] || `:${parts.middle}`;
     if (!replacement) throw new Error(`missing value ${parts.middle}`);
     return parts.first + replacement + this.compileUri(parts.second, values);
   }
 
-  divideUri(uri) {
+  static divideUri(uri) {
     const parts = {};
     const index = uri.indexOf(':');
     if (index === -1) return null;

@@ -3,9 +3,10 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
+const Utils = require('codemaster').utils;
+
 const knex = require('../../../../knex');
 const Coffee = require('../../../../models/coffee-example');
-const Utils = require('codemaster').utils;
 
 
 // Our parent block

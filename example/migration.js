@@ -1,5 +1,5 @@
 
-exports.up = function (knex) {
+exports.up = function createTable(knex) {
   return knex.schema.createTable('$TABLE_NAME$', (table) => {
     // Incremental id
     table.increments();
@@ -9,6 +9,6 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function (knex) {
+exports.down = function dropTable(knex) {
   return knex.schema.dropTable('$TABLE_NAME$');
 };

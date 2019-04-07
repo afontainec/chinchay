@@ -1,15 +1,15 @@
-const Table = require('../index').Table; // eslint-disabled-this-line no-unused-vars
+const { Table } = require('../index');
 
 
-class Places extends Table {
+class Coffee extends Table {
   constructor() {
-    const table_name = 'coffee';
-    super(table_name);
+    const tableName = 'coffee';
+    super(tableName);
   }
 }
 
 
-const instance = new Places();
+const instance = new Coffee();
 
 
 module.exports = instance;

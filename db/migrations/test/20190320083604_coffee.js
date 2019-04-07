@@ -1,5 +1,5 @@
 
-exports.up = function (knex) {
+exports.up = function createCoffee(knex) {
   return knex.schema.createTable('coffee', (table) => {
     // Incremental id
     table.increments();
@@ -10,6 +10,6 @@ exports.up = function (knex) {
   });
 };
 
-exports.down = function (knex) {
+exports.down = function dropCoffee(knex) {
   return knex.schema.dropTable('coffee');
 };

@@ -1,5 +1,5 @@
-const FileCreator = require('./fileCreator');
 const path = require('path');
+const FileCreator = require('./fileCreator');
 
 const samplePath = path.join(__dirname, '../', 'example', 'model.js');
 

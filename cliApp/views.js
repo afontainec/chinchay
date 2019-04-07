@@ -1,5 +1,5 @@
-const FileCreator = require('./fileCreator');
 const path = require('path');
+const FileCreator = require('./fileCreator');
 
 const baseSamplePath = path.join(__dirname, '../', 'example', 'views');
 const pages = ['index.ejs', 'show.ejs', 'edit.ejs', 'create.ejs'];

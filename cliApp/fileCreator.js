@@ -22,7 +22,7 @@ class fileCreator {
   create(values) {
     const f = async () => {
       const string = await this.getSample();
-      const file = this.compileString(string, values);
+      const file = fileCreator.compileString(string, values);
       await this.makeFile(file, this.filePath);
     };
     return f();
@@ -30,7 +30,7 @@ class fileCreator {
 
   makeFile(file, filePath) {
     if (!fs.existsSync(this.directory)) {
-      this.mkDirByPathSync(this.directory);
+      fileCreator.mkDirByPathSync(this.directory);
     }
     if (fs.existsSync(filePath)) {
       return console.log(`ERROR: file: ${filePath} already exists.`); // eslint-disable-line no-console
@@ -38,8 +38,8 @@ class fileCreator {
     return writeFile(filePath, file);
   }
 
-  mkDirByPathSync(targetDir, { isRelativeToScript = false } = {}) {
-    const sep = path.sep;
+  static mkDirByPathSync(targetDir, { isRelativeToScript = false } = {}) {
+    const { sep } = path;
     const initDir = path.isAbsolute(targetDir) ? sep : '';
     const baseDir = isRelativeToScript ? __dirname : '.';
 
@@ -67,7 +67,7 @@ class fileCreator {
     }, initDir);
   }
 
-  compileString(string, values) {
+  static compileString(string, values) {
     const keys = Object.keys(values);
     for (let i = 0; i < keys.length; i++) {
       const inTextKey = '\\$' + keys[i] + '\\$'; // eslint-disable-line
