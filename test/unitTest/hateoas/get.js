@@ -2,12 +2,10 @@
 process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
-const chai = require('chai');// eslint-disable-line
+const { assert } = require('chai');
 const HateoasGenerator = require('../../..').Hateoas;
 
 const HATEOAS = new HateoasGenerator();
-
-const assert = chai.assert; //eslint-disable-line
 
 
 // Our parent block

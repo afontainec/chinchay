@@ -1,10 +1,10 @@
-const FileCreator = require('./fileCreator');
 const path = require('path');
+const FileCreator = require('./fileCreator');
 
 const samplePath = path.join(__dirname, '../', 'example', 'controller.js');
 
 
-const createFile = async(table_name, values, config) => {
+const createFile = async (tableName, values, config) => {
   const filename = values.CONTROLLERNAME.charAt(0).toLowerCase() + values.CONTROLLERNAME.substr(1);
   const Controller = new FileCreator(samplePath, config.controllers.directory, `${filename}.js`);
   await Controller.create(values);

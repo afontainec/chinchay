@@ -1,8 +1,9 @@
-const $MODELNAME$ = require('$CTRL2MODELPATH$');
 const path = require('path');
-const httpResponse = require('codemaster').httpResponse;
-const Table = require('chinchay').Table;
+const { httpResponse } = require('codemaster');
+const { Table } = require('chinchay');
 const HateoasGenerator = require('chinchay').Hateoas;
+const $MODELNAME$ = require('$CTRL2MODELPATH$');
+
 
 
 const viewPath = '$CTRL2VIEWPATH$';
