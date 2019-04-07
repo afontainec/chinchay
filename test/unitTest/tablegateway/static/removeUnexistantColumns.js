@@ -3,7 +3,6 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
-const knex = require('../../../../knex');
 const Table = require('../../../../models/table');
 
 
@@ -11,9 +10,6 @@ const validColumns = ['valid', 'price', 'name'];
 
 // Our parent block
 describe('TABLE GATEWAY: removeUnexistingColumns', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
-    await knex.seed.run();
-  });
 
   it('should filter', async () => { // eslint-disable-line
     const entry = ['price', 'name', 'get out'];
