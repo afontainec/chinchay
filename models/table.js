@@ -8,8 +8,8 @@ const Message = require('codemaster').message;
 
 class Table {
 
-  constructor(table_name, givenKnex) {
-    this.table_name = table_name;
+  constructor(tableName, givenKnex) {
+    this.table_name = tableName;
     this.knex = givenKnex || knex;
     if (!this.knex) throw new Error('Knex param missing.');
   }
@@ -49,7 +49,7 @@ class Table {
       return results;
     };
     options = options || {};
-    const groupBy = options.groupBy;
+    const { groupBy } = options;
     const query = this.countQuery(whereQuery, options);
     if (Table.returnAsQuery(options)) return query;
     return f(query, groupBy);
@@ -144,9 +144,9 @@ class Table {
 
   updateQuery(whereQuery, values, options) {
     let query = this.table();
-    query = this.addUpdate(query, values);
-    query = this.addWhere(query, whereQuery, options);
-    query = this.addAdvancedOptions(query, options);
+    query = Table.addUpdate(query, values);
+    query = Table.addWhere(query, whereQuery, options);
+    query = Table.addAdvancedOptions(query, options);
     return query;
   }
 
@@ -157,22 +157,14 @@ class Table {
     return this.fetchUpdateQuery(query, newValues, whereQuery);
   }
 
-  addUpdate(query, values) {
-    if (!query || !values || !query.update) return query;
-    const isNew = false;
-    Table.removeUnSetableAttributes(values);
-    Table.addTimestamps(values, isNew);
-    query.update(values, '*');
-    return query;
-  }
-
   fetchUpdateQuery(query, newValues, whereQuery) {
     return new Promise((resolve, reject) => {
-      const idsDiffer = whereQuery.id && newValues && newValues.id && whereQuery.id !== newValues.id;
+      const idsDefined = whereQuery.id && newValues && newValues.id;
+      const idsDiffer = idsDefined && whereQuery.id !== newValues.id;
       if (idsDiffer) return reject(Message.new(400, 'Given Id differ', 'Given Id differ'));
       const getUpdatables = this.find(whereQuery);
       const filterColumns = this.parseAttributesForUpsert(newValues);
-      Promise.all([getUpdatables, filterColumns]).then(() => {
+      return Promise.all([getUpdatables, filterColumns]).then(() => {
         return resolve(Table.fetchQuery(query));
       }).catch(() => {
         reject(Message.new(400, 'Error: Nothing to update or unexistant column', 'Error: Nothing to update or unexistant column'));
@@ -233,14 +225,15 @@ class Table {
   // BUILD QUERY
   // ################################################
 
-  addAdvancedOptions(query, options) {
+  static addAdvancedOptions(query, options) {
     if ((typeof options) !== 'object') return query;
     if (options.groupBy) {
       query = Table.addGroupBy(query, options.groupBy);
     }
     if (options.orderBy) {
-      if (Array.isArray(options.orderBy)) query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
-      else query = Table.addOrderBy(query, options.orderBy);
+      if (Array.isArray(options.orderBy)) {
+        query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
+      } else query = Table.addOrderBy(query, options.orderBy);
     }
     if (options.limit) {
       query = Table.addLimit(query, options.limit);
@@ -252,20 +245,20 @@ class Table {
     return query;
   }
 
-  addSelect(type, query, columns, options) {
+  static addSelect(type, query, columns, options) {
     switch (type) {
       case 'find':
-        return this.addFindSelect(query, columns, options);
+        return Table.addFindSelect(query, columns, options);
       case 'count':
-        return this.addCountSelect(query, options);
+        return Table.addCountSelect(query, options);
       case 'delete':
-        return this.addDelete(query, options);
+        return Table.addDelete(query, options);
       default:
-        return this.addFindSelect(query, columns, options);
+        return Table.addFindSelect(query, columns, options);
     }
   }
 
-  addFindSelect(query, columns, options) {
+  static addFindSelect(query, columns, options) {
     options = options || {};
     if (options.rawSelect) {
       query = Table.addRawSelect(query, options.rawSelect);
@@ -275,7 +268,7 @@ class Table {
     return query.select(columns);
   }
 
-  addCountSelect(query, options) {
+  static addCountSelect(query, options) {
     options = options || {};
     if (options.rawSelect) {
       query = Table.addRawSelect(query, options.rawSelect);
@@ -286,14 +279,14 @@ class Table {
     return query.count();
   }
 
-  addDelete(query) {
+  static addDelete(query) {
     return query.del().returning('*');
   }
 
-  addWhere(query, whereQuery, options) {
+  static addWhere(query, whereQuery, options) {
     options = options || {};
     if ((typeof whereQuery) !== 'object' || whereQuery === null) whereQuery = {};
-    const especialQuery = this.filterEspecialQuery(whereQuery);
+    const especialQuery = Table.filterSpecialQuery(whereQuery);
     query.where(whereQuery);
     for (let i = 0; i < especialQuery.length; i++) {
       query.andWhere(especialQuery[i][0], especialQuery[i][1], especialQuery[i][2]);
@@ -306,7 +299,7 @@ class Table {
 
   buildQuery(selectType, whereQuery, columns, options) {
     let query = this.table();
-    query = this.makeQuery(query, selectType, whereQuery, columns, options);
+    query = Table.makeQuery(query, selectType, whereQuery, columns, options);
     return query;
   }
 
@@ -315,7 +308,7 @@ class Table {
     return this.knex('information_schema.columns').select('column_name').where(query);
   }
 
-  filterEspecialQuery(whereQuery) {
+  static filterSpecialQuery(whereQuery) {
     const keys = Object.keys(whereQuery);
     const especialQuery = [];
     for (let i = 0; i < keys.length; i++) {
@@ -329,10 +322,10 @@ class Table {
     return especialQuery;
   }
 
-  makeQuery(query, selectType, whereQuery, columns, options) {
-    this.addSelect(selectType, query, columns, options);
-    query = this.addWhere(query, whereQuery, options);
-    query = this.addAdvancedOptions(query, options);
+  static makeQuery(query, selectType, whereQuery, columns, options) {
+    Table.addSelect(selectType, query, columns, options);
+    query = Table.addWhere(query, whereQuery, options);
+    query = Table.addAdvancedOptions(query, options);
     return query;
   }
 
@@ -351,7 +344,7 @@ class Table {
   }
 
   getAttributesNames() {
-    console.log('WARNING: The method getAttributesNames is deprecated. prefer columnsNames');
+    console.log('WARNING: The method getAttributesNames is deprecated. prefer columnsNames'); // eslint-disable-line no-console
     return this.columnsNames();
   }
 
@@ -390,7 +383,7 @@ class Table {
     return f();
   }
 
-  parseToSend(entry) {
+  parseToSend(entry) { // eslint-disable-line
     return new Promise((resolve) => {
       resolve(entry);
     });
@@ -443,6 +436,15 @@ class Table {
       attr.created_at = new Date();
     }
     attr.updated_at = new Date();
+  }
+
+  static addUpdate(query, values) {
+    if (!query || !values || !query.update) return query;
+    const isNew = false;
+    Table.removeUnSetableAttributes(values);
+    Table.addTimestamps(values, isNew);
+    query.update(values, '*');
+    return query;
   }
 
   static addRawWhere(query, where) {
