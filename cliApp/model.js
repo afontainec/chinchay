@@ -4,7 +4,7 @@ const path = require('path');
 const samplePath = path.join(__dirname, '../', 'example', 'model.js');
 
 
-const createFile = async(table_name, values, config) => {
+const createFile = async (table_name, values, config) => {
   const Model = new FileCreator(samplePath, config.models.directory, `${values.MODELFILENAME}.js`);
   await Model.create(values);
 };

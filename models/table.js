@@ -1,5 +1,5 @@
 // server/models/table.js
-'use strict';
+
 
 let knex;
 const Utils = require('codemaster').utils;
@@ -254,14 +254,14 @@ class Table {
 
   addSelect(type, query, columns, options) {
     switch (type) {
-    case 'find':
-      return this.addFindSelect(query, columns, options);
-    case 'count':
-      return this.addCountSelect(query, options);
-    case 'delete':
-      return this.addDelete(query, options);
-    default:
-      return this.addFindSelect(query, columns, options);
+      case 'find':
+        return this.addFindSelect(query, columns, options);
+      case 'count':
+        return this.addCountSelect(query, options);
+      case 'delete':
+        return this.addDelete(query, options);
+      default:
+        return this.addFindSelect(query, columns, options);
     }
   }
 

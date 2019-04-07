@@ -8,9 +8,6 @@ const Coffee = require('../../../../models/coffee-example');
 const Table = require('../../../../models/table');
 
 
-
-
-
 // Our parent block
 describe('TABLE GATEWAY: get attributes names', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line

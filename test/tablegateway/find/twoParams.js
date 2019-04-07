@@ -7,9 +7,6 @@ const knex = require('../../../knex');
 const Coffee = require('../../../models/coffee-example');
 
 
-
-
-
 // Our parent block
 describe('TABLE GATEWAY: Do not pass columns: assumes columns are all ', () => { // eslint-disable-line
 

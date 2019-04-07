@@ -8,8 +8,6 @@ const HateoasGenerator = require('../../..').Hateoas;
 const HATEOAS = new HateoasGenerator();
 
 
-
-
 // Our parent block
 describe('HATEOAS: get', () => { // eslint-disable-line
 

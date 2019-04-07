@@ -7,9 +7,6 @@ const knex = require('../../../knex');
 const Coffee = require('../../../models/coffee-example');
 
 
-
-
-
 // Our parent block
 describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line

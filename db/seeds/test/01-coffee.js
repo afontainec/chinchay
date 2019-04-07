@@ -1,4 +1,4 @@
-'use strict';
+
 const coffees = require('./coffee/samples');
 
 exports.seed = function (knex, Promise) {

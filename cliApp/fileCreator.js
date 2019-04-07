@@ -52,7 +52,7 @@ class fileCreator {
           return curDir;
         }
 
-      // To avoid `EISDIR` error on Mac and `EACCES`-->`ENOENT` and `EPERM` on Windows.
+        // To avoid `EISDIR` error on Mac and `EACCES`-->`ENOENT` and `EPERM` on Windows.
         if (err.code === 'ENOENT') { // Throw the original parentDir error on curDir `ENOENT` failure.
           throw new Error(`EACCES: permission denied, mkdir '${parentDir}'`);
         }

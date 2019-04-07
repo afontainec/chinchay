@@ -4,7 +4,7 @@ const path = require('path');
 const samplePath = path.join(__dirname, '../', 'example', 'migration.js');
 
 
-const createFile = async(table_name, values, config, knexConfig) => {
+const createFile = async (table_name, values, config, knexConfig) => {
   const filename = getFileName(knexConfig, values.TABLE_NAME);
   const Migration = new FileCreator(samplePath, knexConfig.migrations.directory, filename);
   await Migration.create(values);

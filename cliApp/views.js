@@ -4,7 +4,7 @@ const path = require('path');
 const baseSamplePath = path.join(__dirname, '../', 'example', 'views');
 const pages = ['index.ejs', 'show.ejs', 'edit.ejs', 'create.ejs'];
 
-const createFile = async(table_name, values, config) => {
+const createFile = async (table_name, values, config) => {
   const dir = path.join(config.views.directory, `${values.MODELFILENAME}`);
   const promises = [];
   for (let i = 0; i < pages.length; i++) {

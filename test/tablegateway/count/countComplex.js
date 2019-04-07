@@ -11,9 +11,6 @@ const Coffee = require('../../../models/coffee-example');
 // NOTE Ver tambien como hacer funcionar los accessibleBy.
 
 
-
-
-
 // Our parent block
 describe('TABLE GATEWAY: COUNT WITH COMPLEX WHERE', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line

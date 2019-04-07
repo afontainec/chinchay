@@ -8,8 +8,6 @@ const Coffee = require('../../../../models/coffee-example');
 const Utils = require('codemaster').utils;
 
 
-
-
 // Our parent block
 describe('TABLE GATEWAY: filter attributes', () => { // eslint-disable-line
   before(async () => { // eslint-disable-line
