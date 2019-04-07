@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 const knex = require('./otherKnex');
 
 const run = async () => {
@@ -5,4 +6,9 @@ const run = async () => {
   process.exit();
 };
 
-run();
+run().then(() => {
+  process.exit();
+}).catch((err) => {
+  console.log(err);
+  process.exit();
+});

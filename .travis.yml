@@ -8,7 +8,7 @@ before_script:
   - psql -c 'create database chinchay2;' -U postgres
   - npm i knex -g
   - knex migrate:latest --env test
-  - node knexOtherMigrate.js
+  - node knexOtherMigrate.js 
 script:
   - npm run test
   - npm run coverage
