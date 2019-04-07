@@ -5,6 +5,8 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database chinchay_test;' -U postgres
+  - npm i knex -g
+  - knex migrate:latest --env test
 script:
   - npm run test
   - npm run coverage
