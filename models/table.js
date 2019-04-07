@@ -1,6 +1,5 @@
 // server/models/table.js
 
-const unused = 3;
 
 let knex;
 const Utils = require('codemaster').utils;
