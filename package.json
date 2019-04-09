@@ -7,7 +7,7 @@
     "test": "nyc mocha --recursive --timeout 20000 test/ --exit",
     "fulltest": "nyc mocha --recursive --timeout 20000 test/ --exit",
     "linter": "eslint -c .eslintrc.js .",
-    "coveralls": "npm run coverage -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc check-coverage --statements 55 --branches 50 --functions 45 --lines 60"
   },
   "bin": {
