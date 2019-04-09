@@ -20,4 +20,4 @@ deploy:
   email: antonio.fontainecorrea@gmail.com
   api_key: $NPM_TOKEN
   on:
-    branch: production
+    branch: master
