@@ -16,9 +16,14 @@ script:
 after_success:
   - npm run coveralls
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: sh .travis/pu.sh
-  on:
-    branch: master
-    tags: false
+  - provider: script
+    skip_cleanup: true
+    script: sh .travis/pu.sh
+    on:
+      branch: master
+      tags: false
+  - provider: npm
+    email: antonio.fontainecorrea@gmail.com
+    api_key: $NPM_TOKEN
+    on:
+      branch: master
