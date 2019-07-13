@@ -260,7 +260,14 @@ $ knex migrate:latest
 ```
 <br/>
 
-Last, but not least, add the following lines to the app.js
+Last, but not least, i  the app.js file, right after these lines:
+
+```javascript
+app.use('/', routes);
+app.use('/users', users);
+```
+
+add the following:
 
 ```javascript
 var coffee = require('./routes/coffee');
