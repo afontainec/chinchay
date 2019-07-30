@@ -90,7 +90,8 @@ const create = (req, res) => {
 };
 
 const update = (req, res) => {
-  $MODELNAME$.update(req.params.id, req.body).then((results) => {
+  const id = parseInt(req.params.id, 10);
+  $MODELNAME$.update(id, req.body).then((results) => {
     const json = httpResponse.success('Elemento actualizado exitosamente', 'data', results);
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
