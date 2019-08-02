@@ -230,6 +230,7 @@ class Table {
     if (options.groupBy) {
       query = Table.addGroupBy(query, options.groupBy);
     }
+    // query = Table.addOrderByArray(query, options.orderBy);
     if (options.orderBy) {
       if (Array.isArray(options.orderBy)) {
         query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
@@ -559,6 +560,7 @@ class Table {
 
   static addOrderByArray(query, array) {
     if (!array) return query;
+    if (!Array.isArray(array)) { return Table.addOrderBy(query, array); }
     for (let i = 0; i < array.length; i++) {
       const column = array[i];
       if (Array.isArray(column)) Table.addOrderByArray(query, column);
