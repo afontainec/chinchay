@@ -565,7 +565,7 @@ class Table {
       else {
         const isFinal = i === array.length;
         const order = !isFinal && !Array.isArray(array[i + 1]) ? array[i + 1] : null;
-        Table.orderBy(column, order);
+        Table.addOrderBy(query, column, order);
       }
     }
     return query;
