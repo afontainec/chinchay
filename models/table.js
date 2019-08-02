@@ -557,6 +557,20 @@ class Table {
     knex = elem;
   }
 
+  static addOrderByArray(query, array) {
+    if (!array) return query;
+    for (let i = 0; i < array.length; i++) {
+      const column = array[i];
+      if (Array.isArray(column)) Table.addOrderByArray(query, column);
+      else {
+        const isFinal = i === array.length;
+        const order = !isFinal && !Array.isArray(array[i + 1]) ? array[i + 1] : null;
+        Table.orderBy(column, order);
+      }
+    }
+    return query;
+  }
+
   static addOrderBy(query, column, order) {
     if (column) {
       query.orderBy(column, order);
