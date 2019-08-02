@@ -4,8 +4,6 @@ const { Table } = require('chinchay');
 const HateoasGenerator = require('chinchay').Hateoas;
 const $MODELNAME$ = require('$CTRL2MODELPATH$');
 
-
-
 const viewPath = '$CTRL2VIEWPATH$';
 
 
