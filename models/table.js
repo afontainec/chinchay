@@ -230,12 +230,12 @@ class Table {
     if (options.groupBy) {
       query = Table.addGroupBy(query, options.groupBy);
     }
-    // query = Table.addOrderByArray(query, options.orderBy);
-    if (options.orderBy) {
-      if (Array.isArray(options.orderBy)) {
-        query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
-      } else query = Table.addOrderBy(query, options.orderBy);
-    }
+    query = Table.addOrderByArray(query, options.orderBy);
+    // if (options.orderBy) {
+    //   if (Array.isArray(options.orderBy)) {
+    //     query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
+    //   } else query = Table.addOrderBy(query, options.orderBy);
+    // }
     if (options.limit) {
       query = Table.addLimit(query, options.limit);
     }
