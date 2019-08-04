@@ -230,11 +230,12 @@ class Table {
     if (options.groupBy) {
       query = Table.addGroupBy(query, options.groupBy);
     }
-    if (options.orderBy) {
-      if (Array.isArray(options.orderBy)) {
-        query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
-      } else query = Table.addOrderBy(query, options.orderBy);
-    }
+    query = Table.addOrderByArray(query, options.orderBy);
+    // if (options.orderBy) {
+    //   if (Array.isArray(options.orderBy)) {
+    //     query = Table.addOrderBy(query, options.orderBy[0], options.orderBy[1]);
+    //   } else query = Table.addOrderBy(query, options.orderBy);
+    // }
     if (options.limit) {
       query = Table.addLimit(query, options.limit);
     }
@@ -555,6 +556,23 @@ class Table {
 
   static setDefaultKnex(elem) {
     knex = elem;
+  }
+
+  static addOrderByArray(query, array) {
+    if (!array) return query;
+    if (!Array.isArray(array)) { return Table.addOrderBy(query, array); }
+    for (let i = 0; i < array.length; i++) {
+      const column = array[i];
+      if (Array.isArray(column)) Table.addOrderByArray(query, column);
+      else {
+        const isFinal = i === array.length;
+        const hasOrderBy = !isFinal && !Array.isArray(array[i + 1]);
+        const order = hasOrderBy ? array[i + 1] : null;
+        if (hasOrderBy) i += 1;
+        Table.addOrderBy(query, column, order);
+      }
+    }
+    return query;
   }
 
   static addOrderBy(query, column, order) {
