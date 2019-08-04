@@ -747,6 +747,15 @@ It will get the second and third entries ids ordered by id in descending order:
 ```
 <br/>
 
+This does not ends here, if you need to order by id decreasing and the by nace ascending, the following query will do the trick: 
+
+```javascript
+Requestify.get(`http://localhost:3000/api/coffee/find?columns=["id"]&orderBy=[["id","desc"],["name", "asc"]]&limit=2`);
+```
+<br/>
+
+You can order by as many variables as you need, just add one extra array indicating the variable name and order.
+
 
 ##### **&nbsp;rawSelect:**
 
