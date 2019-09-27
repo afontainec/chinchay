@@ -137,9 +137,12 @@ class Table {
   // UDATE
   // ################################################
 
-  update(input, newValues, options) {
+  async update(input, newValues, options) {
     const whereQuery = typeof input === 'object' ? input : { id: input };
-    return this.updateWhere(whereQuery, newValues, options);
+    const query = this.updateWhere(whereQuery, newValues, options);
+    if (Table.returnAsQuery(options)) return query;
+    const result = await Table.fetchQuery(query);
+    return result[0];
   }
 
   updateQuery(whereQuery, values, options) {
