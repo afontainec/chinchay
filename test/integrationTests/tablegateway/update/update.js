@@ -37,6 +37,13 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     assert.notEqual(entry.updated_at.toString(), updated.updated_at.toString());
   });
 
+  it('update entry', async () => { // eslint-disable-line
+    const entry = await Coffee.findById(1);
+    entry.name = 'updated';
+    const updated = await Coffee.update(1, Utils.cloneJSON(entry));
+    assert.equal(updated.name, 'updated');
+  });
+
 
   it('update entry, without givin the id', async () => { // eslint-disable-line
     const entry = {};
