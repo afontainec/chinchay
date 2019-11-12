@@ -1,4 +1,3 @@
-
 const coffees = require('./coffee/samples');
 
 exports.seed = function seed(knex) {
