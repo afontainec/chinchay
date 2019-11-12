@@ -76,6 +76,19 @@ class Table {
     return this.count(query, options);
   }
 
+  // ################################################
+  // SUM
+  // ################################################
+
+  sum(column, search, options) {
+    const query = this.sumQuery(column, search, options);
+    if (Table.returnAsQuery(options)) return query;
+    return Table.fetchQuery(query);
+  }
+
+  sumQuery(column, whereQuery, options) {
+    return this.buildQuery('sum', whereQuery, column, options);
+  }
 
   // ################################################
   // DELETE
@@ -250,6 +263,8 @@ class Table {
         return Table.addFindSelect(query, columns, options);
       case 'count':
         return Table.addCountSelect(query, options);
+      case 'sum':
+        return Table.addSumSelect(query, columns, options);
       case 'delete':
         return Table.addDelete(query, options);
       default:
@@ -276,6 +291,14 @@ class Table {
       return query.countDistinct(options.countDistinct);
     }
     return query.count();
+  }
+
+  static addSumSelect(query, column, options) {
+    options = options || {};
+    if (options.rawSelect) {
+      query = Table.addRawSelect(query, options.rawSelect);
+    }
+    return query.sum(column);
   }
 
   static addDelete(query) {
