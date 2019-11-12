@@ -83,7 +83,17 @@ class Table {
   sum(column, search, options) {
     const query = this.sumQuery(column, search, options);
     if (Table.returnAsQuery(options)) return query;
-    return Table.fetchQuery(query);
+    return Table.parseSumResult(query);
+  }
+
+  static async parseSumResult(query) {
+    const result = await Table.fetchQuery(query);
+    const nonGroupedBy = result.length === 1 && Object.keys(result[0]).length === 1;
+    if (nonGroupedBy) {
+      const key = Object.keys(result[0])[0];
+      return parseInt(result[0][key], 10);
+    }
+    return result;
   }
 
   sumQuery(column, search, options) {
