@@ -298,6 +298,7 @@ class Table {
     if (options.rawSelect) {
       query = Table.addRawSelect(query, options.rawSelect);
     }
+    if (!column) throw new Error('A column should be given to sum over');
     return query.sum(column);
   }
 
