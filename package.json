@@ -8,7 +8,7 @@
     "fulltest": "nyc mocha --recursive --timeout 20000 test/ --exit",
     "linter": "eslint -c .eslintrc.js .",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "coverage": "nyc check-coverage --statements 55 --branches 50 --functions 45 --lines 60"
+    "coverage": "nyc check-coverage --statements 90 --branches 85 --functions 85 --lines 90"
   },
   "bin": {
     "chinchay": "./cliApp/lector.js"
@@ -27,7 +27,7 @@
     "codemaster": "0.0.8",
     "commander": "^2.19.0",
     "express": "^4.16.4",
-    "knex": "^0.15.2",
+    "knex": "^0.19.5",
     "lodash": "^4.17.14",
     "pg": "^7.5.0"
   },
