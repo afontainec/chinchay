@@ -86,8 +86,8 @@ class Table {
     return Table.fetchQuery(query);
   }
 
-  sumQuery(column, whereQuery, options) {
-    return this.buildQuery('sum', whereQuery, column, options);
+  sumQuery(column, search, options) {
+    return this.buildQuery('sum', search, column, options);
   }
 
   // ################################################
