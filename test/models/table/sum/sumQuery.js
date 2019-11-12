@@ -3,8 +3,7 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
-const knex = require('../../../../knex');
-const Table = require('../../../../models/table');
+const Coffee = require('../../../../models/coffee-example');
 
 
 // Our parent block
@@ -14,7 +13,7 @@ describe('TABLE GATEWAY: SumQuery', () => { // eslint-disable-line no-undef, max
     const column = 'amount';
     const search = { name: 'name' };
     const options = {};
-    const query = Table.sumQuery(column, search, options);
+    const query = Coffee.sumQuery(column, search, options);
     const expected = 'select sum("amount") from "coffee" where "name" = \'name\'';
     assert.equal(query.toString(), expected);
     done();
