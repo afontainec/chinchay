@@ -76,6 +76,29 @@ class Table {
     return this.count(query, options);
   }
 
+  // ################################################
+  // SUM
+  // ################################################
+
+  sum(column, search, options) {
+    const query = this.sumQuery(column, search, options);
+    if (Table.returnAsQuery(options)) return query;
+    return Table.parseSumResult(query);
+  }
+
+  static async parseSumResult(query) {
+    const result = await Table.fetchQuery(query);
+    const nonGroupedBy = result.length === 1 && Object.keys(result[0]).length === 1;
+    if (nonGroupedBy) {
+      const key = Object.keys(result[0])[0];
+      return parseInt(result[0][key], 10);
+    }
+    return result;
+  }
+
+  sumQuery(column, search, options) {
+    return this.buildQuery('sum', search, column, options);
+  }
 
   // ################################################
   // DELETE
@@ -250,6 +273,8 @@ class Table {
         return Table.addFindSelect(query, columns, options);
       case 'count':
         return Table.addCountSelect(query, options);
+      case 'sum':
+        return Table.addSumSelect(query, columns, options);
       case 'delete':
         return Table.addDelete(query, options);
       default:
@@ -276,6 +301,15 @@ class Table {
       return query.countDistinct(options.countDistinct);
     }
     return query.count();
+  }
+
+  static addSumSelect(query, column, options) {
+    options = options || {};
+    if (options.rawSelect) {
+      query = Table.addRawSelect(query, options.rawSelect);
+    }
+    if (!column) throw new Error('A column should be given to sum over');
+    return query.sum(column);
   }
 
   static addDelete(query) {

@@ -3,8 +3,8 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
-const knex = require('../../../knex');
-const coffee = require('../../../models/coffee-example');
+const knex = require('../../../../knex');
+const coffee = require('../../../../models/coffee-example');
 
 
 // Our parent block

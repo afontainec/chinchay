@@ -3,8 +3,8 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
-const knex = require('../../../knex');
-const Coffee = require('../../../models/coffee-example');
+const knex = require('../../../../knex');
+const Coffee = require('../../../../models/coffee-example');
 
 // NOTE Access hace algo raro, arreglar
 // NOTE hay algunos que pasan un arreglo de columnas, para queries mas complejas
