@@ -71,7 +71,7 @@ describe('Malicious happy path', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'errorMissingColumn');
+      assert.equal(err.fullMessage.routine, 'errorMissingColumn');
       done();
     });
   });
@@ -81,7 +81,7 @@ describe('Malicious happy path', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'errorMissingColumn');
+      assert.equal(err.fullMessage.routine, 'errorMissingColumn');
       done();
     });
   });
@@ -111,7 +111,7 @@ describe('with advance settings: group by', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'check_ungrouped_columns_walker');
+      assert.equal(err.fullMessage.routine, 'check_ungrouped_columns_walker');
       done();
     });
   });
@@ -123,7 +123,7 @@ describe('with advance settings: group by', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'errorMissingColumn');
+      assert.equal(err.fullMessage.routine, 'errorMissingColumn');
       done();
     });
   });
@@ -150,7 +150,7 @@ describe('with advance settings: order by', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'errorMissingColumn');
+      assert.equal(err.fullMessage.routine, 'errorMissingColumn');
       done();
     });
   });
@@ -238,7 +238,7 @@ describe('with advance settings: start_date and end_date', () => { // eslint-dis
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'DateTimeParseError');
+      assert.equal(err.fullMessage.routine, 'DateTimeParseError');
       done();
     });
   });
@@ -272,7 +272,7 @@ describe('with advance settings: offset', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'recompute_limits');
+      assert.equal(err.fullMessage.routine, 'recompute_limits');
       done();
     });
   });
@@ -291,7 +291,7 @@ describe('with advance settings: offset', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'recompute_limits');
+      assert.equal(err.fullMessage.routine, 'recompute_limits');
       done();
     });
   });
@@ -358,7 +358,7 @@ describe('with advance settings: raw select', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'scanner_yyerror');
+      assert.equal(err.fullMessage.routine, 'scanner_yyerror');
       done();
     });
   });

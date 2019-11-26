@@ -24,7 +24,7 @@ describe('TABLE GATEWAY: FIND BY ID', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'unexistantID');
+      assert.equal(err.fullMessage.routine, 'unexistantID');
       done();
     });
   });
@@ -34,7 +34,7 @@ describe('TABLE GATEWAY: FIND BY ID', () => { // eslint-disable-line
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
       assert.equal(err.code, 400);
-      assert.equal(err.fullMessage, 'pg_atoi');
+      assert.equal(err.fullMessage.routine, 'pg_atoi');
       done();
     });
   });
