@@ -225,7 +225,7 @@ class Table {
     whereQuery.id = id;
     return new Promise((resolve, reject) => {
       this.find(whereQuery, columns, options).then((entries) => {
-        if (entries.length === 0) return reject(Table.makeError('unexistantID'));
+        if (entries.length === 0) return reject(Table.makeError({ routine: 'unexistantID' }));
         return resolve(entries[0]);
       }).catch((err) => {
         reject(err);
@@ -643,7 +643,7 @@ class Table {
       query.then((results) => {
         return resolve(results);
       }).catch((err) => {
-        reject(Table.makeError(err.routine));
+        reject(Table.makeError(err));
       });
     });
   }
@@ -675,7 +675,7 @@ class Table {
 
   static makeError(err) {
     const keys400 = Object.keys(ERROR_400);
-    if (keys400.indexOf(err) > -1) {
+    if (keys400.indexOf(err.routine) > -1) {
       return Message.new(400, ERROR_400[err], err);
     }
     return Message.new(500, 'Internal error', err);
