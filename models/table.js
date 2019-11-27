@@ -197,7 +197,9 @@ class Table {
       const query = this.saveQuery(subArray);
       promises.push(Table.fetchQuery(query));
     }
-    return Utils.promises.doAll(promises);
+    console.log(Utils.toString());
+
+    return Utils.promise.doAll(promises);
   }
 
   saveQuery(entry) {
