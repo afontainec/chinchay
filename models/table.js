@@ -161,10 +161,37 @@ class Table {
     return saved;
   }
 
-
-  saveBunch() {
+  saveBunch(array) {
+    const parsed = [];
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+      parsed.push(Table.parseForSave(element));
+    }
+    const insertLimit = 10000;
+    const promises = [];
+    const iterations = parsed.length / insertLimit;
+    for (let i = 0; i < iterations; i++) {
+      const initial = insertLimit * i;
+      const final = i < iterations - 1 ? initial + insertLimit : parsed.length;
+      const subArray = parsed.splice(initial, final);
+      const query = this.saveQuery(subArray);
+      promises.push(Table.fetchQuery(query));
+    }
+    return Utils.promises.doAll(promises);
   }
 
+
+  // const insertLimit = 10000;
+  // const promises = [];
+  // const iterations = dataArray.length / insertLimit;
+  // for (let i = 0; i < iterations; i++) {
+  //   const initial = insertLimit * i;
+  //   const query = this.saveQuery(parsed);
+  //   promises.push(Table.fetchQuery(query));
+  //   // const final = i < iterations - 1 ? initial + insertLimit : dataArray.length;
+  //   // promises.push(this.insert(dataArray.slice(initial, final)));
+  // }
+  // return Promise.all(promises);+
 
   saveQuery(entry) {
     return this.table().insert(entry).returning('*');
