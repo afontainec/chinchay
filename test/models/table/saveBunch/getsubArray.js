@@ -33,19 +33,4 @@ describe('MODEL TABLE: getSubArray unit', () => { // eslint-disable-line
     }
     assert.deepEqual(arrayToTest, outcome);
   });
-
-  // it('unexistant property', (done) => { // eslint-disable-line
-  //   const entry = {
-  //     name: 'name',
-  //     price: 120,
-  //     other: 'not exist',
-  //   };
-  //   Coffee.save(entry).then(() => {
-  //     done(new Error('Should not get here'));
-  //   }).catch((err) => {
-  //     assert.equal(err.code, 400);
-  //     assert.equal(err.message, 'Intentando de agregar columna inexistent');
-  //     done();
-  //   });
-  // });
 });
