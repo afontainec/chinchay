@@ -12,6 +12,7 @@ class Table {
     this.table_name = tableName;
     this.knex = givenKnex || knex;
     if (!this.knex) throw new Error('Knex param missing.');
+    this.INSERT_LIMIT_ARRAY = 10000;
   }
 
   toString() {
@@ -161,19 +162,38 @@ class Table {
     return saved;
   }
 
-  saveBunch(array) {
+  static parseForSaveArray(array) {
+    array = array || [];
     const parsed = [];
     for (let i = 0; i < array.length; i++) {
       const element = array[i];
       parsed.push(Table.parseForSave(element));
     }
-    const insertLimit = 10000;
+    return parsed;
+  }
+
+  // getSubArray(i, array) {
+  //   const copy = [...array];
+  //   const initial = this.INSERT_LIMIT_ARRAY * i;
+  //   // const final = i < iterations - 1 ? initial + this.INSERT_LIMIT_ARRAY : array.length;
+  //   const final = Math.min(initial + this.INSERT_LIMIT_ARRAY, copy.length);
+  //   const result = copy.splice(initial, final);
+  //   return result;
+  // }
+
+  getSubArray(i, iterations, array) {
+    const initial = this.INSERT_LIMIT_ARRAY * i;
+    const final = i < iterations - 1 ? initial + this.INSERT_LIMIT_ARRAY : array.length;
+    const result = array.slice(initial, final);
+    return result;
+  }
+
+  saveBunch(array) {
+    const parsed = Table.parseForSaveArray(array);
     const promises = [];
-    const iterations = parsed.length / insertLimit;
+    const iterations = parsed.length / this.INSERT_LIMIT_ARRAY;
     for (let i = 0; i < iterations; i++) {
-      const initial = insertLimit * i;
-      const final = i < iterations - 1 ? initial + insertLimit : parsed.length;
-      const subArray = parsed.splice(initial, final);
+      const subArray = this.getSubArray(i, iterations, parsed);
       const query = this.saveQuery(subArray);
       promises.push(Table.fetchQuery(query));
     }
