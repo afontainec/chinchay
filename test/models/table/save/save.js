@@ -35,7 +35,9 @@ describe('TABLE GATEWAY: save', () => { // eslint-disable-line
     };
     Coffee.save(entry).then(() => {
       done(new Error('Should not get here'));
-    }).catch(() => {
+    }).catch((err) => {
+      assert.equal(err.code, 400);
+      assert.equal(err.message, 'Intentando de agregar columna inexistent');
       done();
     });
   });
