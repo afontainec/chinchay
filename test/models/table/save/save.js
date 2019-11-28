@@ -42,3 +42,28 @@ describe('TABLE GATEWAY: save', () => { // eslint-disable-line
     });
   });
 });
+
+describe('TABLE save: when a input is an Array', () => { // eslint-disable-line
+
+  const arrayToTest = [];
+  const len = 40000;
+
+  before(async () => { // eslint-disable-line
+    await knex('coffee').del();
+    for (let i = 0; i < len; i++) {
+      arrayToTest.push({
+        name: `${i}`,
+        price: i,
+      });
+    }
+  });
+
+  it('save a array', async () => { // eslint-disable-line
+    await Coffee.saveBunch([...arrayToTest]);
+    const saved = await knex('coffee').select('*').orderBy('price');
+    for (let i = 0; i < saved.length; i++) {
+      delete saved[i].id;
+    }
+    assert.deepEqual(arrayToTest, saved);
+  });
+});
