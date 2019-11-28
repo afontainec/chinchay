@@ -12,6 +12,7 @@ class Table {
     this.table_name = tableName;
     this.knex = givenKnex || knex;
     if (!this.knex) throw new Error('Knex param missing.');
+    this.INSERT_LIMIT_ARRAY = 10000;
   }
 
   toString() {
@@ -138,18 +139,65 @@ class Table {
   // SAVE
   // ################################################
 
-  save(originalEntry) {
-    const errorString = 'Something went wrong';
-    const f = async () => {
-      const entry = Utils.cloneJSON(originalEntry);
-      const isSave = true;
-      const parsed = await this.parseAttributesForUpsert(entry, isSave);
-      const query = this.saveQuery(parsed);
-      const saved = await Table.fetchQuery(query);
-      if (!saved || saved.length === 0) throw new Error(errorString);
-      return saved[0];
-    };
-    return f();
+  // save(originalEntry) {
+  //   const errorString = 'Something went wrong';
+  //   const f = async () => {
+  //     const entry = Utils.cloneJSON(originalEntry);
+  //     const isSave = true;
+  //     const parsed = await this.parseAttributesForUpsert(entry, isSave);
+  //     const query = this.saveQuery(parsed);
+  //     const saved = await Table.fetchQuery(query);
+  //     if (!saved || saved.length === 0) throw new Error(errorString);
+  //     return saved[0];
+  //   };
+  //   return f();
+  // }
+
+  async save(input) {
+    const copy = Utils.cloneJSON(input);
+    if (Array.isArray(copy)) return this.saveBunch(copy);
+    const parsed = Table.parseForSave(copy);
+    const query = this.saveQuery(parsed);
+    const [saved] = await Table.fetchQuery(query);
+    return saved;
+  }
+
+  static parseForSaveArray(array) {
+    array = array || [];
+    const parsed = [];
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+      parsed.push(Table.parseForSave(element));
+    }
+    return parsed;
+  }
+
+  // getSubArray(i, array) {
+  //   const copy = [...array];
+  //   const initial = this.INSERT_LIMIT_ARRAY * i;
+  //   // const final = i < iterations - 1 ? initial + this.INSERT_LIMIT_ARRAY : array.length;
+  //   const final = Math.min(initial + this.INSERT_LIMIT_ARRAY, copy.length);
+  //   const result = copy.splice(initial, final);
+  //   return result;
+  // }
+
+  getSubArray(i, iterations, array) {
+    const initial = this.INSERT_LIMIT_ARRAY * i;
+    const final = i < iterations - 1 ? initial + this.INSERT_LIMIT_ARRAY : array.length;
+    const result = array.slice(initial, final);
+    return result;
+  }
+
+  saveBunch(array) {
+    const parsed = Table.parseForSaveArray(array);
+    const promises = [];
+    const iterations = parsed.length / this.INSERT_LIMIT_ARRAY;
+    for (let i = 0; i < iterations; i++) {
+      const subArray = this.getSubArray(i, iterations, parsed);
+      const query = this.saveQuery(subArray);
+      promises.push(Table.fetchQuery(query));
+    }
+    return Utils.Promise.doAll(promises);
   }
 
   saveQuery(entry) {
@@ -673,10 +721,17 @@ class Table {
     return f();
   }
 
+  static parseForSave(entry) {
+    Table.removeUnSetableAttributes(entry);
+    Table.addTimestamps(entry, true);
+    return entry;
+  }
+
   static makeError(err) {
     const keys400 = Object.keys(ERROR_400);
+    if (ERROR_400_BY_CODE[err.code]) return Message.new(400, ERROR_400_BY_CODE[err.code], err);
     if (keys400.indexOf(err.routine) > -1) {
-      return Message.new(400, ERROR_400[err], err);
+      return Message.new(400, ERROR_400[err.routine], err);
     }
     return Message.new(500, 'Internal error', err);
   }
@@ -727,6 +782,11 @@ const ERROR_400 = {
   DateTimeParseError: 'Fecha ingresada no es válida',
   unexistantID: 'Id solicitado no existe',
   pg_atoi: 'Problema en tipo de variable',
+
+};
+
+const ERROR_400_BY_CODE = {
+  42703: 'Intentando de agregar columna inexistent',
 
 };
 
