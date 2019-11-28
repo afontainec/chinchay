@@ -23,11 +23,9 @@ describe('TABLE saveBunch: integration', () => { // eslint-disable-line
   });
 
   it('save a array', async () => { // eslint-disable-line
-    // console.log(arrayToTest);
     await Coffee.saveBunch(arrayToTest);
     const saved = await Coffee.find();
-    console.log(saved.length);
-    // assert.deepEqual(arrayToTest, outcome);
-
+    console.log(saved);
+    // assert.deepEqual(arrayToTest, saved);
   });
 });
