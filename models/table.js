@@ -92,7 +92,7 @@ class Table {
     const nonGroupedBy = result.length === 1 && Object.keys(result[0]).length === 1;
     if (nonGroupedBy) {
       const key = Object.keys(result[0])[0];
-      return parseInt(result[0][key], 10);
+      return parseInt(result[0][key] || 0, 10);
     }
     return result;
   }

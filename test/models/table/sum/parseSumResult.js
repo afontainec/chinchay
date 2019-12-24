@@ -45,4 +45,13 @@ describe('TABLE GATEWAY: SumQuery', () => { // eslint-disable-line no-undef, max
     const expected = 310;
     assert.deepEqual(result, expected);
   });
+
+  it('sum is null', async () => { // eslint-disable-line no-undef
+    const column = 'price';
+    const search = { price: -988766543 };
+    const query = Coffee.sum(column, search, { returnAsQuery: true });
+    const result = await Table.parseSumResult(query);
+    const expected = 0;
+    assert.deepEqual(result, expected);
+  });
 });
