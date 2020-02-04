@@ -1,12 +1,8 @@
 const codemaster = require('codemaster');
-// const TheWall = require('./thewall');
 
 let TheWall;
 let UNRESTRICTED_ROLES;
 let RESTRICTED_ROLES;
-// const config = require('../config/thewall');
-
-// module.exports = require('thewall')(config);
 
 
 const ADMIN = 'admin';
