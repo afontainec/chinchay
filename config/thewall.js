@@ -4,5 +4,5 @@ module.exports = {
   access: {
     admin: ['*'],
   },
-  knex: path.join(__dirname, '..', '..', 'knex.js'),
+  knex: path.join(__dirname, '..', 'knex.js'),
 };
