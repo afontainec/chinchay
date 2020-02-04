@@ -3,7 +3,7 @@ const config = require('./config/thewall');
 const Thewall = require('thewall')(config);
 
 const UNRESTRICTED_ROLES = {
-  places: [ADMIN, 'placesAdmin', 'allPlacesReader'],
+  places: ['admin', 'placesAdmin', 'allPlacesReader'],
 };
 
 const RESTRICTED_ROLES = {
