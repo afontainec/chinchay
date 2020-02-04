@@ -9,6 +9,7 @@ const chainConfig = getConfig();
 
 const knex = require(chainConfig.knex); // eslint-disable-line import/no-dynamic-require
 const access = require(chainConfig.access); // eslint-disable-line import/no-dynamic-require
+const thewall = require(chainConfig.thewall); // eslint-disable-line import/no-dynamic-require
 
 
 function getConfig() {
@@ -20,7 +21,7 @@ function getConfig() {
 }
 
 Table.setDefaultKnex(knex);
-Access.setTheWall(access);
+Access.bootstramp(access, thewall);
 
 module.exports = {
   Table,
