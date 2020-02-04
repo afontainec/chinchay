@@ -1,6 +1,6 @@
 const codemaster = require('codemaster');
 // const TheWall = require('./thewall');
-let TheWall;
+// let TheWall;
 let UNRESTRICTED_ROLES;
 let RESTRICTED_ROLES;
 // const config = require('../config/thewall');
@@ -11,7 +11,7 @@ let RESTRICTED_ROLES;
 const ADMIN = 'admin';
 
 const setTheWall = (config) => {
-  ({ TheWall, UNRESTRICTED_ROLES, RESTRICTED_ROLES } = config);
+  ({ UNRESTRICTED_ROLES, RESTRICTED_ROLES } = config);
 };
 
 // const UNRESTRICTED_ROLES = {
@@ -59,9 +59,9 @@ const accessiblesIds = (access, to) => {
   return ids;
 };
 
-const find = (access) => {
-  return TheWall.findAccess(access);
-};
+// const find = (access) => {
+//   return TheWall.findAccess(access);
+// };
 
 
 const addAccessibleToSearch = (search, access, tableName, key) => {
@@ -83,6 +83,6 @@ module.exports = {
   setTheWall,
   hasAccessToAll,
   accessiblesIds,
-  find,
+  // find,
   addAccessibleToSearch,
 };

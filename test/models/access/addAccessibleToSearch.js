@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 const { assert } = require('chai');
 
-const Access = require('../../../../../server-anna/models/access');
+const { Access } = require('../../../index');
 
 
 describe('MODELS: Access addAccessibleToSearch', () => { // eslint-disable-line

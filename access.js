@@ -1,7 +1,3 @@
-const config = require('./config/thewall');
-// eslint-disable-next-line import/order
-const Thewall = require('thewall')(config);
-
 const UNRESTRICTED_ROLES = {
   places: ['admin', 'placesAdmin', 'allPlacesReader'],
 };
@@ -16,7 +12,6 @@ const RESTRICTED_ROLES = {
 };
 
 module.exports = {
-  Thewall,
   UNRESTRICTED_ROLES,
   RESTRICTED_ROLES,
 };
