@@ -7,7 +7,7 @@ let RESTRICTED_ROLES;
 
 const ADMIN = 'admin';
 
-const bootstramp = (config, thewall) => {
+const bootstrap = (config, thewall) => {
   TheWall = thewall;
   ({ UNRESTRICTED_ROLES, RESTRICTED_ROLES } = config);
 };
@@ -65,7 +65,7 @@ const addAccessibleToSearch = (search, access, tableName, key) => {
 
 module.exports = {
   isAdmin,
-  bootstramp,
+  bootstrap,
   hasAccessToAll,
   accessiblesIds,
   find,
