@@ -1,6 +1,8 @@
 const codemaster = require('codemaster');
-const TheWall = require('./thewall');
-
+// const TheWall = require('./thewall');
+let TheWall;
+let UNRESTRICTED_ROLES;
+let RESTRICTED_ROLES;
 // const config = require('../config/thewall');
 
 // module.exports = require('thewall')(config);
@@ -8,18 +10,22 @@ const TheWall = require('./thewall');
 
 const ADMIN = 'admin';
 
-const UNRESTRICTED_ROLES = {
-  places: [ADMIN, 'placesAdmin', 'allPlacesReader'],
+const setTheWall = (config) => {
+  ({ TheWall, UNRESTRICTED_ROLES, RESTRICTED_ROLES } = config);
 };
 
-const RESTRICTED_ROLES = {
-  places: ['venueOwner'],
-  leads: ['sponsorOwner'],
-  sponsorship: ['sponsorOwner'],
-  impressions: ['sponsorOwner'],
-  interactions: ['sponsorOwner'],
-  person_info: ['sponsorOwner'],
-};
+// const UNRESTRICTED_ROLES = {
+//   places: [ADMIN, 'placesAdmin', 'allPlacesReader'],
+// };
+
+// const RESTRICTED_ROLES = {
+//   places: ['venueOwner'],
+//   leads: ['sponsorOwner'],
+//   sponsorship: ['sponsorOwner'],
+//   impressions: ['sponsorOwner'],
+//   interactions: ['sponsorOwner'],
+//   person_info: ['sponsorOwner'],
+// };
 
 const isAdmin = (user) => {
   if (!user) return false;
@@ -74,6 +80,7 @@ const addAccessibleToSearch = (search, access, tableName, key) => {
 
 module.exports = {
   isAdmin,
+  setTheWall,
   hasAccessToAll,
   accessiblesIds,
   find,
