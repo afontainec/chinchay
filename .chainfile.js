@@ -14,5 +14,6 @@ module.exports = {
     directory: path.join(process.cwd(), '/chinchapp/routes')
   },
   access: path.join(process.cwd(), 'access.js'),
-  knex:  path.join(process.cwd(), 'knex.js')
+  knex:  path.join(process.cwd(), 'knex.js'),
+  thewall: path.join(process.cwd(), 'thewall.js'),
 };
