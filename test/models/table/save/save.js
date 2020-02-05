@@ -48,7 +48,7 @@ describe('TABLE save: when a input is an Array', () => { // eslint-disable-line
   const arrayToTest = [];
   const len = 40000;
 
-  before(async () => { // eslint-disable-line
+  before(async () => { // eslint-disable-line no-undef
     await knex('coffee').del();
     for (let i = 0; i < len; i++) {
       arrayToTest.push({
