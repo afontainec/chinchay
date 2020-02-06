@@ -62,6 +62,19 @@ const addAccessibleToSearch = (search, access, tableName, key) => {
   return search;
 };
 
+const hasAccessTo = (user, to, filterId) => {
+  if (!user || !user.access || !to) return false;
+  const { access } = user;
+  if (hasAccessToAll(user, to)) return true;
+  const roles = RESTRICTED_ROLES[to];
+  for (let i = 0; i < access.length; i++) {
+    if (codemaster.utils.Array.contains(roles, access[i].role)) {
+      if (access[i].filter.toString() === filterId.toString()) return true;
+    }
+  }
+  return false;
+};
+
 
 module.exports = {
   isAdmin,
@@ -70,4 +83,5 @@ module.exports = {
   accessiblesIds,
   find,
   addAccessibleToSearch,
+  hasAccessTo,
 };
