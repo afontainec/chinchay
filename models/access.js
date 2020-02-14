@@ -93,7 +93,7 @@ const hasAccessTo = (user, to, filterId) => {
 };
 
 
-module.exports = {
+const PUBLIC_METHODS = {
   isAdmin,
   bootstrap,
   hasAccessToAll,
@@ -102,3 +102,11 @@ module.exports = {
   addAccessibleToSearch,
   hasAccessTo,
 };
+
+if (process.env.NODE_ENV === 'test') {
+  PUBLIC_METHODS.searchingInArray = searchingInArray;
+  PUBLIC_METHODS.filterEveryElement = filterEveryElement;
+}
+
+
+module.exports = PUBLIC_METHODS;
