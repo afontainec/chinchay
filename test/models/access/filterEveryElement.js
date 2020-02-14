@@ -51,12 +51,23 @@ describe('MODELS: ACCESS searchingInArray', () => { // eslint-disable-line
     done();
   });
 
-  it('Happy path ', (done) => { // eslint-disable-line
+  it('Happy path: search are ints ', (done) => { // eslint-disable-line
     const search = {
       key: ['in', [1, 2, 3]],
     };
-    const validIds = [1, 2, 4, 5, 6];
+    const validIds = ['1', '2', '4', '5', '6'];
     const expected = ['in', [1, 2]];
+    const result = Access.filterEveryElement(search, 'key', validIds);
+    assert.deepEqual(result, expected);
+    done();
+  });
+
+  it('Happy path: search are strings ', (done) => { // eslint-disable-line
+    const search = {
+      key: ['in', ['1', '2', '3']],
+    };
+    const validIds = ['1', '2', '4', '5', '6'];
+    const expected = ['in', ['1', '2']];
     const result = Access.filterEveryElement(search, 'key', validIds);
     assert.deepEqual(result, expected);
     done();

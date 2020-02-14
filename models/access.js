@@ -76,10 +76,11 @@ const filterEveryElement = (search, key, validIds) => {
   validIds = validIds || [];
   const [, array] = search[key];
   const result = [];
+  console.log({ validIds });
+  console.log({ array });
   for (let i = 0; i < array.length; i++) {
     const element = array[i];
-    if (validIds.includes(element)) result.push(element);
-
+    if (validIds.includes(element.toString())) result.push(element);
   }
   return ['in', result];
 };
