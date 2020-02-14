@@ -281,6 +281,16 @@ class Table {
     });
   }
 
+  async arrayOfIds(search, options) {
+    const result = await this.find(search, ['id'], options);
+    const array = [];
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
+      array.push(element.id);
+    }
+    return array;
+  }
+
   findIdIn(ids, columns, query, options) {
     return this.findIn('id', ids, query, columns, options);
   }
