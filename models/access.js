@@ -57,9 +57,26 @@ const addAccessibleToSearch = (search, access, tableName, key) => {
     search[key] = ['in', array];
     return search;
   }
+  if (searchingInArray(search[key])) return filterEveryElement(search, key, array);
   if (array.includes(search[key])) return search;
   search[key] = ['in', []];
   return search;
+};
+
+const searchingInArray = (input) => {
+  return Array.isArray(input) && input[0] === 'in';
+};
+
+
+const filterEveryElement = (search, key, validIds) => {
+  const [, array] = search[key];
+  const result = [];
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i];
+    if (validIds.includes(element)) result.push(element);
+
+  }
+  return ['in', result];
 };
 
 const hasAccessTo = (user, to, filterId) => {
