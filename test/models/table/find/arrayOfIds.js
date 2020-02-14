@@ -20,4 +20,12 @@ describe('TABLE GATEWAY: ArrayOfIds', () => { // eslint-disable-line
     assert.isArray(results);
     assert.deepEqual(results, expected);
   });
+
+  it('empty response', async () => { // eslint-disable-line
+    const results = await coffee.arrayOfIds({ name: 'nonexistant' });
+    const expected = [];
+    results.sort();
+    assert.isArray(results);
+    assert.deepEqual(results, expected);
+  });
 });
