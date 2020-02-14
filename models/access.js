@@ -57,9 +57,31 @@ const addAccessibleToSearch = (search, access, tableName, key) => {
     search[key] = ['in', array];
     return search;
   }
+  if (searchingInArray(search[key])) {
+    search[key] = filterEveryElement(search, key, array);
+    return search;
+  }
   if (array.includes(search[key])) return search;
   search[key] = ['in', []];
   return search;
+};
+
+const searchingInArray = (input) => {
+  return Array.isArray(input) && input[0] === 'in';
+};
+
+
+const filterEveryElement = (search, key, validIds) => {
+  if (!search || !search[key] || !Array.isArray(search[key][1])) return ['in', []];
+  validIds = validIds || [];
+  const [, array] = search[key];
+  const result = [];
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i];
+    if (validIds.includes(element)) result.push(element);
+
+  }
+  return ['in', result];
 };
 
 const hasAccessTo = (user, to, filterId) => {
@@ -76,7 +98,7 @@ const hasAccessTo = (user, to, filterId) => {
 };
 
 
-module.exports = {
+const PUBLIC_METHODS = {
   isAdmin,
   bootstrap,
   hasAccessToAll,
@@ -85,3 +107,11 @@ module.exports = {
   addAccessibleToSearch,
   hasAccessTo,
 };
+
+if (process.env.NODE_ENV === 'test') {
+  PUBLIC_METHODS.searchingInArray = searchingInArray;
+  PUBLIC_METHODS.filterEveryElement = filterEveryElement;
+}
+
+
+module.exports = PUBLIC_METHODS;
