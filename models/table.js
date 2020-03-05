@@ -737,13 +737,34 @@ class Table {
     return entry;
   }
 
-  static makeError(err) {
-    const keys400 = Object.keys(ERROR_400);
-    if (ERROR_400_BY_CODE[err.code]) return Message.new(400, ERROR_400_BY_CODE[err.code], err);
-    if (keys400.indexOf(err.routine) > -1) {
-      return Message.new(400, ERROR_400[err.routine], err);
-    }
-    return Message.new(500, 'Internal error', err);
+  static makeError(err) { // Support for previous versions
+    err = err || new Error('Unknown error');
+    const message = Table.getMessage(err);
+    err = message ? Table.error400(err, message) : Table.error500(err);
+    return err;
+  }
+
+  static error400(err, message) {
+    err.postgresCode = err.code;
+    err.code = 400;
+    err.suggestedHTTPCode = err.code;
+    err.message = message;
+    err.fullMessage = err;
+    return err;
+  }
+
+  static error500(err) {
+    err.postgresCode = err.code;
+    err.code = 500;
+    err.suggestedHTTPCode = err.code;
+    err.message = 'Internal Error';
+    err.fullMessage = err;
+    return err;
+  }
+
+  static getMessage(err) {
+    if (!err) return null;
+    return ERROR_400_BY_CODE[err.code] || ERROR_400[err.routine];
   }
 
   static isStringArray(elem) {
