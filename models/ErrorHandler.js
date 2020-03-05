@@ -32,7 +32,10 @@ const POSTGRESS_TO_HTTP_ERROR = {
     code: 400,
     message: 'Ids no coinciden.',
   },
-
+  empty_update: {
+    code: 400,
+    message: 'Error: Nothing to update or unexistant column',
+  },
 };
 
 

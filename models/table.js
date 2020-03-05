@@ -3,7 +3,6 @@
 
 let knex;
 const Utils = require('codemaster').utils;
-const Message = require('codemaster').message;
 
 
 class Table {
@@ -235,13 +234,15 @@ class Table {
     return new Promise((resolve, reject) => {
       const idsDefined = whereQuery.id && newValues && newValues.id;
       const idsDiffer = idsDefined && whereQuery.id !== newValues.id;
-      if (idsDiffer) return reject(Message.new(400, 'Given Id differ', 'Given Id differ'));
+      if (idsDiffer) return reject(Table.IdDifferError());
       const getUpdatables = this.find(whereQuery);
       const filterColumns = this.parseAttributesForUpsert(newValues);
       return Promise.all([getUpdatables, filterColumns]).then(() => {
         return resolve(Table.fetchQuery(query));
-      }).catch(() => {
-        reject(Message.new(400, 'Error: Nothing to update or unexistant column', 'Error: Nothing to update or unexistant column'));
+      }).catch((err) => {
+        err.code = 'empty_update';
+        err = Table.makeError(err);
+        reject(err);
       });
     });
   }
@@ -465,9 +466,9 @@ class Table {
 
   filterAttributes(attributes) {
     const f = async () => {
-      if (!Utils.isJSON(attributes)) throw new Error(Message.new(400, 'Parameter should be a json', 'Parameter should be a json'));
+      if (!Utils.isJSON(attributes)) throw new Error('Parameter should be a json');
       const columnsNames = await this.columnsNames();
-      if (Table.containsUnexistingProperties(columnsNames, attributes)) throw new Error(Message.new(400, 'Intentando agregar columna inexistente', 'Intentando agregar columna inexistente'));
+      if (Table.containsUnexistingProperties(columnsNames, attributes)) throw new Error('Intentando agregar columna inexistente');
       return attributes;
     };
     return f();
@@ -732,7 +733,7 @@ class Table {
     const f = async () => {
       Table.removeUnSetableAttributes(attributes);
       attributes = await this.filterAttributes(attributes);
-      if (Utils.isEmptyJSON(attributes)) throw new Error(Message.new(400, 'Parameter should not be empty'));
+      if (Utils.isEmptyJSON(attributes)) throw new Error('Parameter should not be empty');
       Table.addTimestamps(attributes, isNew);
       return attributes;
     };
