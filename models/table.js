@@ -246,6 +246,10 @@ class Table {
     });
   }
 
+  static IdDifferError() {
+    return Table.error400(new Error('Given ID differ'), 'Given ID differ');
+  }
+
 
   // ################################################
   // Find (R from CRUD)
@@ -273,7 +277,11 @@ class Table {
     whereQuery.id = id;
     return new Promise((resolve, reject) => {
       this.find(whereQuery, columns, options).then((entries) => {
-        if (entries.length === 0) return reject(Table.makeError({ routine: 'unexistantID' }));
+        if (entries.length === 0) {
+          const error = new Error('Id solicitado no existe');
+          error.code = 'unexistantID';
+          return reject(Table.makeError(error));
+        }
         return resolve(entries[0]);
       }).catch((err) => {
         reject(err);
@@ -745,21 +753,25 @@ class Table {
   }
 
   static error400(err, message) {
-    err.postgresCode = err.code;
-    err.code = 400;
-    err.suggestedHTTPCode = err.code;
+    Table.setCode(err, 400);
     err.message = message;
     err.fullMessage = err;
     return err;
   }
 
   static error500(err) {
-    err.postgresCode = err.code;
-    err.code = 500;
-    err.suggestedHTTPCode = err.code;
+    Table.setCode(err, 500);
     err.message = 'Internal Error';
     err.fullMessage = err;
     return err;
+  }
+
+  // this method redefine de error code in several ways to support previous versions
+  static setCode(err, code) {
+    err.postgresCode = err.code;
+    err.chinchayCode = err.code;
+    err.code = code;
+    err.suggestedHTTPCode = code;
   }
 
   static getMessage(err) {
