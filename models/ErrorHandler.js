@@ -42,21 +42,21 @@ const POSTGRESS_TO_HTTP_ERROR = {
 class ErrorHandler {
 
 
-  constructor(postgresToHttpError, replace) {
-    postgresToHttpError = postgresToHttpError || {};
-    if (replace) this.ERROR_TRANSLATE = postgresToHttpError;
-    this.ERROR_TRANSLATE = Object.assign(POSTGRESS_TO_HTTP_ERROR, postgresToHttpError);
+  constructor(errorTranslate, replace) {
+    errorTranslate = errorTranslate || {};
+    if (replace) this.ERROR_TRANSLATE = errorTranslate;
+    else this.ERROR_TRANSLATE = Object.assign(POSTGRESS_TO_HTTP_ERROR, errorTranslate);
+    this.DEFAULT_ERROR_TRANSLATE = POSTGRESS_TO_HTTP_ERROR;
   }
 
   getHTTPCode(error) {
-    if (error.suggestedHTTPCode) return error.suggestedHTTPCode;
-    const translation = this.ERROR_TRANSLATE[error.postgresCode];
-    if (!translation) return 500;
+    const translation = this.ERROR_TRANSLATE[error.chinchayCode];
+    if (!translation) return error.suggestedHTTPCode || 500;
     return translation.code;
   }
 
   getHTTPMessage(error) {
-    const translation = this.ERROR_TRANSLATE[error.postgresCode];
+    const translation = this.ERROR_TRANSLATE[error.chinchayCode];
     if (!translation) return 'Internal Error';
     return translation.message;
   }
