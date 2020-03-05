@@ -50,12 +50,14 @@ class ErrorHandler {
   }
 
   getHTTPCode(error) {
+    error = error || {};
     const translation = this.ERROR_TRANSLATE[error.chinchayCode];
     if (!translation) return error.suggestedHTTPCode || 500;
     return translation.code;
   }
 
   getHTTPMessage(error) {
+    error = error || {};
     const translation = this.ERROR_TRANSLATE[error.chinchayCode];
     if (!translation) return 'Internal Error';
     return translation.message;
