@@ -1,8 +1,10 @@
 const path = require('path');
 const { httpResponse } = require('codemaster');
-const { Table } = require('chinchay');
+const { Table, ErrorHandler } = require('chinchay');
 const HateoasGenerator = require('chinchay').Hateoas;
 const $MODELNAME$ = require('$CTRL2MODELPATH$');
+
+const errorHandler = new ErrorHandler();
 
 const viewPath = '$CTRL2VIEWPATH$';
 
@@ -82,8 +84,10 @@ const create = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
+    const code = errorHandler.getHTTPCode(error);
+    const message = errorHandler.getHTTPMessage(error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
   });
 };
 
@@ -94,8 +98,10 @@ const update = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
+    const code = errorHandler.getHTTPCode(error);
+    const message = errorHandler.getHTTPMessage(error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
   });
 };
 
@@ -105,8 +111,10 @@ const del = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
+    const code = errorHandler.getHTTPCode(error);
+    const message = errorHandler.getHTTPMessage(error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
   });
 };
 
@@ -122,8 +130,10 @@ const find = (req, res) => {
     }
     return res.status(200).send(json);
   }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
+    const code = errorHandler.getHTTPCode(error);
+    const message = errorHandler.getHTTPMessage(error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
   });
 };
 
@@ -135,8 +145,10 @@ const findById = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
+    const code = errorHandler.getHTTPCode(error);
+    const message = errorHandler.getHTTPMessage(error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
   });
 };
 
@@ -147,8 +159,10 @@ const count = (req, res) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const json = httpResponse.error(error.message, error.fullMessage);
-    return res.status(error.code).send(json);
+    const code = errorHandler.getHTTPCode(error);
+    const message = errorHandler.getHTTPMessage(error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
   });
 };
 
