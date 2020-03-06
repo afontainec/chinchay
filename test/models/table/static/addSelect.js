@@ -54,7 +54,7 @@ describe('Tablegateway: add Select', () => { // eslint-disable-line no-undef, ma
     const query = knex('coffee');
     const columns = 'all';
     const options = {};
-    Table.addSelect('find', query, columns, options);
+    Table.addSelect(undefined, query, columns, options);
     const expected = 'select * from "coffee"';
     assert.equal(query.toString(), expected);
     done();
