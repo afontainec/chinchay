@@ -3,6 +3,7 @@ const fs = require('fs');
 const Table = require('./models/table');
 const Hateoas = require('./models/hateoas');
 const Access = require('./models/access');
+const ErrorHandler = require('./models/ErrorHandler');
 
 let access;
 let thewall;
@@ -31,4 +32,5 @@ module.exports = {
   Table,
   Hateoas,
   Access,
+  ErrorHandler,
 };

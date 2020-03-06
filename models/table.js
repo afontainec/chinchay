@@ -3,7 +3,6 @@
 
 let knex;
 const Utils = require('codemaster').utils;
-const Message = require('codemaster').message;
 
 
 class Table {
@@ -235,15 +234,21 @@ class Table {
     return new Promise((resolve, reject) => {
       const idsDefined = whereQuery.id && newValues && newValues.id;
       const idsDiffer = idsDefined && whereQuery.id !== newValues.id;
-      if (idsDiffer) return reject(Message.new(400, 'Given Id differ', 'Given Id differ'));
+      if (idsDiffer) return reject(Table.IdDifferError());
       const getUpdatables = this.find(whereQuery);
       const filterColumns = this.parseAttributesForUpsert(newValues);
       return Promise.all([getUpdatables, filterColumns]).then(() => {
         return resolve(Table.fetchQuery(query));
-      }).catch(() => {
-        reject(Message.new(400, 'Error: Nothing to update or unexistant column', 'Error: Nothing to update or unexistant column'));
+      }).catch((err) => {
+        err.code = 'empty_update';
+        err = Table.makeError(err);
+        reject(err);
       });
     });
+  }
+
+  static IdDifferError() {
+    return Table.error400(new Error('Given ID differ'), 'Given ID differ');
   }
 
 
@@ -273,7 +278,11 @@ class Table {
     whereQuery.id = id;
     return new Promise((resolve, reject) => {
       this.find(whereQuery, columns, options).then((entries) => {
-        if (entries.length === 0) return reject(Table.makeError({ routine: 'unexistantID' }));
+        if (entries.length === 0) {
+          const error = new Error('Id solicitado no existe');
+          error.code = 'unexistantID';
+          return reject(Table.makeError(error));
+        }
         return resolve(entries[0]);
       }).catch((err) => {
         reject(err);
@@ -440,26 +449,20 @@ class Table {
   }
 
   // // TODO: USE FIND TO MAKE THIS QUERY
-  getFirstDate(attr) {
-    return new Promise((resolve, reject) => {
-      this.table().select('created_at').where(attr).orderBy('created_at', 'asc').first() // eslint-disable-line newline-per-chained-call
-        .then((results) => {
-          if (results && results.created_at) {
-            return resolve(results.created_at);
-          }
-          return resolve(undefined);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+  async getFirstDate(search, options) {
+    options = options || {};
+    options.limit = 1;
+    options.orderBy = ['created_at', 'asc'];
+    options.returnAsQuery = true;
+    const result = await this.find(search, ['created_at'], options);
+    return result[0] ? result[0].created_at : undefined;
   }
 
   filterAttributes(attributes) {
     const f = async () => {
-      if (!Utils.isJSON(attributes)) throw new Error(Message.new(400, 'Parameter should be a json', 'Parameter should be a json'));
+      if (!Utils.isJSON(attributes)) throw new Error('Parameter should be a json');
       const columnsNames = await this.columnsNames();
-      if (Table.containsUnexistingProperties(columnsNames, attributes)) throw new Error(Message.new(400, 'Intentando agregar columna inexistente', 'Intentando agregar columna inexistente'));
+      if (Table.containsUnexistingProperties(columnsNames, attributes)) throw new Error('Intentando agregar columna inexistente');
       return attributes;
     };
     return f();
@@ -724,7 +727,7 @@ class Table {
     const f = async () => {
       Table.removeUnSetableAttributes(attributes);
       attributes = await this.filterAttributes(attributes);
-      if (Utils.isEmptyJSON(attributes)) throw new Error(Message.new(400, 'Parameter should not be empty'));
+      if (Utils.isEmptyJSON(attributes)) throw new Error('Parameter should not be empty');
       Table.addTimestamps(attributes, isNew);
       return attributes;
     };
@@ -737,13 +740,38 @@ class Table {
     return entry;
   }
 
-  static makeError(err) {
-    const keys400 = Object.keys(ERROR_400);
-    if (ERROR_400_BY_CODE[err.code]) return Message.new(400, ERROR_400_BY_CODE[err.code], err);
-    if (keys400.indexOf(err.routine) > -1) {
-      return Message.new(400, ERROR_400[err.routine], err);
-    }
-    return Message.new(500, 'Internal error', err);
+  static makeError(err) { // Support for previous versions
+    err = err || new Error('Unknown error');
+    const message = Table.getMessage(err);
+    err = message ? Table.error400(err, message) : Table.error500(err);
+    return err;
+  }
+
+  static error400(err, message) {
+    Table.setCode(err, 400);
+    err.message = message;
+    err.fullMessage = err;
+    return err;
+  }
+
+  static error500(err) {
+    Table.setCode(err, 500);
+    err.message = 'Internal Error';
+    err.fullMessage = err;
+    return err;
+  }
+
+  // this method redefine de error code in several ways to support previous versions
+  static setCode(err, code) {
+    err.postgresCode = err.code;
+    err.chinchayCode = err.code;
+    err.code = code;
+    err.suggestedHTTPCode = code;
+  }
+
+  static getMessage(err) {
+    if (!err) return null;
+    return ERROR_400_BY_CODE[err.code] || ERROR_400[err.routine];
   }
 
   static isStringArray(elem) {
