@@ -750,15 +750,23 @@ class Table {
   static error400(err, message) {
     Table.setCode(err, 400);
     err.message = message;
-    err.fullMessage = err;
+    err.fullMessage = Table.cloneError(err);
     return err;
   }
 
   static error500(err) {
     Table.setCode(err, 500);
     err.message = 'Internal Error';
-    err.fullMessage = err;
+    err.fullMessage = Table.cloneError(err);
     return err;
+  }
+
+  static cloneError(error) {
+    let { stack } = error;
+    stack = stack.replace('error: error:', 'error:');
+    let clone = new Error(stack);
+    clone = Object.assign(clone, error);
+    return clone;
   }
 
   // this method redefine de error code in several ways to support previous versions
