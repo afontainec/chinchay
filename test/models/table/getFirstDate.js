@@ -14,6 +14,7 @@ const firstDate = new Date('1990-06-06 13:00:00.000-00');
 describe('TABLE GATEWAY: parseToSend', () => { // eslint-disable-line max-lines-per-function
 
   before(async () => {
+    await knex.seed.run();
     const entry = { name: 'first', created_at: firstDate };
     await knex('coffee').insert(entry);
   });
@@ -36,14 +37,14 @@ describe('TABLE GATEWAY: parseToSend', () => { // eslint-disable-line max-lines-
 
   it('no results', async () => {
     const result = await Coffee.getFirstDate({ name: 'non existant' });
-    assert.isUndefined(result);
+    assert.notExists(result);
 
   });
 
   it('no results.created_at', async () => {
     await knex('coffee').update({ created_at: null });
     const result = await Coffee.getFirstDate();
-    assert.isUndefined(result);
+    assert.notExists(result);
   });
 
   it('Error', (done) => {

@@ -449,21 +449,13 @@ class Table {
   }
 
   // // TODO: USE FIND TO MAKE THIS QUERY
-  getFirstDate(attr) {
-    attr = attr || {};
-    return new Promise((resolve, reject) => {
-      const query = this.table().select('created_at').where(attr).orderBy('created_at', 'asc')
-        .first();
-      query.then((results) => {
-        if (results && results.created_at) {
-          return resolve(results.created_at);
-        }
-        return resolve(undefined);
-      })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+  async getFirstDate(search, options) {
+    options = options || {};
+    options.limit = 1;
+    options.orderBy = ['created_at', 'asc'];
+    options.returnAsQuery = true;
+    const result = await this.find(search, ['created_at'], options);
+    return result[0] ? result[0].created_at : undefined;
   }
 
   filterAttributes(attributes) {
