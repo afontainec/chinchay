@@ -450,14 +450,16 @@ class Table {
 
   // // TODO: USE FIND TO MAKE THIS QUERY
   getFirstDate(attr) {
+    attr = attr || {};
     return new Promise((resolve, reject) => {
-      this.table().select('created_at').where(attr).orderBy('created_at', 'asc').first() // eslint-disable-line newline-per-chained-call
-        .then((results) => {
-          if (results && results.created_at) {
-            return resolve(results.created_at);
-          }
-          return resolve(undefined);
-        })
+      const query = this.table().select('created_at').where(attr).orderBy('created_at', 'asc')
+        .first();
+      query.then((results) => {
+        if (results && results.created_at) {
+          return resolve(results.created_at);
+        }
+        return resolve(undefined);
+      })
         .catch((error) => {
           reject(error);
         });
