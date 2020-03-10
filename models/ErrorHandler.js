@@ -36,6 +36,10 @@ const POSTGRESS_TO_HTTP_ERROR = {
     code: 400,
     message: 'Error: Nothing to update or unexistant column',
   },
+  forbidden: {
+    code: 403,
+    message: 'Access restricted to this data',
+  },
 };
 
 
