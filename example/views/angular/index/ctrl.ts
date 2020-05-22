@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 })
 export class Index$MODELNAME$Component implements OnInit {
 
-  public $MODELFILENAME$s: any[] = {};
+  public $MODELFILENAME$s: any = [];
   public loading: boolean = true;
   public errorMessage: string = null;
   public keys: string[] = [];
