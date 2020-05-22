@@ -11,9 +11,8 @@ const createFile = async (tableName, values, config) => {
   await buildService(values, APP_PATH);
   await createNewComponent(values, APP_PATH);
   await createShowComponent(values, APP_PATH);
-  // await createEditComponent(values, APP_PATH);
+  await createEditComponent(values, APP_PATH);
   await createIndexComponent(values, APP_PATH);
-  // createComponent(config);
 };
 
 const getAngularAppPath = (config) => {
@@ -78,6 +77,16 @@ const createShowComponent = (values, APP_PATH) => {
   const component = {};
   component.sampleCtrl = path.join('show', 'ctrl.ts');
   component.sampleHTML = path.join('show', 'view.html');
+  component.path = buildSchemaPath(LOWERCASE, name);
+  return createComponent(APP_PATH, values, component);
+};
+
+const createEditComponent = (values, APP_PATH) => {
+  const LOWERCASE = values.MODELFILENAME;
+  const name = `edit${values.MODELNAME}`;
+  const component = {};
+  component.sampleCtrl = path.join('edit', 'ctrl.ts');
+  component.sampleHTML = path.join('edit', 'view.html');
   component.path = buildSchemaPath(LOWERCASE, name);
   return createComponent(APP_PATH, values, component);
 };
