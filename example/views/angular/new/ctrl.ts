@@ -1,4 +1,4 @@
-import { $MODEL$Service } from './../$MODELFILENAME$-service/$MODELFILENAME$.service';
+import { $MODELNAME$Service } from './../$MODELFILENAME$-service/$MODELFILENAME$.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
@@ -7,14 +7,14 @@ import { Router } from "@angular/router";
   templateUrl: './new-$MODELFILENAME$.component.html',
   styleUrls: ['./new-$MODELFILENAME$.component.css']
 })
-export class New$MODEL$Component implements OnInit {
+export class New$MODELNAME$Component implements OnInit {
 
   public $MODELFILENAME$: any = {};
   public loading: boolean = false;
   public errorMessage: string = null;
   public successMessage: string = null;
 
-  constructor(private $MODELFILENAME$Service: $MODEL$Service) { }
+  constructor(private $MODELFILENAME$Service: $MODELNAME$Service) { }
 
   ngOnInit() {
     

@@ -26,12 +26,9 @@ const getAngularAppPath = (config) => {
 // #region SERVICE
 const buildService = (values, APP_PATH) => {
   const command = ngGenerateService(values, APP_PATH);
-  console.log(command);
   const result = execSync(command).toString();
   const [directory, filename] = getServicePath(APP_PATH, result);
   const sampleService = path.join(SAMPLE_DIR, serviceFile);
-  console.log({ directory });
-  console.log({ filename });
   const service = new FileCreator(sampleService, directory, filename);
   return service.create(values, true);
 };
@@ -64,8 +61,19 @@ const createNewComponent = (values, APP_PATH) => {
   const result = execSync(command).toString();
   const { controller, html } = getComponentPath(APP_PATH, result);
   const sampleCtrl = path.join(SAMPLE_DIR, sampleCtrlFile);
-  // const service = new FileCreator(sampleService, directory, filename);
-  // return service.create(values, true);
+  const ctrl = new FileCreator(sampleCtrl, controller[0], controller[1]);
+  return ctrl.create(values, true);
+};
+
+const getComponentPath = (APP_PATH, result) => {
+  const lines = result.split(/\r?\n/);
+  const tsFile = getTSFile(lines);
+  const controllerPath = path.join(APP_PATH, tsFile);
+  const controller = [path.dirname(controllerPath), path.basename(controllerPath)];
+  const htmlFile = getHTMLFile(lines);
+  const viewPath = path.join(APP_PATH, htmlFile);
+  const html = [path.dirname(viewPath), path.basename(viewPath)];
+  return { controller, html };
 };
 
 
@@ -85,6 +93,17 @@ const getTSFile = (lines) => {
   for (let i = 0; i < lines.length; i++) {
     const element = lines[i];
     if (element.includes('.ts') && !element.includes('.spec.ts')) {
+      const pieces = element.split(' ');
+      return pieces[1];
+    }
+  }
+  throw new Error(`Could not create angular: missing TS FILE in ${lines}`);
+};
+
+const getHTMLFile = (lines) => {
+  for (let i = 0; i < lines.length; i++) {
+    const element = lines[i];
+    if (element.includes('.html')) {
       const pieces = element.split(' ');
       return pieces[1];
     }
