@@ -1,9 +1,14 @@
 const { execSync } = require('child_process');
 const path = require('path');
+const FileCreator = require('../fileCreator');
 
+
+const SAMPLE_DIR = path.join(__dirname, '..', '..', 'example', 'views', 'angular');
+// const files = ['service.ts'];
+const serviceFile = 'service.ts';
 const createFile = async (tableName, values, config) => {
   const APP_PATH = getAngularAppPath(config);
-  await buildService(tableName, values, config, APP_PATH);
+  await buildService(values, APP_PATH);
   // await createNewComponent(tableName, values, config);
   // await createReadComponent(tableName, values, config);
   // await createEditComponent(tableName, values, config);
@@ -17,11 +22,13 @@ const createFile = async (tableName, values, config) => {
 //   const result = execSync(`cd '${appPath}' && ls`).toString();
 // };
 
-const buildService = (tableName, values, config, APP_PATH) => {
+const buildService = (values, APP_PATH) => {
   const command = ngGenerateService(values, APP_PATH);
   const result = execSync(command).toString();
-  const servicePath = getServicePath(APP_PATH, result);
-  console.log(servicePath);
+  const [directory, filename] = getServicePath(APP_PATH, result);
+  const sampleService = path.join(SAMPLE_DIR, serviceFile);
+  const service = new FileCreator(sampleService, directory, filename);
+  return service.create(values, true);
 };
 
 const ngGenerateService = (values, APP_PATH) => {
@@ -33,8 +40,11 @@ const ngGenerateService = (values, APP_PATH) => {
 const getServicePath = (APP_PATH, result) => {
   const lines = result.split(/\r?\n/);
   const tsFile = getTSFile(lines);
-  return path.join(APP_PATH, tsFile);
-
+  const servicePath = path.join(APP_PATH, tsFile);
+  return [
+    path.dirname(servicePath),
+    path.basename(servicePath),
+  ];
 };
 
 const getTSFile = (lines) => {

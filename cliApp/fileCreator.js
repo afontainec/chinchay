@@ -19,20 +19,20 @@ class fileCreator {
     return readFile(this.samplePath, 'utf8');
   }
 
-  create(values) {
+  create(values, rewrite) {
     const f = async () => {
       const string = await this.getSample();
       const file = fileCreator.compileString(string, values);
-      await this.makeFile(file, this.filePath);
+      await this.makeFile(file, this.filePath, rewrite);
     };
     return f();
   }
 
-  makeFile(file, filePath) {
+  makeFile(file, filePath, rewrite) {
     if (!fs.existsSync(this.directory)) {
       fileCreator.mkDirByPathSync(this.directory);
     }
-    if (fs.existsSync(filePath)) {
+    if (!rewrite && fs.existsSync(filePath)) {
       return console.log(`ERROR: file: ${filePath} already exists.`); // eslint-disable-line no-console
     }
     return writeFile(filePath, file);
