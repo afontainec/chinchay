@@ -5,7 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class $MODELNAME$Service {
+export class $TABLE_NAME$Service {
 
   private backend: string = environment.backend;
 
