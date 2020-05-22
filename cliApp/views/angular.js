@@ -10,9 +10,9 @@ const createFile = async (tableName, values, config) => {
   const APP_PATH = getAngularAppPath(config);
   await buildService(values, APP_PATH);
   await createNewComponent(values, APP_PATH);
-  // await createReadComponent(tableName, values, config);
-  // await createEditComponent(tableName, values, config);
-  // await createIndexComponent(tableName, values, config);
+  // await createReadComponent(values, APP_PATH);
+  // await createEditComponent(values, APP_PATH);
+  await createIndexComponent(values, APP_PATH);
   // createComponent(config);
 };
 
@@ -58,6 +58,16 @@ const createNewComponent = (values, APP_PATH) => {
   const component = {};
   component.sampleCtrl = path.join('new', 'ctrl.ts');
   component.sampleHTML = path.join('new', 'view.html');
+  component.path = buildSchemaPath(LOWERCASE, name);
+  return createComponent(APP_PATH, values, component);
+};
+
+const createIndexComponent = (values, APP_PATH) => {
+  const LOWERCASE = values.MODELFILENAME;
+  const name = `index${values.MODELNAME}`;
+  const component = {};
+  component.sampleCtrl = path.join('index', 'ctrl.ts');
+  component.sampleHTML = path.join('index', 'view.html');
   component.path = buildSchemaPath(LOWERCASE, name);
   return createComponent(APP_PATH, values, component);
 };
