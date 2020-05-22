@@ -38,7 +38,6 @@ const newMVC = (tableName, options) => {
 
 
 const shouldCreateFrontend = (frontend) => {
-  console.log(frontend);
   return frontend !== 'disable';
 };
 
