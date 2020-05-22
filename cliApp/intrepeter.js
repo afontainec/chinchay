@@ -7,12 +7,12 @@ const Controller = require('./controller');
 const Views = require('./views');
 const Router = require('./routes');
 const Migration = require('./migrations');
-
 let config = require('../.chainfile');
+const configPath = require('./configPath');
 
 let knexConfig;
 
-const configPath = require('./configPath');
+const DEFAULT_FRONTEND = 'ejs';
 
 
 const newMVC = (tableName, options) => {
@@ -21,12 +21,15 @@ const newMVC = (tableName, options) => {
   if (typeof tableName !== 'string') {
     return Printer.error('Not valid model name');
   }
+  const frontendType = getFrontendType(options);
   const values = getValues(tableName);
   const promises = [];
   promises.push(Model.createFile(tableName, values, config));
   promises.push(Controller.createFile(tableName, values, config));
   promises.push(Router.createFile(tableName, values, config));
-  if (shouldCreateFrontend(options)) promises.push(Views.createFile(tableName, values, config));
+  if (shouldCreateFrontend(frontendType)) {
+    promises.push(Views.createFile(tableName, values, config, frontendType));
+  }
   promises.push(Migration.createFile(tableName, values, config, knexConfig));
   Promise.all(promises).then().catch((err) => {
     console.log(err); // eslint-disable-line no-console
@@ -34,8 +37,15 @@ const newMVC = (tableName, options) => {
 };
 
 
-const shouldCreateFrontend = (options) => {
-  return options && options.frontend !== 'disabled';
+const shouldCreateFrontend = (frontend) => {
+  console.log(frontend);
+  return frontend !== 'disable';
+};
+
+const getFrontendType = (options) => {
+  options = options || {};
+  const configFrontend = config ? config.frontend : null;
+  return options.frontend || configFrontend || DEFAULT_FRONTEND;
 };
 
 function getConfig() {
@@ -80,7 +90,7 @@ function getValues(tableName) {
     ROUTE2CTRL: path.relative(config.routes.directory, path.join(config.controllers.directory, CONTROLLERNAME)).replace(/\\/g, '/'),
     CTRL2VIEWPATH: path.relative(config.controllers.directory, path.join(config.views.directory, MODELFILENAME)).replace(/\\/g, '/'),
     TABLEPATH: path.relative(config.controllers.directory, configPath.TABLEPATH).replace(/\\/g, '/'),
-    tableName,
+    table_name: tableName,
   };
 }
 
