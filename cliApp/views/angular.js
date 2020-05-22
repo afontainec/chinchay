@@ -9,32 +9,37 @@ const serviceFile = 'service.ts';
 const createFile = async (tableName, values, config) => {
   const APP_PATH = getAngularAppPath(config);
   await buildService(values, APP_PATH);
-  // await createNewComponent(tableName, values, config);
+  await createNewComponent(values, APP_PATH);
   // await createReadComponent(tableName, values, config);
   // await createEditComponent(tableName, values, config);
   // await createIndexComponent(tableName, values, config);
   // createComponent(config);
 };
 
+const getAngularAppPath = (config) => {
+  config = config || {};
+  config.views = config.views || {};
+  return config.views.angular || '.';
+};
 
-// const createComponent = (config) => {
-//   const appPath = getAngularAppPath(config);
-//   const result = execSync(`cd '${appPath}' && ls`).toString();
-// };
 
+// #region SERVICE
 const buildService = (values, APP_PATH) => {
   const command = ngGenerateService(values, APP_PATH);
+  console.log(command);
   const result = execSync(command).toString();
   const [directory, filename] = getServicePath(APP_PATH, result);
   const sampleService = path.join(SAMPLE_DIR, serviceFile);
+  console.log({ directory });
+  console.log({ filename });
   const service = new FileCreator(sampleService, directory, filename);
   return service.create(values, true);
 };
 
 const ngGenerateService = (values, APP_PATH) => {
   const MODEL = values.MODELFILENAME;
-  const command = `cd '${APP_PATH}' && ng generate service '${MODEL}/${MODEL}Service/${MODEL}'`;
-  return command;
+  const servicePath = buildSchemaPath(MODEL, `${MODEL}-service`, MODEL);
+  return ngGenerate('service', APP_PATH, servicePath);
 };
 
 const getServicePath = (APP_PATH, result) => {
@@ -47,6 +52,36 @@ const getServicePath = (APP_PATH, result) => {
   ];
 };
 
+// #endregion
+
+
+const createNewComponent = (values, APP_PATH) => {
+  const LOWERCASE = values.MODELFILENAME;
+  const name = `new${values.MODELNAME}`;
+  console.log(values);
+  const newPath = buildSchemaPath(LOWERCASE, name);
+  const command = ngGenerate('component', APP_PATH, newPath);
+  const result = execSync(command).toString();
+  console.log(result);
+  // const [directory, filename] = getServicePath(APP_PATH, result);
+  // const sampleService = path.join(SAMPLE_DIR, serviceFile);
+  // const service = new FileCreator(sampleService, directory, filename);
+  // return service.create(values, true);
+};
+
+
+const buildSchemaPath = (first, second, third) => {
+  let schemaPath = path.join(first, second);
+  if (third) schemaPath = path.join(schemaPath, third);
+  return schemaPath;
+};
+
+
+const ngGenerate = (schema, APP_PATH, schemaPath) => {
+  const command = `cd '${APP_PATH}' && ng generate ${schema} '${schemaPath}'`;
+  return command;
+};
+
 const getTSFile = (lines) => {
   for (let i = 0; i < lines.length; i++) {
     const element = lines[i];
@@ -56,13 +91,6 @@ const getTSFile = (lines) => {
     }
   }
   throw new Error(`Could not create angular: missing TS FILE in ${lines}`);
-};
-
-
-const getAngularAppPath = (config) => {
-  config = config || {};
-  config.views = config.views || {};
-  return config.views.angular || '.';
 };
 
 

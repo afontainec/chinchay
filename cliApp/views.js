@@ -3,7 +3,7 @@ const FileCreator = require('./fileCreator');
 const Printer = require('./printer');
 const AngularViews = require('./views/angular');
 
-const baseSamplePath = path.join(__dirname, '..', 'example', 'views');
+const baseSamplePath = path.join(__dirname, '../', 'example', 'views');
 const pages = ['index.ejs', 'show.ejs', 'edit.ejs', 'create.ejs'];
 
 const createFile = (tableName, values, config, frontend) => {
