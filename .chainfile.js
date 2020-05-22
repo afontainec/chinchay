@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  frontend: 'angular',
   models: {
     directory: path.join(process.cwd(), '/chinchapp/models')
   },
