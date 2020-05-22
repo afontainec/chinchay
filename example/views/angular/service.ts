@@ -18,6 +18,11 @@ export class $TABLE_NAME$Service {
     return request.data; 
   }
 
+  async template() {
+    const request: any = await this.http.get(`${BASE_PATH}/template`).toPromise();
+    return request.data; 
+  }
+
   async find(search) {
     const request: any = await this.http.get(`${BASE_PATH}/find`, { params: search }).toPromise();
     return request.data; 
