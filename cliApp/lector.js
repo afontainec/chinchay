@@ -17,7 +17,7 @@ program
   .command('new-mvc')
   .alias('new')
   .description('Create new MVC')
-  .option('-v, --view [v]', 'include a view elemet')
+  .option('-f, --frontend [v]', 'define frontend')
   .action((table_name, options) => {
     intrepeter.new(table_name, options);
   });
