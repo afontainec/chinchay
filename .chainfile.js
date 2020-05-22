@@ -8,7 +8,8 @@ module.exports = {
     directory: path.join(process.cwd(), '/chinchapp/controllers')
   },
   views: {
-    directory: path.join(process.cwd(), '/chinchapp/views')
+    directory: path.join(process.cwd(), '/chinchapp/views'),
+    angular: path.join(process.cwd(), '/chinchapp/'),
   },
   routes: {
     directory: path.join(process.cwd(), '/chinchapp/routes')
