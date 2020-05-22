@@ -19,21 +19,20 @@ const newMVC = (tableName, options) => {
   config = getConfig();
   knexConfig = getKnexConfig();
   if (typeof tableName !== 'string') {
-    return Printer.error('Not valid model name');
+    Printer.error('Not valid model name');
+    return;
   }
   const frontendType = getFrontendType(options);
   const values = getValues(tableName);
   const promises = [];
-  // promises.push(Model.createFile(tableName, values, config));
-  // promises.push(Controller.createFile(tableName, values, config));
-  // promises.push(Router.createFile(tableName, values, config));
+  promises.push(Model.createFile(tableName, values, config));
+  promises.push(Controller.createFile(tableName, values, config));
+  promises.push(Router.createFile(tableName, values, config));
   if (shouldCreateFrontend(frontendType)) {
     promises.push(Views.createFile(tableName, values, config, frontendType));
   }
-  // promises.push(Migration.createFile(tableName, values, config, knexConfig));
-  Promise.all(promises).then().catch((err) => {
-    console.log(err); // eslint-disable-line no-console
-  });
+  promises.push(Migration.createFile(tableName, values, config, knexConfig));
+  Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
 
 
