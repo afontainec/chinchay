@@ -58,13 +58,12 @@ const getServicePath = (APP_PATH, result) => {
 const createNewComponent = (values, APP_PATH) => {
   const LOWERCASE = values.MODELFILENAME;
   const name = `new${values.MODELNAME}`;
-  console.log(values);
+  const sampleCtrlFile = path.join('new', 'ctrl.ts');
   const newPath = buildSchemaPath(LOWERCASE, name);
   const command = ngGenerate('component', APP_PATH, newPath);
   const result = execSync(command).toString();
-  console.log(result);
-  // const [directory, filename] = getServicePath(APP_PATH, result);
-  // const sampleService = path.join(SAMPLE_DIR, serviceFile);
+  const { controller, html } = getComponentPath(APP_PATH, result);
+  const sampleCtrl = path.join(SAMPLE_DIR, sampleCtrlFile);
   // const service = new FileCreator(sampleService, directory, filename);
   // return service.create(values, true);
 };
