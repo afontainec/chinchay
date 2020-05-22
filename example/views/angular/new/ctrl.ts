@@ -11,8 +11,10 @@ export class New$MODELNAME$Component implements OnInit {
 
   public $MODELFILENAME$: any = {};
   public loading: boolean = false;
+  public finished: boolean = false;
   public errorMessage: string = null;
   public successMessage: string = null;
+  public keys: string[] = [];
 
   constructor(private $MODELFILENAME$Service: $MODELNAME$Service) { }
 
@@ -20,6 +22,7 @@ export class New$MODELNAME$Component implements OnInit {
     
     this.$MODELFILENAME$Service.template().then((result) => {
       this.$MODELFILENAME$ = result;
+      this.keys = Object.keys(this.$MODELFILENAME$);
     }).catch((err) => {
       this.errorMessage = 'Unexpected error.'
     });
@@ -29,6 +32,7 @@ export class New$MODELNAME$Component implements OnInit {
      this.loading = true;
      this.$MODELFILENAME$Service.new(this.$MODELFILENAME$).then(() => {
       this.loading = false;
+      this.finished = true;
       this.successMessage = 'Entry saved successfully.'
      }).catch((err) => {
       this.errorMessage = 'Unexpected error.'
