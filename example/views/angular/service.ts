@@ -7,7 +7,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class $MODELNAME$Service {
 
-  private backend: string = environment.backend;
+  private backend: string = environment.backend || '';
   private BASE_PATH: string;
 
   constructor(private http: HttpClient) { 
