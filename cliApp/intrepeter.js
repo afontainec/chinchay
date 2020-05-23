@@ -13,6 +13,7 @@ const configPath = require('./configPath');
 let knexConfig;
 
 const DEFAULT_FRONTEND = 'ejs';
+const DEFAULT_BACKEND = 'enable';
 
 
 const newMVC = (tableName, options) => {
@@ -23,22 +24,37 @@ const newMVC = (tableName, options) => {
     return;
   }
   const frontendType = getFrontendType(options);
+  const backend = getBackend(options);
   const values = getValues(tableName);
-  const promises = [];
-  // promises.push(Model.createFile(tableName, values, config));
-  // promises.push(Controller.createFile(tableName, values, config));
-  // promises.push(Router.createFile(tableName, values, config));
-  if (shouldCreateFrontend(frontendType)) {
-    promises.push(Views.createFile(tableName, values, config, frontendType));
-  }
-  // promises.push(Migration.createFile(tableName, values, config, knexConfig));
+  const promises = createFiles(frontendType, backend, tableName, values);
   Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
 
-
-const shouldCreateFrontend = (frontend) => {
-  return frontend !== 'disable';
+const createFiles = (frontendType, backend, tableName, values) => {
+  const promises = [];
+  if (shouldCreate(frontendType)) {
+    promises.push(Views.createFile(tableName, values, config, frontendType));
+  }
+  if (shouldCreate(backend)) {
+    promises.push(Model.createFile(tableName, values, config));
+    promises.push(Controller.createFile(tableName, values, config));
+    promises.push(Router.createFile(tableName, values, config));
+    promises.push(Migration.createFile(tableName, values, config, knexConfig));
+  }
+  return promises;
 };
+
+
+const shouldCreate = (type) => {
+  return type !== 'disable';
+};
+
+const getBackend = (options) => {
+  options = options || {};
+  const configBackend = config ? config.backend : null;
+  return options.backend || configBackend || DEFAULT_BACKEND;
+};
+
 
 const getFrontendType = (options) => {
   options = options || {};
