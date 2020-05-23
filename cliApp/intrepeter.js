@@ -25,13 +25,13 @@ const newMVC = (tableName, options) => {
   const frontendType = getFrontendType(options);
   const values = getValues(tableName);
   const promises = [];
-  promises.push(Model.createFile(tableName, values, config));
-  promises.push(Controller.createFile(tableName, values, config));
-  promises.push(Router.createFile(tableName, values, config));
+  // promises.push(Model.createFile(tableName, values, config));
+  // promises.push(Controller.createFile(tableName, values, config));
+  // promises.push(Router.createFile(tableName, values, config));
   if (shouldCreateFrontend(frontendType)) {
     promises.push(Views.createFile(tableName, values, config, frontendType));
   }
-  promises.push(Migration.createFile(tableName, values, config, knexConfig));
+  // promises.push(Migration.createFile(tableName, values, config, knexConfig));
   Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
 

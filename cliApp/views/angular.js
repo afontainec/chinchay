@@ -6,9 +6,12 @@ const FileCreator = require('../fileCreator');
 const SAMPLE_DIR = path.join(__dirname, '..', '..', 'example', 'views', 'angular');
 // const files = ['service.ts'];
 const serviceFile = 'service.ts';
+const routerFile = 'router.ts';
+
 const createFile = async (tableName, values, config) => {
   const APP_PATH = getAngularAppPath(config);
-  await buildService(values, APP_PATH);
+  const directory = await buildService(values, APP_PATH);
+  await buildRouter(values, APP_PATH, directory);
   await createNewComponent(values, APP_PATH);
   await createShowComponent(values, APP_PATH);
   await createEditComponent(values, APP_PATH);
@@ -23,13 +26,14 @@ const getAngularAppPath = (config) => {
 
 
 // #region SERVICE
-const buildService = (values, APP_PATH) => {
+const buildService = async (values, APP_PATH) => {
   const command = ngGenerateService(values, APP_PATH);
   const result = execSync(command).toString();
   const [directory, filename] = getServicePath(APP_PATH, result);
   const sampleService = path.join(SAMPLE_DIR, serviceFile);
   const service = new FileCreator(sampleService, directory, filename);
-  return service.create(values, true);
+  await service.create(values, true);
+  return directory;
 };
 
 const ngGenerateService = (values, APP_PATH) => {
@@ -149,6 +153,13 @@ const getHTMLFile = (lines) => {
     }
   }
   throw new Error(`Could not create angular: missing TS FILE in ${lines}`);
+};
+
+const buildRouter = (values, APP_PATH, directory) => {
+  directory = path.dirname(directory);
+  const sample = path.join(SAMPLE_DIR, routerFile);
+  const service = new FileCreator(sample, directory, 'router.ts');
+  return service.create(values, true);
 };
 
 
