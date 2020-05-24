@@ -13,33 +13,48 @@ const configPath = require('./configPath');
 let knexConfig;
 
 const DEFAULT_FRONTEND = 'ejs';
+const DEFAULT_BACKEND = 'enable';
 
 
 const newMVC = (tableName, options) => {
   config = getConfig();
   knexConfig = getKnexConfig();
   if (typeof tableName !== 'string') {
-    return Printer.error('Not valid model name');
+    Printer.error('Not valid model name');
+    return;
   }
   const frontendType = getFrontendType(options);
+  const backend = getBackend(options);
   const values = getValues(tableName);
+  const promises = createFiles(frontendType, backend, tableName, values);
+  Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
+};
+
+const createFiles = (frontendType, backend, tableName, values) => {
   const promises = [];
-  promises.push(Model.createFile(tableName, values, config));
-  promises.push(Controller.createFile(tableName, values, config));
-  promises.push(Router.createFile(tableName, values, config));
-  if (shouldCreateFrontend(frontendType)) {
+  if (shouldCreate(frontendType)) {
     promises.push(Views.createFile(tableName, values, config, frontendType));
   }
-  promises.push(Migration.createFile(tableName, values, config, knexConfig));
-  Promise.all(promises).then().catch((err) => {
-    console.log(err); // eslint-disable-line no-console
-  });
+  if (shouldCreate(backend)) {
+    promises.push(Model.createFile(tableName, values, config));
+    promises.push(Controller.createFile(tableName, values, config));
+    promises.push(Router.createFile(tableName, values, config));
+    promises.push(Migration.createFile(tableName, values, config, knexConfig));
+  }
+  return promises;
 };
 
 
-const shouldCreateFrontend = (frontend) => {
-  return frontend !== 'disable';
+const shouldCreate = (type) => {
+  return type !== 'disable';
 };
+
+const getBackend = (options) => {
+  options = options || {};
+  const configBackend = config ? config.backend : null;
+  return options.backend || configBackend || DEFAULT_BACKEND;
+};
+
 
 const getFrontendType = (options) => {
   options = options || {};

@@ -14,6 +14,10 @@ router.post('/api/$TABLE_NAME$/new', (req, res, next) => {
   $CONTROLLERNAME$.create(req, res, next);
 });
 
+router.get('/api/$TABLE_NAME$/template', (req, res, next) => {
+  $CONTROLLERNAME$.template(req, res, next);
+});
+
 // READ
 
 router.get('/api/$TABLE_NAME$/find', (req, res, next) => {
