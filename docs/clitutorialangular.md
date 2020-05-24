@@ -14,12 +14,24 @@ $ chinchay new coffee --frontend disable
 
   This will not create the ejs files. We will not be needing them, we are going to do the frontend with Angular.
 
-## Create nodejs app with express
+## Angular App
 
-Create a nodejs app called: test_chinchay
+Next, we need to create an Angular app. We need to install the [Angular cli](https://angular.io/cli).
+If you do not have it go and run: 
+
 ```
-$ express test_chinchay && cd test_chinchay
+$npm install -g @angular/cli
 ```
+
+*NOTE*: You will need to have [npm](https://www.npmjs.com/get-npm) installed.
+
+Then we simply create the angular app called test_chinchay_ng
+```
+$ ng new testChinchayAngular && cd testChinchayAngular
+```
+
+A prompt asking if you like to add the angular routing will show, press y to confirm we will like to add it and then select the stylesheet format of your preference. We will use CSS.
+
 <br/>
 We will install drivers to use PostgresSQL database. we will use knexjs and pg
 
