@@ -5,10 +5,10 @@ module.exports = {
     client: 'pg',
     connection: 'postgres://localhost:5432/chinchay_test',
     migrations: {
-      directory: path.join(__dirname, 'chinchapp', 'backend', 'migrations'),
+      directory: path.join(__dirname, 'db', 'migrations'),
     },
     seeds: {
-      directory: path.join(__dirname, '/db/seeds/test'),
+      directory: path.join(__dirname, 'db', 'seeds', 'test'),
     },
     acquireConnectionTimeout: 10000,
   },
