@@ -20,47 +20,69 @@ Next, we need to create an Angular app. We need to install the [Angular cli](htt
 If you do not have it go and run: 
 
 ```
-$npm install -g @angular/cli
+$ npm install -g @angular/cli
 ```
 
 *NOTE*: You will need to have [npm](https://www.npmjs.com/get-npm) installed.
 
 Then we simply create the angular app called test_chinchay_ng
+
 ```
 $ ng new testChinchayAngular && cd testChinchayAngular
 ```
 
 A prompt asking if you like to add the angular routing will show, press y to confirm we will like to add it and then select the stylesheet format of your preference. We will use CSS.
 
-<br/>
-We will install drivers to use PostgresSQL database. we will use knexjs and pg
+Next, we will add couple of modules. In the app.module.ts file, found within the src/app directory we will add the `FormsModule` and the `HttpClientModule` to the imports:
+
+```javascript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    FormsModule,
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
 
 ```
-$ npm install pg -s
-$ npm install knex -s
-```
-<br/>
-Also we will use ejs instead of jade. So we need to run
-```
-$ npm install ejs -s
-```
-<br/>
-You can run the following commands to see the default express app
-```
-$ npm install
-$ npm start
-```
-<br/>
-Visit [http://localhost:3000](http://localhost:3000) to see the defaut express web app
 
-## Create Postgresql Database
+We are now ready to run our chinchay command.
 
-In this tutorial we will not dig in how Postgres fully work. For more information on how to work around Postgres visit [https://www.postgresql.org/](https://www.postgresql.org/).
 
-In order to connect to Postgres, we need to create a database. If you have postgresql installed you can run
+## Chinchay
+
+We install chinchay:
 ```
-$ psql
+$ npm install chinchay -s
+$ npm install chinchay -g
 ```
+
+Then we simply run the command to create all the views and logic to work with the `coffee` relation of the backend:
+
+```
+$ chinchay new coffee --frontend angular --backend disable
+```
+
+Note we are indicating the frontend is angular and that the no backend files should be created.
+
+
+
+
 <br/>
 This should open up postgresql console. Run the following command:
 
@@ -75,7 +97,7 @@ postgres=# \q
 ```
 
 
-## Connecting to the Database
+## Running the app
 
 In this tutorial we will not dig in how knex fully work. For more information on how to work around knex [click here](https://knex.org/).
 

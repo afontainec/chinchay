@@ -67,7 +67,7 @@ function getConfig() {
   if (fs.existsSync(p)) {
     return require(p); // eslint-disable-line
   }
-  return require('../.chainfile'); // eslint-disable-line
+  return require('../.defaultchainfile'); // eslint-disable-line
 }
 
 function getKnexConfig() {
