@@ -4,4 +4,5 @@ const error = (input) => {
   console.log(input);
 };
 
+
 module.exports = { error };

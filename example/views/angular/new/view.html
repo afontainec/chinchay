@@ -1,0 +1,22 @@
+<div>
+  <div style="margin: 50px;" *ngIf="!finished">
+    <p style="color: red;" *ngIf="errorMessage"> {{ errorMessage }}</p>
+    <h2 class="title">Nuevo</h2>
+    <form>
+      <div *ngFor="let key of keys; let i = index;">
+        <label for="key"> {{key}} </label><br>
+        <input [(ngModel)]="$MODELFILENAME$[key]" type="text" placeholder="{{key}}" name="{{key}}">
+      </div>
+      <div>
+        <br>
+        <button *ngIf="!loading" (click)="create()"> Crear</button>
+        <p *ngIf="loading"> Creando... </p>
+      </div>
+    </form>
+  </div>
+  <div style="margin: 50px;" *ngIf="finished">
+    <h2> {{ successMessage }} </h2>
+    <a href="/$TABLE_NAME$/new">crear otro</a>
+    <a [routerLink]="[ '/$TABLE_NAME$']" style="margin-left: 10px;">Indice</a>
+  </div>
+</div>

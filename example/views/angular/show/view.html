@@ -1,0 +1,30 @@
+<div>
+  <div style="margin: 50px;" *ngIf="!finished && !loading">
+    <p style="color: red;" *ngIf="errorMessage"> {{ errorMessage }}</p>
+    <h2 class="title">Ver</h2>
+    <form>
+      <div *ngFor="let key of keys; let i = index;">
+        <label for="key"> {{key}}: </label>
+        <span style="margin-left: 10px;"> {{$MODELFILENAME$[key]}} </span>
+      </div>
+      <div>
+        <br>
+        <button *ngIf="!loading" (click)="confirmDelete()"> Eliminar</button>
+        <button style="margin-left: 10px;"> <a [routerLink]="[ '/$TABLE_NAME$/' + $MODELFILENAME$.id + '/edit']" >Editar</a></button>
+        <div *ngIf="showConfirmDelete">
+          <p> ¿Seguro que quiere eliminar esta entrada?</p>
+          <button (click)="delete()"> Eliminar</button>
+          <button (click)="cancelDelete()"> Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div style="margin: 50px;" *ngIf="finished">
+    <h2> {{ successMessage }} </h2>
+    <a [routerLink]="[ '/$TABLE_NAME$']" style="margin-left: 10px;">Indice</a>
+  </div>
+  <div style="margin: 50px;" *ngIf="loading">
+    <p > Eliminando... </p>
+    <p style="color: red;" *ngIf="errorMessage"> {{ errorMessage }}</p>
+  </div>
+</div>

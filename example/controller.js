@@ -91,6 +91,21 @@ const create = (req, res) => {
   });
 };
 
+const template = (req, res) => {
+  $MODELNAME$.new().then((result) => {
+    delete result.id;
+    delete result.created_at;
+    delete result.updated_at;
+    const json = httpResponse.success('Elemento de template', 'data', result);
+    return res.status(200).send(json);
+  }).catch((error) => {
+    const code = errorHandler.getHTTPCode(error);
+    const message = errorHandler.getHTTPMessage(error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
+  });
+};
+
 const update = (req, res) => {
   const id = parseInt(req.params.id, 10);
   $MODELNAME$.update(id, req.body).then((results) => {
@@ -169,6 +184,7 @@ const count = (req, res) => {
 
 module.exports = {
   new: newElement,
+  template,
   show,
   index,
   edit,
