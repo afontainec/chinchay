@@ -5,7 +5,7 @@ module.exports = {
     client: 'pg',
     connection: 'postgres://localhost:5432/chinchay_test',
     migrations: {
-      directory: path.join(__dirname, 'db', 'migrations'),
+      directory: path.join(__dirname, 'db', 'migrations', 'test'),
     },
     seeds: {
       directory: path.join(__dirname, 'db', 'seeds', 'test'),
