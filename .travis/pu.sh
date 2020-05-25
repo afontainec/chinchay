@@ -37,6 +37,12 @@ upload_files() {
 
   # This pushes the new tag
   git push --tags
+
+  # merge to dev and push
+  git pull
+  git checkout dev
+  git merge master
+  git push origin dev
 }
 
 setup_git
