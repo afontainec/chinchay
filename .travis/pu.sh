@@ -40,7 +40,7 @@ upload_files() {
 
   # merge to dev and push
   git pull
-  git checkout dev
+  git checkout -b dev
   git merge master
   git push origin dev
 }
