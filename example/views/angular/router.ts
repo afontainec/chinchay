@@ -22,4 +22,4 @@ const $MODELFILENAME$Routes: Routes = [{
   data: { title: 'Edit $MODELNAME$' },
 }];
 
-export { carRoutes };
+export { $MODELFILENAME$Routes };
