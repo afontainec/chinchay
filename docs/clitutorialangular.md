@@ -14,6 +14,23 @@ $ chinchay new coffee --frontend disable
 
   This will not create the ejs files. We will not be needing them, we are going to do the frontend with Angular.
 
+  The only new difference, its we need to configure so we do not get blocked by CORS. If you do not know what this is you can read [this blog](https://www.codecademy.com/articles/what-is-cors), but in short, by default the server will block any request that coming from another app. Therefore, it will block the requests of the frontend. On the backend, we add the following to our app.js. Its important that this should be defined *BEFORE* we indicate the app to use the coffeeAPI routes.
+
+  ```javascript
+    app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+  ``` 
+
+  Lets go and run the backend, run the following command on the backend directory:
+
+```
+$ npm start
+```
+
+
 ## Angular App
 
 Next, we need to create an Angular app. We need to install the [Angular cli](https://angular.io/cli).
