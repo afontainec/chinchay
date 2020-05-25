@@ -14,7 +14,7 @@ $ chinchay new coffee --frontend disable
 
   This will not create the ejs files. We will not be needing them, we are going to do the frontend with Angular.
 
-  The only new difference, its we need to configure so we do not get blocked by CORS. If you do not know what this is you can read [this blog](https://www.codecademy.com/articles/what-is-cors), but in short, by default the server will block any request that coming from another app. Therefore, it will block the requests of the frontend. On the backend, we add the following to our app.js (of the backend). Its important that this should be defined *BEFORE* we indicate the app to use the coffeeAPI routes.
+  The only new difference, its we need to configure so we do not get blocked by CORS. If you do not know what this is you can read [this blog](https://www.codecademy.com/articles/what-is-cors), but in short, by default the server will block any request that coming from another app. Therefore, it will block the requests of the frontend. On the backend, we add the following to our app.js. Its important that this should be defined *BEFORE* we indicate the app to use the coffeeAPI routes.
 
   ```javascript
     app.use((req, res, next) => {
@@ -42,11 +42,12 @@ $ npm install -g @angular/cli
 
 *NOTE*: You will need to have [npm](https://www.npmjs.com/get-npm) installed.
 
-Then we simply create the angular app called test_chinchay_ng
+Then we simply create the angular app called testChinchayAngular
 
 ```
 $ ng new testChinchayAngular && cd testChinchayAngular
 ```
+
 
 A prompt asking if you like to add the angular routing will show, press y to confirm we will like to add it and then select the stylesheet format of your preference. We will use CSS.
 
@@ -95,7 +96,7 @@ Then we simply run the command to create all the views and logic to work with th
 $ chinchay new coffee --frontend angular --backend disable
 ```
 
-Note we are indicating the frontend is angular and that the no backend files should be created.
+Note we are indicating the frontend is angular and that no backend files should be created.
 
 This will create a coffee directory within src/app. This will include:
 
@@ -105,6 +106,8 @@ This will create a coffee directory within src/app. This will include:
 * Show component: To view a coffee and its properties.
 * Service: For connecting with the backend, to create, edit or retrieve data.
 * Router: Configuration for the routes.
+
+<br>
 
 ## Connecting Backend and Frontend
 
