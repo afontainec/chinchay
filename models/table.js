@@ -3,7 +3,7 @@
 
 let knex;
 const Utils = require('codemaster').utils;
-
+const ChinchayError = require('./chinchayError');
 
 class Table {
 
@@ -248,7 +248,7 @@ class Table {
   }
 
   static IdDifferError() {
-    return Table.error400(new Error('Given ID differ'), 'Given ID differ');
+    return new ChinchayError(new Error('Given ID differ'), 'given_id_differ');
   }
 
 
