@@ -67,6 +67,10 @@ class ErrorHandler {
     return translation.message;
   }
 
+  getHTTPCodeAndMessage(error) {
+    return { code: this.getHTTPCode(error), message: this.getHTTPMessage(error) };
+  }
+
 }
 
 

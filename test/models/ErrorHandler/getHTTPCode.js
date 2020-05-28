@@ -8,7 +8,7 @@ const { ErrorHandler } = require('../../..');
 
 // Our parent block
 // eslint-disable-next-line max-lines-per-function
-describe('Error Handler intialize', () => {
+describe('Error Handler getHttpCode', () => {
 
   it('code is in translate', async () => {
     const error = { chinchayCode: 42703 };
