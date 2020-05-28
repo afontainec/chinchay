@@ -742,6 +742,7 @@ class Table {
 
   static makeError(err) { // Support for previous versions
     err = err || new Error('Unknown error');
+    if (err.chinchayCode) return err;
     const message = Table.getMessage(err);
     err = message ? Table.error400(err, message) : Table.error500(err);
     return err;
