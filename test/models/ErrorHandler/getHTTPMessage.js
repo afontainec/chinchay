@@ -26,6 +26,14 @@ describe('Error Handler intialize', () => {
     assert.equal(message, expected);
   });
 
+  it('code is not in translate but has chinchayMessage', async () => {
+    const error = { chinchayCode: 427031, chinchayMessage: 'this is the error' };
+    const handler = new ErrorHandler();
+    const message = handler.getHTTPMessage(error);
+    const expected = 'this is the error';
+    assert.equal(message, expected);
+  });
+
   it('error is undefined', async () => {
     const handler = new ErrorHandler();
     const message = handler.getHTTPMessage();
