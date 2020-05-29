@@ -62,9 +62,8 @@ class ErrorHandler {
 
   getHTTPMessage(error) {
     error = error || {};
-    const translation = this.ERROR_TRANSLATE[error.chinchayCode];
-    if (!translation) return 'Internal Error';
-    return translation.message;
+    const translation = this.ERROR_TRANSLATE[error.chinchayCode] || {};
+    return translation.message || error.chinchayMessage || 'Internal Error';
   }
 
   getHTTPCodeAndMessage(error) {
