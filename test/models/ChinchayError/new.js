@@ -8,6 +8,7 @@ const ChinchayError = require('../../../models/chinchayError');
 
 
 // Our parent block
+// eslint-disable-next-line max-lines-per-function
 describe('ChinchayError', () => {
 
   it('error is string', async () => {
@@ -22,5 +23,15 @@ describe('ChinchayError', () => {
     assert.equal(error.name, 'Error');
     assert.equal(error.message, 'Error: this is the error');
     assert.equal(error.chinchayMessage, 'this is the error');
+  });
+
+  it('pass chinchayCode', async () => {
+    const error = new ChinchayError(new Error('this is the error'), 'code');
+    assert.equal(error.chinchayCode, 'code');
+  });
+
+  it('pass chinchayMessage', async () => {
+    const error = new ChinchayError(new Error('this is the error'), 'code', 'custom message');
+    assert.equal(error.chinchayMessage, 'custom message');
   });
 });
