@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
-const ChinchayError = require('../../../models/chinchayError');
+const { ChinchayError } = require('../../../');
 
 
 // Our parent block
