@@ -4,6 +4,7 @@ const Table = require('./models/table');
 const Hateoas = require('./models/hateoas');
 const Access = require('./models/access');
 const ErrorHandler = require('./models/ErrorHandler');
+const ChinchayError = require('./models/chinchayError');
 const ForbiddenError = require('./models/ForbiddenError');
 
 let access;
@@ -35,4 +36,5 @@ module.exports = {
   Access,
   ErrorHandler,
   ForbiddenError,
+  ChinchayError,
 };
