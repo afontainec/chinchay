@@ -27,7 +27,7 @@ export class Index$MODELNAME$Component implements OnInit {
   }
 
   getKeys() {
-    if (!this.$MODELFILENAME$s[0]) { return [] };
+    if (!this.$MODELFILENAME$s[0]) { return []; }
     delete this.$MODELFILENAME$s[0].links;
     return Object.keys(this.$MODELFILENAME$s[0]);
   }

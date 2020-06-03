@@ -8,7 +8,7 @@ import { $MODELNAME$Service } from '../$MODELFILENAME$-service/$MODELFILENAME$.s
   styleUrls: ['./show-$MODELFILENAME$.component.css'],
 })
 export class Show$MODELNAME$Component implements OnInit {
-  public $MODELFILENAME$ = {};
+  public $MODELFILENAME$: any = {};
   public loading = true;
   public finished = false;
   public errorMessage: string = null;
@@ -18,12 +18,12 @@ export class Show$MODELNAME$Component implements OnInit {
 
   constructor(private $MODELFILENAME$Service: $MODELNAME$Service, private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit(): unknown {
+  ngOnInit() {
     const { id } = this.activatedRoute.snapshot.params;
     this.get(id);
   }
 
-  get(id: string): unknown {
+  get(id: string) {
     this.$MODELFILENAME$Service.findById(id).then((result) => {
       this.loading = false;
       this.$MODELFILENAME$ = result;
@@ -45,11 +45,11 @@ export class Show$MODELNAME$Component implements OnInit {
      });
   }
 
-  confirmDelete(): unknown {
+  confirmDelete() {
     this.showConfirmDelete = true;
   }
 
-  cancelDelete(): unknown {
+  cancelDelete() {
     this.showConfirmDelete = false;
   }
 }
