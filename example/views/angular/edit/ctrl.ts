@@ -1,6 +1,6 @@
 import { $MODELNAME$Service } from './../$MODELFILENAME$-service/$MODELFILENAME$.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-$MODELFILENAME$',
@@ -10,20 +10,19 @@ import { ActivatedRoute } from "@angular/router";
 export class Edit$MODELNAME$Component implements OnInit {
 
   public $MODELFILENAME$: any = {};
-  public loading: boolean = true;
-  public finished: boolean = false;
+  public loading = true;
+  public finished = false;
   public errorMessage: string = null;
   public successMessage: string = null;
   public keys: string[] = [];
-  public showConfirm: boolean = false;
+  public showConfirm = false;
 
   constructor(private $MODELFILENAME$Service: $MODELNAME$Service,
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    let id = this.activatedRoute.snapshot.params.id;
+    const id = this.activatedRoute.snapshot.params.id;
     this.get(id);
-
   }
 
   get(id) {
