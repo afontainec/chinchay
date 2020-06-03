@@ -8,25 +8,22 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ['./show-$MODELFILENAME$.component.css']
 })
 export class Show$MODELNAME$Component implements OnInit {
-
-  public $MODELFILENAME$: any = {};
-  public loading: boolean = true;
-  public finished: boolean = false;
+  public $MODELFILENAME$ = {};
+  public loading = true;
+  public finished = false;
   public errorMessage: string = null;
   public successMessage: string = null;
   public keys: string[] = [];
-  public showConfirmDelete: boolean = false;
+  public showConfirmDelete = false;
 
-  constructor(private $MODELFILENAME$Service: $MODELNAME$Service,
-    private activatedRoute: ActivatedRoute) { }
+  constructor(private $MODELFILENAME$Service: $MODELNAME$Service, private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    let id = this.activatedRoute.snapshot.params.id;
+  ngOnInit(): unknown {
+    const { id } = this.activatedRoute.snapshot.params;
     this.get(id);
-
   }
 
-  get(id) {
+  get(id: string): unknown {
     this.$MODELFILENAME$Service.findById(id).then((result) => {
       this.loading = false;
       this.$MODELFILENAME$ = result;
@@ -37,23 +34,22 @@ export class Show$MODELNAME$Component implements OnInit {
     });
   }
 
-  delete() {
+  delete(): unknown {
     this.loading = true;
-     this.$MODELFILENAME$Service.delete(this.$MODELFILENAME$.id).then(() => {
+    this.$MODELFILENAME$Service.delete(this.$MODELFILENAME$.id).then(() => {
       this.loading = false;
       this.finished = true;
-      this.successMessage = 'Entry deleted successfully.'
+      this.successMessage = 'Entry deleted successfully.';
      }).catch((err) => {
-      this.errorMessage = 'Unexpected error.'
-
+      this.errorMessage = 'Unexpected error.';
      });
   }
   
-  confirmDelete() {
+  confirmDelete(): unknown {
     this.showConfirmDelete = true;
    }
 
-   cancelDelete() {
+   cancelDelete(): unknown {
     this.showConfirmDelete = false;
    }
 
