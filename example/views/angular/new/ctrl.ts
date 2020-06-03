@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 export class New$MODELNAME$Component implements OnInit {
 
   public $MODELFILENAME$: any = {};
-  public loading: boolean = false;
-  public finished: boolean = false;
+  public loading = false;
+  public finished = false;
   public errorMessage: string = null;
   public successMessage: string = null;
   public keys: string[] = [];
@@ -24,7 +24,7 @@ export class New$MODELNAME$Component implements OnInit {
       this.$MODELFILENAME$ = result;
       this.keys = Object.keys(this.$MODELFILENAME$);
     }).catch((err) => {
-      this.errorMessage = 'Unexpected error.'
+      this.errorMessage = 'Unexpected error.';
     });
   }
 
@@ -33,10 +33,9 @@ export class New$MODELNAME$Component implements OnInit {
      this.$MODELFILENAME$Service.new(this.$MODELFILENAME$).then(() => {
       this.loading = false;
       this.finished = true;
-      this.successMessage = 'Entry saved successfully.'
+      this.successMessage = 'Entry saved successfully.';
      }).catch((err) => {
-      this.errorMessage = 'Unexpected error.'
-
+      this.errorMessage = 'Unexpected error.';
      });
   }
 
