@@ -34,7 +34,7 @@ export class Show$MODELNAME$Component implements OnInit {
     });
   }
 
-  delete(): unknown {
+  delete() {
     this.loading = true;
     this.$MODELFILENAME$Service.delete(this.$MODELFILENAME$.id).then(() => {
       this.loading = false;
