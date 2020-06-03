@@ -1,11 +1,11 @@
-import { $MODELNAME$Service } from './../$MODELFILENAME$-service/$MODELFILENAME$.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
+import { $MODELNAME$Service } from '../$MODELFILENAME$-service/$MODELFILENAME$.service';
 
 @Component({
   selector: 'app-show-$MODELFILENAME$',
   templateUrl: './show-$MODELFILENAME$.component.html',
-  styleUrls: ['./show-$MODELFILENAME$.component.css']
+  styleUrls: ['./show-$MODELFILENAME$.component.css'],
 })
 export class Show$MODELNAME$Component implements OnInit {
   public $MODELFILENAME$ = {};
@@ -30,7 +30,7 @@ export class Show$MODELNAME$Component implements OnInit {
       delete this.$MODELFILENAME$.links;
       this.keys = Object.keys(this.$MODELFILENAME$);
     }).catch((err) => {
-      this.errorMessage = 'Unexpected error.'
+      this.errorMessage = 'Unexpected error.';
     });
   }
 
@@ -44,13 +44,12 @@ export class Show$MODELNAME$Component implements OnInit {
       this.errorMessage = 'Unexpected error.';
      });
   }
-  
+
   confirmDelete(): unknown {
     this.showConfirmDelete = true;
-   }
+  }
 
-   cancelDelete(): unknown {
+  cancelDelete(): unknown {
     this.showConfirmDelete = false;
-   }
-
+  }
 }
