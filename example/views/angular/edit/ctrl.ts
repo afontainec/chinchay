@@ -43,9 +43,9 @@ export class Edit$MODELNAME$Component implements OnInit {
      this.$MODELFILENAME$Service.update(this.$MODELFILENAME$.id, this.$MODELFILENAME$).then(() => {
       this.loading = false;
       this.finished = true;
-      this.successMessage = 'Entry Updated successfully.'
+      this.successMessage = 'Entry Updated successfully.';
      }).catch((err) => {
-      this.errorMessage = 'Unexpected error.'
+      this.errorMessage = 'Unexpected error.';
 
      });
   }
