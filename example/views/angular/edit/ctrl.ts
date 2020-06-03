@@ -21,9 +21,8 @@ export class Edit$MODELNAME$Component implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    let id = this.activatedRoute.snapshot.params.id;
+    const id = this.activatedRoute.snapshot.params.id;
     this.get(id);
-
   }
 
   get(id) {
