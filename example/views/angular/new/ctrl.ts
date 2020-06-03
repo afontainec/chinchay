@@ -1,6 +1,6 @@
 import { $MODELNAME$Service } from './../$MODELFILENAME$-service/$MODELFILENAME$.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-$MODELFILENAME$',

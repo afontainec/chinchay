@@ -1,6 +1,6 @@
 import { $MODELNAME$Service } from './../$MODELFILENAME$-service/$MODELFILENAME$.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-index-$MODELFILENAME$',
@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 export class Index$MODELNAME$Component implements OnInit {
 
   public $MODELFILENAME$s: any = [];
-  public loading: boolean = true;
+  public loading = true;
   public errorMessage: string = null;
   public keys: string[] = [];
 
@@ -27,7 +27,7 @@ export class Index$MODELNAME$Component implements OnInit {
   }
 
   getKeys() {
-    if(!this.$MODELFILENAME$s[0]) return [];
+    if (!this.$MODELFILENAME$s[0]) { return [] };
     delete this.$MODELFILENAME$s[0].links;
     return Object.keys(this.$MODELFILENAME$s[0]);
   }
