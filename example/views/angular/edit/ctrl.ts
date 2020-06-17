@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class Edit$PASCAL_CASE$Component implements OnInit {
 
-  public $MODELFILENAME$: any = {};
+  public $CAMEL_CASE$: any = {};
   public loading = true;
   public finished = false;
   public errorMessage: string = null;
@@ -17,7 +17,7 @@ export class Edit$PASCAL_CASE$Component implements OnInit {
   public keys: string[] = [];
   public showConfirm = false;
 
-  constructor(private $MODELFILENAME$Service: $PASCAL_CASE$Service,
+  constructor(private $CAMEL_CASE$Service: $PASCAL_CASE$Service,
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
