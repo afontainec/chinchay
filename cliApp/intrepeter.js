@@ -9,7 +9,6 @@ const Router = require('./routes');
 const Migration = require('./migrations');
 let config = require('../.chainfile');
 const configPath = require('./configPath');
-const { table } = require('console');
 
 let knexConfig;
 
@@ -24,12 +23,11 @@ const newMVC = (tableName, options) => {
     Printer.error('Not valid model name');
     return;
   }
-  // const frontendType = getFrontendType(options);
-  // const backend = getBackend(options);
+  const frontendType = getFrontendType(options);
+  const backend = getBackend(options);
   const values = getValues(tableName);
-  console.log(values);
-  // const promises = createFiles(frontendType, backend, tableName, values);
-  // Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
+  const promises = createFiles(frontendType, backend, tableName, values);
+  Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
 
 const createFiles = (frontendType, backend, tableName, values) => {
