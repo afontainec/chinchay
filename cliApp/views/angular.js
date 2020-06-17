@@ -37,8 +37,8 @@ const buildService = async (values, APP_PATH) => {
 };
 
 const ngGenerateService = (values, APP_PATH) => {
-  const MODEL = values.MODELFILENAME;
-  const servicePath = buildSchemaPath(MODEL, `${MODEL}-service`, MODEL);
+  const NAME = values.KEBAB_CASE;
+  const servicePath = buildSchemaPath(NAME, `${NAME}-service`, NAME);
   return ngGenerate('service', APP_PATH, servicePath);
 };
 
@@ -130,6 +130,7 @@ const buildSchemaPath = (first, second, third) => {
 
 const ngGenerate = (schema, APP_PATH, schemaPath) => {
   const command = `cd '${APP_PATH}' && ng generate ${schema} '${schemaPath}'`;
+  console.log(command);
   return command;
 };
 
