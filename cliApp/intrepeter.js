@@ -99,11 +99,11 @@ function getValues(tableName) {
   tableName = parseKebabCase(tableName);
   tableName = tableName.toLowerCase();
   const words = tableName.split('_');
-  console.log(words);
   const MODELNAME = Model.getName(tableName);
   const CONTROLLERNAME = Controller.getName(MODELNAME);
   const MODELFILENAME = Model.getFileName(MODELNAME);
   return {
+    CAMEL_CASE: toCamelCase(words),
     MODELFILENAME,
     MODELNAME,
     CONTROLLERNAME,
@@ -121,6 +121,21 @@ const parseCamelCase = (input) => {
 
 const parseKebabCase = (input) => {
   return input.replace(/-/g, '_');
+};
+
+const toCamelCase = (array) => {
+  array = array || [];
+  let result = '';
+  if (array[0]) result += array[0];
+  for (let i = 1; i < array.length; i++) {
+    const element = array[i];
+    result += capitalizeFirstLetter(element);
+  }
+  return result;
+};
+
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 module.exports = { new: newMVC };
