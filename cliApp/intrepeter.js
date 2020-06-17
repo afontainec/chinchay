@@ -9,6 +9,7 @@ const Router = require('./routes');
 const Migration = require('./migrations');
 let config = require('../.chainfile');
 const configPath = require('./configPath');
+const { table } = require('console');
 
 let knexConfig;
 
@@ -23,11 +24,12 @@ const newMVC = (tableName, options) => {
     Printer.error('Not valid model name');
     return;
   }
-  const frontendType = getFrontendType(options);
-  const backend = getBackend(options);
+  // const frontendType = getFrontendType(options);
+  // const backend = getBackend(options);
   const values = getValues(tableName);
-  const promises = createFiles(frontendType, backend, tableName, values);
-  Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
+  console.log(values);
+  // const promises = createFiles(frontendType, backend, tableName, values);
+  // Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
 
 const createFiles = (frontendType, backend, tableName, values) => {
@@ -91,8 +93,13 @@ function defaultKnex() {
   };
 }
 
+// eslint-disable-next-line max-lines-per-function
 function getValues(tableName) {
+  tableName = parseCamelCase(tableName);
+  tableName = parseKebabCase(tableName);
   tableName = tableName.toLowerCase();
+  const words = tableName.split('_');
+  console.log(words);
   const MODELNAME = Model.getName(tableName);
   const CONTROLLERNAME = Controller.getName(MODELNAME);
   const MODELFILENAME = Model.getFileName(MODELNAME);
@@ -107,5 +114,13 @@ function getValues(tableName) {
     TABLE_NAME: tableName,
   };
 }
+
+const parseCamelCase = (input) => {
+  return input.replace(/([a-z0-9])([A-Z])/g, '$1_$2');
+};
+
+const parseKebabCase = (input) => {
+  return input.replace(/-/g, '_');
+};
 
 module.exports = { new: newMVC };
