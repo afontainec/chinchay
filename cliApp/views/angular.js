@@ -56,43 +56,33 @@ const getServicePath = (APP_PATH, result) => {
 
 
 const createNewComponent = (values, APP_PATH) => {
-  const LOWERCASE = values.MODELFILENAME;
-  const name = `new${values.MODELNAME}`;
-  const component = {};
-  component.sampleCtrl = path.join('new', 'ctrl.ts');
-  component.sampleHTML = path.join('new', 'view.html');
-  component.path = buildSchemaPath(LOWERCASE, name);
+  const component = buildComponentURIs('new', values);
   return createComponent(APP_PATH, values, component);
 };
 
 const createIndexComponent = (values, APP_PATH) => {
-  const LOWERCASE = values.MODELFILENAME;
-  const name = `index${values.MODELNAME}`;
-  const component = {};
-  component.sampleCtrl = path.join('index', 'ctrl.ts');
-  component.sampleHTML = path.join('index', 'view.html');
-  component.path = buildSchemaPath(LOWERCASE, name);
+  const component = buildComponentURIs('index', values);
   return createComponent(APP_PATH, values, component);
 };
 
 const createShowComponent = (values, APP_PATH) => {
-  const LOWERCASE = values.MODELFILENAME;
-  const name = `show${values.MODELNAME}`;
-  const component = {};
-  component.sampleCtrl = path.join('show', 'ctrl.ts');
-  component.sampleHTML = path.join('show', 'view.html');
-  component.path = buildSchemaPath(LOWERCASE, name);
+  const component = buildComponentURIs('show', values);
   return createComponent(APP_PATH, values, component);
 };
 
 const createEditComponent = (values, APP_PATH) => {
-  const LOWERCASE = values.MODELFILENAME;
-  const name = `edit${values.MODELNAME}`;
-  const component = {};
-  component.sampleCtrl = path.join('edit', 'ctrl.ts');
-  component.sampleHTML = path.join('edit', 'view.html');
-  component.path = buildSchemaPath(LOWERCASE, name);
+  const component = buildComponentURIs('edit', values);
   return createComponent(APP_PATH, values, component);
+};
+
+const buildComponentURIs = (prefix, values) => {
+  const { CAMEL_CASE } = values;
+  const name = `${prefix}${values.PASCAL_CASE}`;
+  const component = {};
+  component.sampleCtrl = path.join(prefix, 'ctrl.ts');
+  component.sampleHTML = path.join(prefix, 'view.html');
+  component.path = buildSchemaPath(CAMEL_CASE, name);
+  return component;
 };
 
 const createComponent = (APP_PATH, values, component) => {
@@ -130,7 +120,6 @@ const buildSchemaPath = (first, second, third) => {
 
 const ngGenerate = (schema, APP_PATH, schemaPath) => {
   const command = `cd '${APP_PATH}' && ng generate ${schema} '${schemaPath}'`;
-  console.log(command);
   return command;
 };
 
