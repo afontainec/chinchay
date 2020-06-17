@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { $MODELNAME$Service } from '../$MODELFILENAME$-service/$MODELFILENAME$.service';
+import { $PASCAL_CASE$Service } from '../$KEBAB_CASE$-service/$KEBAB_CASE$.service';
 
 @Component({
-  selector: 'app-show-$MODELFILENAME$',
-  templateUrl: './show-$MODELFILENAME$.component.html',
-  styleUrls: ['./show-$MODELFILENAME$.component.css'],
+  selector: 'app-show-$KEBAB_CASE$',
+  templateUrl: './show-$KEBAB_CASE$.component.html',
+  styleUrls: ['./show-$KEBAB_CASE$.component.css'],
 })
-export class Show$MODELNAME$Component implements OnInit {
-  public $MODELFILENAME$: any = {};
+export class Show$PASCAL_CASE$Component implements OnInit {
+  public $CAMEL_CASE$: any = {};
   public loading = true;
   public finished = false;
   public errorMessage: string = null;
@@ -16,7 +16,7 @@ export class Show$MODELNAME$Component implements OnInit {
   public keys: string[] = [];
   public showConfirmDelete = false;
 
-  constructor(private $MODELFILENAME$Service: $MODELNAME$Service, private activatedRoute: ActivatedRoute) {}
+  constructor(private $CAMEL_CASE$Service: $PASCAL_CASE$Service, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     const { id } = this.activatedRoute.snapshot.params;
@@ -24,11 +24,11 @@ export class Show$MODELNAME$Component implements OnInit {
   }
 
   get(id: string) {
-    this.$MODELFILENAME$Service.findById(id).then((result) => {
+    this.$CAMEL_CASE$Service.findById(id).then((result) => {
       this.loading = false;
-      this.$MODELFILENAME$ = result;
-      delete this.$MODELFILENAME$.links;
-      this.keys = Object.keys(this.$MODELFILENAME$);
+      this.$CAMEL_CASE$ = result;
+      delete this.$CAMEL_CASE$.links;
+      this.keys = Object.keys(this.$CAMEL_CASE$);
     }).catch((err) => {
       this.errorMessage = 'Unexpected error.';
     });
@@ -36,7 +36,7 @@ export class Show$MODELNAME$Component implements OnInit {
 
   delete() {
     this.loading = true;
-    this.$MODELFILENAME$Service.delete(this.$MODELFILENAME$.id).then(() => {
+    this.$CAMEL_CASE$Service.delete(this.$CAMEL_CASE$.id).then(() => {
       this.loading = false;
       this.finished = true;
       this.successMessage = 'Entry deleted successfully.';
