@@ -104,6 +104,8 @@ function getValues(tableName) {
   const MODELFILENAME = Model.getFileName(MODELNAME);
   return {
     CAMEL_CASE: toCamelCase(words),
+    SNAKE_CASE: toSnakeCase(words),
+    KEBAB_CASE: toKebabCase(words),
     MODELFILENAME,
     MODELNAME,
     CONTROLLERNAME,
@@ -136,6 +138,16 @@ const toCamelCase = (array) => {
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+const toSnakeCase = (array) => {
+  array = array || [];
+  return array.join('_');
+};
+
+const toKebabCase = (array) => {
+  array = array || [];
+  return array.join('-');
 };
 
 module.exports = { new: newMVC };
