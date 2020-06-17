@@ -76,12 +76,12 @@ const createEditComponent = (values, APP_PATH) => {
 };
 
 const buildComponentURIs = (prefix, values) => {
-  const { CAMEL_CASE } = values;
+  const { KEBAB_CASE } = values;
   const name = `${prefix}${values.PASCAL_CASE}`;
   const component = {};
   component.sampleCtrl = path.join(prefix, 'ctrl.ts');
   component.sampleHTML = path.join(prefix, 'view.html');
-  component.path = buildSchemaPath(CAMEL_CASE, name);
+  component.path = buildSchemaPath(KEBAB_CASE, name);
   return component;
 };
 
