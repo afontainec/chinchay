@@ -101,9 +101,13 @@ function getValues(tableName) {
   const CONTROLLERNAME = Controller.getName(MODELNAME);
   const MODELFILENAME = Model.getFileName(MODELNAME);
   return {
+    FLAT_CASE: toFlatCase(words),
+    PASCAL_CASE: toPascalCase(words),
     CAMEL_CASE: toCamelCase(words),
     SNAKE_CASE: toSnakeCase(words),
     KEBAB_CASE: toKebabCase(words),
+    TRAIN_CASE: toTrainCase(words),
+    MACRO_CASE: toMacroCase(words),
     MODELFILENAME,
     MODELNAME,
     CONTROLLERNAME,
@@ -146,6 +150,23 @@ const toSnakeCase = (array) => {
 const toKebabCase = (array) => {
   array = array || [];
   return array.join('-');
+};
+
+const toFlatCase = (array) => {
+  array = array || [];
+  return array.join('');
+};
+
+const toPascalCase = (array) => {
+  return capitalizeFirstLetter(toCamelCase(array));
+};
+
+const toTrainCase = (array) => {
+  return toKebabCase(array).toUpperCase();
+};
+
+const toMacroCase = (array) => {
+  return toSnakeCase(array).toUpperCase();
 };
 
 module.exports = { new: newMVC };
