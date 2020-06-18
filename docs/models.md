@@ -33,4 +33,4 @@ Explain how to create/extend a Table.
 1. extractOptions
 2. removeRawOptions
 3. extractColumns
-4. extractQuery
+4. extractSearch

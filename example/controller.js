@@ -137,7 +137,7 @@ const del = (req, res) => {
 const find = (req, res) => {
   const options = Table.extractOptions(req.query);
   const columns = Table.extractColumns(req.query);
-  const query = Table.extractQuery(req.query);
+  const query = Table.extractSearch(req.query);
   $MODELNAME$.find(query, columns, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     for (let i = 0; i < json.data.length; i++) {
@@ -169,7 +169,7 @@ const findById = (req, res) => {
 
 const count = (req, res) => {
   const options = Table.extractOptions(req.query);
-  const query = Table.extractQuery(req.query);
+  const query = Table.extractSearch(req.query);
   $MODELNAME$.count(query, options).then((results) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
