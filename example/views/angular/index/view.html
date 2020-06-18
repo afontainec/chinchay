@@ -16,10 +16,10 @@
             {{$MODELFILENAME$[key]}}
           </td>
           <td>
-            <a [routerLink]="[ '/$MODELFILENAME$/' + $MODELFILENAME$.id]">Ver</a>
+            <a [routerLink]="[ '/$SNAKE_CASE$/' + $MODELFILENAME$.id]">Ver</a>
           </td>
           <td>
-            <a [routerLink]="[ '/$MODELFILENAME$/' + $MODELFILENAME$.id + '/edit']">Editar</a>
+            <a [routerLink]="[ '/$SNAKE_CASE$/' + $MODELFILENAME$.id + '/edit']">Editar</a>
           </td>
         </tr>
       </tbody>
