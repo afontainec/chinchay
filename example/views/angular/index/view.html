@@ -1,6 +1,6 @@
 <div>
   <div style="margin: 50px;" *ngIf="!loading">
-    <h2 class="title">Todos <span style="margin-left: 10px;"> <a [routerLink]="[ '/$MODELFILENAME$/new']">Crear Nuevo</a> </span></h2>
+    <h2 class="title">Todos <span style="margin-left: 10px;"> <a [routerLink]="[ '/$SNAKE_CASE$/new']">Crear Nuevo</a> </span></h2>
     <table>
       <thead>
         <th *ngFor="let key of keys; let i = index;">
