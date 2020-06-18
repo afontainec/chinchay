@@ -91,12 +91,23 @@ function defaultKnex() {
   };
 }
 
+// eslint-disable-next-line max-lines-per-function
 function getValues(tableName) {
+  tableName = parseCamelCase(tableName);
+  tableName = parseKebabCase(tableName);
   tableName = tableName.toLowerCase();
+  const words = tableName.split('_');
   const MODELNAME = Model.getName(tableName);
   const CONTROLLERNAME = Controller.getName(MODELNAME);
   const MODELFILENAME = Model.getFileName(MODELNAME);
   return {
+    FLAT_CASE: toFlatCase(words),
+    PASCAL_CASE: toPascalCase(words),
+    CAMEL_CASE: toCamelCase(words),
+    SNAKE_CASE: toSnakeCase(words),
+    KEBAB_CASE: toKebabCase(words),
+    TRAIN_CASE: toTrainCase(words),
+    MACRO_CASE: toMacroCase(words),
     MODELFILENAME,
     MODELNAME,
     CONTROLLERNAME,
@@ -107,5 +118,55 @@ function getValues(tableName) {
     TABLE_NAME: tableName,
   };
 }
+
+const parseCamelCase = (input) => {
+  return input.replace(/([a-z0-9])([A-Z])/g, '$1_$2');
+};
+
+const parseKebabCase = (input) => {
+  return input.replace(/-/g, '_');
+};
+
+const toCamelCase = (array) => {
+  array = array || [];
+  let result = '';
+  if (array[0]) result += array[0];
+  for (let i = 1; i < array.length; i++) {
+    const element = array[i];
+    result += capitalizeFirstLetter(element);
+  }
+  return result;
+};
+
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+const toSnakeCase = (array) => {
+  array = array || [];
+  return array.join('_');
+};
+
+const toKebabCase = (array) => {
+  array = array || [];
+  return array.join('-');
+};
+
+const toFlatCase = (array) => {
+  array = array || [];
+  return array.join('');
+};
+
+const toPascalCase = (array) => {
+  return capitalizeFirstLetter(toCamelCase(array));
+};
+
+const toTrainCase = (array) => {
+  return toKebabCase(array).toUpperCase();
+};
+
+const toMacroCase = (array) => {
+  return toSnakeCase(array).toUpperCase();
+};
 
 module.exports = { new: newMVC };
