@@ -1,28 +1,27 @@
-import { $MODELNAME$Service } from './../$MODELFILENAME$-service/$MODELFILENAME$.service';
+import { $PASCAL_CASE$Service } from './../$KEBAB_CASE$-service/$KEBAB_CASE$.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-new-$MODELFILENAME$',
-  templateUrl: './new-$MODELFILENAME$.component.html',
-  styleUrls: ['./new-$MODELFILENAME$.component.css']
+  selector: 'app-new-$KEBAB_CASE$',
+  templateUrl: './new-$KEBAB_CASE$.component.html',
+  styleUrls: ['./new-$KEBAB_CASE$.component.css']
 })
-export class New$MODELNAME$Component implements OnInit {
+export class New$PASCAL_CASE$Component implements OnInit {
 
-  public $MODELFILENAME$: any = {};
+  public $CAMEL_CASE$: any = {};
   public loading = false;
   public finished = false;
   public errorMessage: string = null;
   public successMessage: string = null;
   public keys: string[] = [];
 
-  constructor(private $MODELFILENAME$Service: $MODELNAME$Service) { }
+  constructor(private $CAMEL_CASE$Service: $PASCAL_CASE$Service) { }
 
   ngOnInit() {
-    
-    this.$MODELFILENAME$Service.template().then((result) => {
-      this.$MODELFILENAME$ = result;
-      this.keys = Object.keys(this.$MODELFILENAME$);
+    this.$CAMEL_CASE$Service.template().then((result) => {
+      this.$CAMEL_CASE$ = result;
+      this.keys = Object.keys(this.$CAMEL_CASE$);
     }).catch((err) => {
       this.errorMessage = 'Unexpected error.';
     });
@@ -30,7 +29,7 @@ export class New$MODELNAME$Component implements OnInit {
 
   create() {
      this.loading = true;
-     this.$MODELFILENAME$Service.new(this.$MODELFILENAME$).then(() => {
+     this.$CAMEL_CASE$Service.new(this.$CAMEL_CASE$).then(() => {
       this.loading = false;
       this.finished = true;
       this.successMessage = 'Entry saved successfully.';

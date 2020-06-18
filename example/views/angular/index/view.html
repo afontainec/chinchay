@@ -1,6 +1,6 @@
 <div>
   <div style="margin: 50px;" *ngIf="!loading">
-    <h2 class="title">Todos <span style="margin-left: 10px;"> <a [routerLink]="[ '/$MODELFILENAME$/new']">Crear Nuevo</a> </span></h2>
+    <h2 class="title">Todos <span style="margin-left: 10px;"> <a [routerLink]="[ '/$SNAKE_CASE$/new']">Crear Nuevo</a> </span></h2>
     <table>
       <thead>
         <th *ngFor="let key of keys; let i = index;">
@@ -16,10 +16,10 @@
             {{$MODELFILENAME$[key]}}
           </td>
           <td>
-            <a [routerLink]="[ '/$MODELFILENAME$/' + $MODELFILENAME$.id]">Ver</a>
+            <a [routerLink]="[ '/$SNAKE_CASE$/' + $MODELFILENAME$.id]">Ver</a>
           </td>
           <td>
-            <a [routerLink]="[ '/$MODELFILENAME$/' + $MODELFILENAME$.id + '/edit']">Editar</a>
+            <a [routerLink]="[ '/$SNAKE_CASE$/' + $MODELFILENAME$.id + '/edit']">Editar</a>
           </td>
         </tr>
       </tbody>

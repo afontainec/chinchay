@@ -1,25 +1,25 @@
-import { New$MODELNAME$Component } from './new-$MODELFILENAME$/new-$MODELFILENAME$.component';
-import { Edit$MODELNAME$Component } from './edit-$MODELFILENAME$/edit-$MODELFILENAME$.component';
-import { Show$MODELNAME$Component } from './show-$MODELFILENAME$/show-$MODELFILENAME$.component';
-import { Index$MODELNAME$Component } from './index-$MODELFILENAME$/index-$MODELFILENAME$.component';
+import { New$PASCAL_CASE$Component } from './new-$KEBAB_CASE$/new-$KEBAB_CASE$.component';
+import { Edit$PASCAL_CASE$Component } from './edit-$KEBAB_CASE$/edit-$KEBAB_CASE$.component';
+import { Show$PASCAL_CASE$Component } from './show-$KEBAB_CASE$/show-$KEBAB_CASE$.component';
+import { Index$PASCAL_CASE$Component } from './index-$KEBAB_CASE$/index-$KEBAB_CASE$.component';
 import { Routes } from '@angular/router';
 
-const $MODELFILENAME$Routes: Routes = [{
-  path: '$TABLE_NAME$/new',
-  component: New$MODELNAME$Component,
-  data: { title: 'New $MODELNAME$' },
+const $CAMEL_CASE$Routes: Routes = [{
+  path: '$SNAKE_CASE$/new',
+  component: New$PASCAL_CASE$Component,
+  data: { title: 'New $PASCAL_CASE$' },
 }, {
-  path: '$TABLE_NAME$',
-  component: Index$MODELNAME$Component,
-  data: { title: 'Index $MODELNAME$' },
+  path: '$SNAKE_CASE$',
+  component: Index$PASCAL_CASE$Component,
+  data: { title: 'Index $PASCAL_CASE$' },
 }, {
-  path: '$TABLE_NAME$/:id',
-  component: Show$MODELNAME$Component,
-  data: { title: 'Show $MODELNAME$' },
+  path: '$SNAKE_CASE$/:id',
+  component: Show$PASCAL_CASE$Component,
+  data: { title: 'Show $PASCAL_CASE$' },
 }, {
-  path: '$TABLE_NAME$/:id/edit',
-  component: Edit$MODELNAME$Component,
-  data: { title: 'Edit $MODELNAME$' },
+  path: '$SNAKE_CASE$/:id/edit',
+  component: Edit$PASCAL_CASE$Component,
+  data: { title: 'Edit $PASCAL_CASE$' },
 }];
 
-export { $MODELFILENAME$Routes };
+export { $CAMEL_CASE$Routes };
