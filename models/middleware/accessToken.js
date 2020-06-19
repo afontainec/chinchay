@@ -4,7 +4,7 @@ let TheWall;
 
 const ONE_HOUR = 60 * 60;
 const WINDOW = 7 * 24 * ONE_HOUR;
-const secret = process.env.JWT_SECRET || 'JWT_CHINCHAY_CODE_SECRET';
+const secret = process.env.JWT_SECRET || 'JWT_CHINCHAY_SECRET_CODE';
 
 const bootstrap = (thewall) => {
   TheWall = thewall;
