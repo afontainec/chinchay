@@ -10,7 +10,7 @@ const bootstrap = (thewall) => {
   TheWall = thewall;
 };
 
-const decodeToken = async (req, res, next) => {
+const decode = async (req, res, next) => {
   try {
     delete req.user_id;
     addIsNotAuthenticated(req);
@@ -74,7 +74,7 @@ const generate = (user) => {
 };
 
 const PUBLIC_METHODS = {
-  decodeToken,
+  decode,
   generate,
   bootstrap,
 };
