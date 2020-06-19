@@ -4,8 +4,12 @@ const codemaster = require('codemaster');
 
 const Req = codemaster.utils.mocks.express.req;
 const { assert } = require('chai');
+const { thewall } = require('../../../../.chainfile');
 const knex = require('../../../../knex');
 const accessToken = require('../../../../models/middleware/accessToken');
+
+// eslint-disable-next-line import/no-dynamic-require
+const TheWall = require(thewall);
 
 describe('Middleware: accessToken: addIsAuthenticated', () => { // eslint-disable-line
 
@@ -44,6 +48,7 @@ describe('Middleware: accessToken: addIsAuthenticated', () => { // eslint-disabl
     const req = Req.generate();
     req.isAuthenticated = undefined;
     const decoded = { user: 1 };
+    accessToken.bootstrap(TheWall);
     await accessToken.addIsAuthenticated(req, decoded);
     assert.isTrue(req.isAuthenticatedByToken());
     assert.equal(req.user.id, 1);
