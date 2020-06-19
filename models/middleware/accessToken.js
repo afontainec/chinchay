@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const ChinchayError = require('../chinchayError');
 
 let TheWall;
 
@@ -26,6 +27,7 @@ const decode = async (req, res, next) => {
 
 const addIsAuthenticated = async (req, decoded) => {
   if (!req || !decoded) return;
+  if (!TheWall) throw new ChinchayError(new Error('TheWall should be defined in chainfile and middleware bootstraped.'), 'middlewareMissingTheWall');
   req.isAuthenticatedByToken = () => {
     return true;
   };

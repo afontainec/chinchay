@@ -19,7 +19,7 @@ describe('Middleware: accessToken: addIsNotAuthenticated', () => { // eslint-dis
     const req = Req.generate();
     req.isAuthenticated = undefined;
     accessToken.addIsNotAuthenticated(req);
-    assert.isFalse(req.isAuthenticated());
+    assert.isFalse(req.isAuthenticatedByToken());
     assert.isUndefined(req.user_id);
     done();
   });

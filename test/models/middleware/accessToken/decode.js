@@ -14,7 +14,7 @@ const ONE_HOUR = 60 * 60;
 const now = new Date().getTime() / 1000;
 const YESTERDAY = now - 24 * ONE_HOUR;
 const TOMORROW = now + 24 * ONE_HOUR;
-describe('Middleware: accessToken: decodeToken', () => { // eslint-disable-line
+describe('Middleware: accessToken: decode', () => { // eslint-disable-line
 
 
   // eslint-disable-next-line no-undef
@@ -23,7 +23,7 @@ describe('Middleware: accessToken: decodeToken', () => { // eslint-disable-line
   });
 
   it('req is undefined', (done) => { // eslint-disable-line
-    accessToken.decodeToken(null, null, () => {
+    accessToken.decode(null, null, () => {
       done();
     });
   });
@@ -31,7 +31,7 @@ describe('Middleware: accessToken: decodeToken', () => { // eslint-disable-line
   it('req has a user_id', (done) => { // eslint-disable-line
     const req = Req.generate();
     req.user_id = 44;
-    accessToken.decodeToken(req, null, () => {
+    accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
       done();
     });
@@ -41,9 +41,9 @@ describe('Middleware: accessToken: decodeToken', () => { // eslint-disable-line
   it('no token present', (done) => { // eslint-disable-line
     const req = Req.generate();
     delete req.isAuthenticated;
-    accessToken.decodeToken(req, null, () => {
+    accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
-      assert.isFalse(req.isAuthenticated());
+      assert.isFalse(req.isAuthenticatedByToken());
       done();
     });
   });
@@ -53,9 +53,9 @@ describe('Middleware: accessToken: decodeToken', () => { // eslint-disable-line
     const token = jwt.sign({ user: 1, exp: YESTERDAY }, secret);
     req.headers.Authorization = `Bearer ${token}`;
     delete req.isAuthenticated;
-    accessToken.decodeToken(req, null, () => {
+    accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
-      assert.isFalse(req.isAuthenticated());
+      assert.isFalse(req.isAuthenticatedByToken());
       done();
     });
   });
@@ -65,11 +65,11 @@ describe('Middleware: accessToken: decodeToken', () => { // eslint-disable-line
     const token = jwt.sign({ user: 1, exp: TOMORROW }, secret);
     req.headers.Authorization = `Bearer ${token}`;
     delete req.isAuthenticated;
-    accessToken.decodeToken(req, null, () => {
+    accessToken.decode(req, null, () => {
       assert.equal(req.user.id, 1);
       assert.equal(req.user.access.length, 1);
       assert.equal(req.user.access[0].role, 'admin');
-      assert.isTrue(req.isAuthenticated());
+      assert.isTrue(req.isAuthenticatedByToken());
       done();
     });
   });

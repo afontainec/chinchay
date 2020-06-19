@@ -27,12 +27,25 @@ describe('Middleware: accessToken: addIsAuthenticated', () => { // eslint-disabl
     assert.isUndefined(req.user);
   });
 
+  it('The wall is not bootstrapped', async () => { // eslint-disable-line
+    const req = Req.generate();
+    req.isAuthenticated = undefined;
+    const decoded = { user: 1 };
+
+    try {
+      await accessToken.addIsAuthenticated(req, decoded);
+      throw new Error('should not get here');
+    } catch (error) {
+      assert.equal(error.chinchayCode, 'middlewareMissingTheWall');
+    }
+  });
+
   it('happy path', async () => { // eslint-disable-line
     const req = Req.generate();
     req.isAuthenticated = undefined;
     const decoded = { user: 1 };
     await accessToken.addIsAuthenticated(req, decoded);
-    assert.isTrue(req.isAuthenticated());
+    assert.isTrue(req.isAuthenticatedByToken());
     assert.equal(req.user.id, 1);
     assert.equal(req.user.access.length, 1);
     assert.equal(req.user.access[0].user_id, 1);
