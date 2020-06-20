@@ -7,8 +7,11 @@ const { assert } = require('chai');
 const jwt = require('jsonwebtoken');
 const knex = require('../../../../knex');
 const accessToken = require('../../../../models/middleware/accessToken');
+const { thewall } = require('../../../../.chainfile');
+// eslint-disable-next-line import/no-dynamic-require
+const TheWall = require(thewall);
 
-const secret = process.env.JWT_SECRET || 'JWT_SECRET_FOR ACCIONET';
+const secret = process.env.JWT_SECRET || 'JWT_CHINCHAY_SECRET_CODE';
 
 const ONE_HOUR = 60 * 60;
 const now = new Date().getTime() / 1000;
@@ -28,7 +31,18 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
     });
   });
 
+  it('TheWall is not bootstrapped', (done) => { // eslint-disable-line
+    const req = Req.generate();
+    req.user_id = 44;
+    accessToken.unbootstrap();
+    accessToken.decode(req, null, () => {
+      assert.isUndefined(req.user);
+      done();
+    });
+  });
+
   it('req has a user_id', (done) => { // eslint-disable-line
+    accessToken.bootstrap(TheWall);
     const req = Req.generate();
     req.user_id = 44;
     accessToken.decode(req, null, () => {

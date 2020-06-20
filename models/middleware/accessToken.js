@@ -11,6 +11,10 @@ const bootstrap = (thewall) => {
   TheWall = thewall;
 };
 
+const unbootstrap = () => {
+  TheWall = null;
+};
+
 const decode = async (req, res, next) => {
   try {
     delete req.user_id;
@@ -87,6 +91,7 @@ if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.extractToken = extractToken;
   PUBLIC_METHODS.decryptToken = decryptToken;
   PUBLIC_METHODS.hasExpired = hasExpired;
+  PUBLIC_METHODS.unbootstrap = unbootstrap;
 }
 
 module.exports = PUBLIC_METHODS;
