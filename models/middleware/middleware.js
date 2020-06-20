@@ -24,8 +24,7 @@ const hasAccess = async (req, res, next) => {
 
 function forbidden(req, res) {
   const error = new ForbiddenError();
-  const code = errorHandler.getHTTPCode(error);
-  const message = errorHandler.getHTTPMessage(error);
+  const { code, message } = errorHandler.getHTTPCodeAndMessage(error);
   const json = httpResponse.error(message, error, code);
   return res.status(code).send(json);
 }
@@ -103,6 +102,9 @@ const PUBLIC_METHODS = {
   postrouting,
 };
 
+if (process.env.NODE_ENV === 'test') {
+  PUBLIC_METHODS.forbidden = forbidden;
+}
 
 module.exports = (thewall) => {
   TheWall = thewall;
