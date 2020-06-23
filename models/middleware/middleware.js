@@ -7,7 +7,7 @@ let TheWall;
 const errorHandler = new ErrorHandler();
 
 const hasAccess = async (req, res, next) => {
-  if (!req.isAuthenticated()) return forbidden(req, res);
+  if (!req.isAuthenticatedByToken()) return forbidden(req, res);
   let fullUrl = req.baseUrl + req.path;
   if (fullUrl.endsWith('/')) fullUrl = fullUrl.substring(0, fullUrl.length - 1);
   const userId = req.user.id;
