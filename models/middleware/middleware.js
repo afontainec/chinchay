@@ -77,14 +77,16 @@ function devSplashPage(app) {
 function prodSplashPage(app) {
   // production error handler
   // no stacktraces leaked to user
-  app.use((err, req, res) => {
-    res.status(err.status || 500);
-    res.json('error', {
-      message: err.message,
-      error: {},
-    });
-  });
+  app.use(errorSplashWithoutError);
 }
+// no stacktraces leaked to user
+const errorSplashWithoutError = (err, req, res) => {
+  res.status(err.status || 500);
+  res.json('error', {
+    message: err.message,
+    error: {},
+  });
+};
 
 
 const notFoundError = (req, res, next) => {
@@ -103,6 +105,7 @@ const PUBLIC_METHODS = {
 if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.forbidden = forbidden;
   PUBLIC_METHODS.notFoundError = notFoundError;
+  PUBLIC_METHODS.errorSplashWithoutError = errorSplashWithoutError;
 }
 
 module.exports = (thewall) => {
