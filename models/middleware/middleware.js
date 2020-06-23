@@ -51,7 +51,7 @@ function prerouting(app) {
 
 
 function postrouting(app) {
-  notFoundRoute(app);
+  app.use(notFoundError); // catch 404 and forward to error handler
   errSplashPage(app);
 }
 
@@ -86,14 +86,12 @@ function prodSplashPage(app) {
   });
 }
 
-function notFoundRoute(app) {
-  // catch 404 and forward to error handler
-  app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
-}
+
+const notFoundError = (req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+};
 
 
 const PUBLIC_METHODS = {
@@ -104,6 +102,7 @@ const PUBLIC_METHODS = {
 
 if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.forbidden = forbidden;
+  PUBLIC_METHODS.notFoundError = notFoundError;
 }
 
 module.exports = (thewall) => {
