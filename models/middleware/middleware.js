@@ -57,7 +57,8 @@ function postrouting(app) {
 
 function errSplashPage(app) {
   devSplashPage(app);
-  prodSplashPage(app);
+  // for production: no stacktraces leaked to user
+  app.use(errorSplashWithoutError);
 }
 function devSplashPage(app) {
   // error handlers
@@ -74,12 +75,6 @@ function devSplashPage(app) {
   }
 }
 
-function prodSplashPage(app) {
-  // production error handler
-  // no stacktraces leaked to user
-  app.use(errorSplashWithoutError);
-}
-// no stacktraces leaked to user
 const errorSplashWithoutError = (err, req, res) => {
   res.status(err.status || 500);
   res.json('error', {
