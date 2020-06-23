@@ -16,7 +16,6 @@ function createUser(knex, user) {
 }
 
 function createAccess(knex, userId) {
-  const q1 = TheWall.addAccess(userId, 'venueOwner', 1);
-  const q3 = TheWall.addAccess(userId, 'sponsorOwner', 1);
-  return Promise.all([q1, q3]);
+  const q1 = TheWall.addAccess(userId, 'restricted', 1);
+  return Promise.all([q1]);
 }
