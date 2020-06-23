@@ -8,7 +8,7 @@ const TheWall = require(thewall);
 const middleware = require('../../../../models/middleware/middleware')(TheWall);
 
 
-describe('Middleware: errSplashPage', () => { // eslint-disable-line
+describe('Middleware: postrouting', () => { // eslint-disable-line
 
 
   it('Happy path: when dev', () => { // eslint-disable-line
@@ -18,19 +18,8 @@ describe('Middleware: errSplashPage', () => { // eslint-disable-line
       use: (func) => { uses.push(func); },
       get: (key) => { return getters[key]; },
     };
-    middleware.errSplashPage(app);
-    assert.equal(uses.length, 2);
-  });
-
-  it('Happy path: when not dev', () => { // eslint-disable-line
-    const uses = [];
-    const getters = { env: 'production' };
-    const app = {
-      use: (func) => { uses.push(func); },
-      get: (key) => { return getters[key]; },
-    };
-    middleware.errSplashPage(app);
-    assert.equal(uses.length, 1);
+    middleware.postrouting(app);
+    assert.equal(uses.length, 3);
   });
 
 });
