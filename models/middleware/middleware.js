@@ -36,14 +36,15 @@ function forbidden(req, res) {
 function prerouting(app) {
   app.enable('trust proxy'); // Trust heroku proxy to know if the request was https
 
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    next();
-  });
-
+  app.use(setHeadersForAccessToken);
   app.use(AccessToken.decodeToken);
 }
+
+const setHeadersForAccessToken = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+};
 
 // ////////////////////////////
 // ////// POSTROUTING ////////
@@ -98,6 +99,7 @@ if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.errorSplashWithoutError = errorSplashWithoutError;
   PUBLIC_METHODS.errorSplashWithError = errorSplashWithError;
   PUBLIC_METHODS.errSplashPage = errSplashPage;
+  PUBLIC_METHODS.setHeadersForAccessToken = setHeadersForAccessToken;
 }
 
 module.exports = (thewall) => {

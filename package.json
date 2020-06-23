@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/afontainec/chinchay#readme",
   "dependencies": {
-    "codemaster": "0.0.43",
+    "codemaster": "0.0.44",
     "commander": "^2.19.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
