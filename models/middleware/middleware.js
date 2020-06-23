@@ -61,19 +61,18 @@ function errSplashPage(app) {
   app.use(errorSplashWithoutError);
 }
 function devSplashPage(app) {
-  // error handlers
-  // development error handler
-  // will print stacktrace
   if (app.get('env') === 'development') {
-    app.use((err, req, res) => {
-      res.status(err.status || 500);
-      res.json('error', {
-        message: err.message,
-        error: err,
-      });
-    });
+    app.use(errorSplashWithError);
   }
 }
+
+const errorSplashWithError = (err, req, res) => {
+  res.status(err.status || 500);
+  res.json('error', {
+    message: err.message,
+    error: err,
+  });
+};
 
 const errorSplashWithoutError = (err, req, res) => {
   res.status(err.status || 500);
@@ -101,6 +100,7 @@ if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.forbidden = forbidden;
   PUBLIC_METHODS.notFoundError = notFoundError;
   PUBLIC_METHODS.errorSplashWithoutError = errorSplashWithoutError;
+  PUBLIC_METHODS.errorSplashWithError = errorSplashWithError;
 }
 
 module.exports = (thewall) => {
