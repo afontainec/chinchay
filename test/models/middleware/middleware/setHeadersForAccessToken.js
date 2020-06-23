@@ -16,7 +16,7 @@ describe('Middleware: setHeadersForAccessToken', () => { // eslint-disable-line
   it('happy path', (done) => { // eslint-disable-line
     const req = Req.generate();
     const res = Res.generate();
-    middleware.setHeadersForAccessToken(req, res, (err) => {
+    middleware.setHeadersForAccessToken(req, res, () => {
       assert.equal(res.getHeader('Access-Control-Allow-Origin'), '*');
       assert.equal(res.getHeader('Access-Control-Allow-Headers'), 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
       done();
