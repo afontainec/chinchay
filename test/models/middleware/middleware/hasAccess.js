@@ -50,15 +50,16 @@ describe('Middleware: hasAccess', () => {
 
   it('is authenticated: can go through (fullUrl ends with /)', async () => {
     const req = Req.generate();
-    accessToken.addIsNotAuthenticated(req);
+    req.baseUrl = '';
+    req.path = '/test/1/';
+    req.method = 'get';
+    const decoded = { user: 2 };
+    await accessToken.addIsAuthenticated(req, decoded);
     const res = Res.generate();
     let called = false;
     const next = () => { called = true; };
-    middleware.hasAccess(req, res, next);
-    assert.equal(res.statusToSend, 403);
-    assert.equal(res.sendingFile.error, 'Access restricted to this data');
-    assert.equal(called, false);
-    throw new Error('NOT DONE');
+    await middleware.hasAccess(req, res, next);
+    assert.equal(called, true);
   });
 
 
