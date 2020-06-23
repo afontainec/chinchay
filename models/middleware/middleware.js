@@ -56,14 +56,10 @@ function postrouting(app) {
 }
 
 function errSplashPage(app) {
-  devSplashPage(app);
+  // for dev: print whole error
+  if (app.get('env') === 'development') app.use(errorSplashWithError);
   // for production: no stacktraces leaked to user
   app.use(errorSplashWithoutError);
-}
-function devSplashPage(app) {
-  if (app.get('env') === 'development') {
-    app.use(errorSplashWithError);
-  }
 }
 
 const errorSplashWithError = (err, req, res) => {
@@ -101,6 +97,7 @@ if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.notFoundError = notFoundError;
   PUBLIC_METHODS.errorSplashWithoutError = errorSplashWithoutError;
   PUBLIC_METHODS.errorSplashWithError = errorSplashWithError;
+  PUBLIC_METHODS.errSplashPage = errSplashPage;
 }
 
 module.exports = (thewall) => {
