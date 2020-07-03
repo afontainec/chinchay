@@ -10,7 +10,7 @@ const { thewall } = require('../../../../.chainfile');
 const knex = require('../../../../knex');
 // eslint-disable-next-line import/no-dynamic-require
 const TheWall = require(thewall);
-const middleware = require('../../../../models/middleware/middleware')(TheWall);
+const { Middleware } = require('../../../../');
 const accessToken = require('../../../../models/middleware/accessToken');
 
 
@@ -28,7 +28,7 @@ describe('Middleware: hasAccess', () => {
     const res = Res.generate();
     let called = false;
     const next = () => { called = true; };
-    await middleware.hasAccess(req, res, next);
+    await Middleware.hasAccess(req, res, next);
     assert.equal(res.statusToSend, 403);
     assert.equal(res.sendingFile.error, 'Access restricted to this data');
     assert.equal(called, false);
@@ -44,7 +44,7 @@ describe('Middleware: hasAccess', () => {
     const res = Res.generate();
     let called = false;
     const next = () => { called = true; };
-    await middleware.hasAccess(req, res, next);
+    await Middleware.hasAccess(req, res, next);
     assert.equal(called, true);
   });
 
@@ -58,7 +58,7 @@ describe('Middleware: hasAccess', () => {
     const res = Res.generate();
     let called = false;
     const next = () => { called = true; };
-    await middleware.hasAccess(req, res, next);
+    await Middleware.hasAccess(req, res, next);
     assert.equal(called, true);
   });
 
@@ -73,7 +73,7 @@ describe('Middleware: hasAccess', () => {
     const res = Res.generate();
     let called = false;
     const next = () => { called = true; };
-    await middleware.hasAccess(req, res, next);
+    await Middleware.hasAccess(req, res, next);
     assert.equal(res.statusToSend, 403);
     assert.equal(res.sendingFile.error, 'Access restricted to this data');
     assert.equal(called, false);
@@ -89,7 +89,7 @@ describe('Middleware: hasAccess', () => {
     const res = Res.generate();
     let called = false;
     const next = () => { called = true; };
-    await middleware.hasAccess(req, res, next);
+    await Middleware.hasAccess(req, res, next);
     assert.equal(res.statusToSend, 403);
     assert.equal(res.sendingFile.error, 'Access restricted to this data');
     assert.equal(called, false);

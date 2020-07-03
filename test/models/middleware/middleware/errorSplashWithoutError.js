@@ -5,10 +5,7 @@ const codemaster = require('codemaster');
 const Req = codemaster.utils.mocks.express.req;
 const Res = codemaster.utils.mocks.express.res;
 const { assert } = require('chai');
-const { thewall } = require('../../../../.chainfile');
-// eslint-disable-next-line import/no-dynamic-require
-const TheWall = require(thewall);
-const middleware = require('../../../../models/middleware/middleware')(TheWall);
+const { Middleware } = require('../../../../');
 
 
 describe('Middleware: errorSplashWithoutError', () => { // eslint-disable-line
@@ -18,7 +15,7 @@ describe('Middleware: errorSplashWithoutError', () => { // eslint-disable-line
     const req = new Req();
     const res = new Res();
     const err = { status: 401, message: 'message' };
-    middleware.errorSplashWithoutError(err, req, res);
+    Middleware.errorSplashWithoutError(err, req, res);
     assert.equal(res.jsonKey, 'error');
     assert.equal(res.sending.message, err.message);
     assert.deepEqual(res.sending.error, {});
@@ -29,7 +26,7 @@ describe('Middleware: errorSplashWithoutError', () => { // eslint-disable-line
     const req = Req.generate();
     const res = Res.generate();
     const err = { };
-    middleware.errorSplashWithoutError(err, req, res);
+    Middleware.errorSplashWithoutError(err, req, res);
     assert.equal(res.statusToSend, 500);
   });
 });

@@ -2,11 +2,7 @@ process.env.NODE_ENV = 'test';
 
 
 const { assert } = require('chai');
-const { thewall } = require('../../../../.chainfile');
-// eslint-disable-next-line import/no-dynamic-require
-const TheWall = require(thewall);
-const middleware = require('../../../../models/middleware/middleware')(TheWall);
-
+const { Middleware } = require('../../../../');
 
 describe('Middleware: errSplashPage', () => { // eslint-disable-line
 
@@ -18,7 +14,7 @@ describe('Middleware: errSplashPage', () => { // eslint-disable-line
       use: (func) => { uses.push(func); },
       get: (key) => { return getters[key]; },
     };
-    middleware.errSplashPage(app);
+    Middleware.errSplashPage(app);
     assert.equal(uses.length, 2);
   });
 
@@ -29,7 +25,7 @@ describe('Middleware: errSplashPage', () => { // eslint-disable-line
       use: (func) => { uses.push(func); },
       get: (key) => { return getters[key]; },
     };
-    middleware.errSplashPage(app);
+    Middleware.errSplashPage(app);
     assert.equal(uses.length, 1);
   });
 

@@ -2,11 +2,7 @@ process.env.NODE_ENV = 'test';
 
 
 const { assert } = require('chai');
-const { thewall } = require('../../../../.chainfile');
-// eslint-disable-next-line import/no-dynamic-require
-const TheWall = require(thewall);
-const middleware = require('../../../../models/middleware/middleware')(TheWall);
-
+const { Middleware } = require('../../../../');
 
 describe('Middleware: postrouting', () => { // eslint-disable-line
 
@@ -20,7 +16,7 @@ describe('Middleware: postrouting', () => { // eslint-disable-line
       get: (key) => { return getters[key]; },
       enable: (key) => { enabled[key] = true; },
     };
-    middleware.prerouting(app);
+    Middleware.prerouting(app);
     assert.equal(uses.length, 2);
     assert.equal(enabled['trust proxy'], true);
   });
