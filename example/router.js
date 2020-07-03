@@ -4,7 +4,7 @@ const express = require('express');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-const { Middleware } = require(chinchay);
+const { Middleware } = require('chinchay');
 const $CONTROLLERNAME$ = require('$ROUTE2CTRL$');
 
 
