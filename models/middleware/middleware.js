@@ -1,5 +1,6 @@
 const { httpResponse } = require('codemaster');
-const { ErrorHandler, ForbiddenError } = require('../../');
+const ErrorHandler = require('../ErrorHandler');
+const ForbiddenError = require('../ForbiddenError');
 const AccessToken = require('./accessToken');
 
 let TheWall;

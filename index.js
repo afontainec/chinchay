@@ -6,10 +6,10 @@ const Access = require('./models/access');
 const ErrorHandler = require('./models/ErrorHandler');
 const ChinchayError = require('./models/chinchayError');
 const ForbiddenError = require('./models/ForbiddenError');
-const Middleware = require('./models/middleware/middleware');
 
 let access;
 let thewall;
+let Middleware;
 
 const chainConfig = getConfig();
 
@@ -18,6 +18,8 @@ const knex = require(chainConfig.knex); // eslint-disable-line import/no-dynamic
 if (chainConfig.access) access = require(chainConfig.access); // eslint-disable-line import/no-dynamic-require
 // eslint-disable-next-line global-require
 if (chainConfig.thewall) thewall = require(chainConfig.thewall); // eslint-disable-line import/no-dynamic-require
+// eslint-disable-next-line global-require
+if (thewall) Middleware = require('./models/middleware/middleware')(thewall);
 
 
 function getConfig() {
