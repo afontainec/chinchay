@@ -180,12 +180,12 @@ const toMacroCase = (array) => {
 // #endregion
 
 const addMiddlewareValues = (values, options) => {
-  const thewall = options && options.thewall ? options.thewall.toLowerCase() : '';
+  const middleware = options && options.middleware ? options.middleware.toLowerCase() : '';
   values = values || {};
-  const addToFrontend = ['frontend', 'enable', 'true'].includes(thewall);
-  values.THEWALLFRONTEND = addToFrontend ? 'Middleware.hasAccess, ' : '';
-  const addToAPI = ['api', 'enable', 'true'].includes(thewall);
-  values.THEWALLAPI = addToAPI ? 'Middleware.hasAccess, ' : '';
+  const addToFrontend = ['frontend', 'enable', 'true'].includes(middleware);
+  values.MIDDLEWAREFRONTEND = addToFrontend ? 'Middleware.hasAccess, ' : '';
+  const addToAPI = ['api', 'enable', 'true'].includes(middleware);
+  values.MIDDLEWAREAPI = addToAPI ? 'Middleware.hasAccess, ' : '';
   return values;
 };
 
