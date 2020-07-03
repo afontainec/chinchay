@@ -38,7 +38,7 @@ const createFiles = (frontendType, backend, tableName, values) => {
   if (shouldCreate(backend)) {
     promises.push(Model.createFile(tableName, values, config));
     promises.push(Controller.createFile(tableName, values, config));
-    promises.push(Router.createFile(tableName, values, config));
+    promises.push(Router.createFile(values, config));
     promises.push(Migration.createFile(tableName, values, config, knexConfig));
   }
   return promises;
