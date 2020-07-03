@@ -14,6 +14,11 @@ let knexConfig;
 
 const DEFAULT_FRONTEND = 'ejs';
 const DEFAULT_BACKEND = 'enable';
+const DEFAULT = {
+  frontend: 'ejs',
+  backend: 'enable',
+  middleware: 'disable',
+};
 
 
 const newMVC = (tableName, options) => {
@@ -25,7 +30,7 @@ const newMVC = (tableName, options) => {
   }
   const frontendType = getFrontendType(options);
   const backend = getBackend(options);
-  const values = getValues(tableName, options);
+  const values = getValues(tableName, options, config);
   const promises = createFiles(frontendType, backend, tableName, values);
   Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
@@ -180,13 +185,21 @@ const toMacroCase = (array) => {
 // #endregion
 
 const addMiddlewareValues = (values, options) => {
-  const middleware = options && options.middleware ? options.middleware.toLowerCase() : '';
+  const middleware = getOption('middleware', options);
   values = values || {};
   const addToFrontend = ['frontend', 'enable', 'true'].includes(middleware);
   values.MIDDLEWAREFRONTEND = addToFrontend ? 'Middleware.hasAccess, ' : '';
   const addToAPI = ['api', 'enable', 'true'].includes(middleware);
   values.MIDDLEWAREAPI = addToAPI ? 'Middleware.hasAccess, ' : '';
   return values;
+};
+
+const getOption = (key, options) => {
+  options = options || {};
+  const configOption = config ? config[key] : null;
+  const value = options[key] || configOption || DEFAULT[key];
+  return value.toString().toLowerCase();
+
 };
 
 module.exports = { new: newMVC };
