@@ -25,7 +25,7 @@ const newMVC = (tableName, options) => {
   }
   const frontendType = getFrontendType(options);
   const backend = getBackend(options);
-  const values = getValues(tableName);
+  const values = getValues(tableName, options);
   const promises = createFiles(frontendType, backend, tableName, values);
   Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
@@ -91,8 +91,15 @@ function defaultKnex() {
   };
 }
 
+function getValues(tableName, options) {
+  let values = getNameValues(tableName);
+  values = addMiddlewareValues(values, options);
+  return values;
+}
+
+// #region GETNAMEVALUES
 // eslint-disable-next-line max-lines-per-function
-function getValues(tableName) {
+const getNameValues = (tableName) => {
   tableName = parseCamelCase(tableName);
   tableName = parseKebabCase(tableName);
   tableName = tableName.toLowerCase();
@@ -117,7 +124,8 @@ function getValues(tableName) {
     TABLEPATH: path.relative(config.controllers.directory, configPath.TABLEPATH).replace(/\\/g, '/'),
     TABLE_NAME: tableName,
   };
-}
+};
+
 
 const parseCamelCase = (input) => {
   return input.replace(/([a-z0-9])([A-Z])/g, '$1_$2');
@@ -167,6 +175,16 @@ const toTrainCase = (array) => {
 
 const toMacroCase = (array) => {
   return toSnakeCase(array).toUpperCase();
+};
+
+// #endregion
+
+const addMiddlewareValues = (values, options) => {
+  options = options || {};
+  values = values || {};
+  const addToFrontend = ['frontend', 'enable', 'true'].includes(options.thewall);
+  values.THEWALLFRONTEND = addToFrontend ? 'Middleware.hasAccess,' : '';
+  return values;
 };
 
 module.exports = { new: newMVC };
