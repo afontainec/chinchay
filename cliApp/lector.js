@@ -19,6 +19,7 @@ program
   .description('Create new MVC')
   .option('-f, --frontend [v]', 'define frontend')
   .option('-b, --backend [v]', 'define backend')
+  .option('-tw, --thewall [v]', 'Protect routes with chinchay middleware and thewall')
   .action((table_name, options) => {
     intrepeter.new(table_name, options);
   });

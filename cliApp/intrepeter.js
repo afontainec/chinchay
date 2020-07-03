@@ -183,7 +183,7 @@ const addMiddlewareValues = (values, options) => {
   options = options || {};
   values = values || {};
   const addToFrontend = ['frontend', 'enable', 'true'].includes(options.thewall);
-  values.THEWALLFRONTEND = addToFrontend ? 'Middleware.hasAccess,' : '';
+  values.THEWALLFRONTEND = addToFrontend ? 'Middleware.hasAccess, ' : '';
   return values;
 };
 
