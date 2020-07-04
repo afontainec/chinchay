@@ -14,6 +14,11 @@ let knexConfig;
 
 const DEFAULT_FRONTEND = 'ejs';
 const DEFAULT_BACKEND = 'enable';
+const DEFAULT = {
+  frontend: 'ejs',
+  backend: 'enable',
+  middleware: 'disable',
+};
 
 
 const newMVC = (tableName, options) => {
@@ -25,7 +30,7 @@ const newMVC = (tableName, options) => {
   }
   const frontendType = getFrontendType(options);
   const backend = getBackend(options);
-  const values = getValues(tableName);
+  const values = getValues(tableName, options, config);
   const promises = createFiles(frontendType, backend, tableName, values);
   Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
 };
@@ -38,7 +43,7 @@ const createFiles = (frontendType, backend, tableName, values) => {
   if (shouldCreate(backend)) {
     promises.push(Model.createFile(tableName, values, config));
     promises.push(Controller.createFile(tableName, values, config));
-    promises.push(Router.createFile(tableName, values, config));
+    promises.push(Router.createFile(values, config));
     promises.push(Migration.createFile(tableName, values, config, knexConfig));
   }
   return promises;
@@ -91,8 +96,15 @@ function defaultKnex() {
   };
 }
 
+function getValues(tableName, options) {
+  let values = getNameValues(tableName);
+  values = addMiddlewareValues(values, options);
+  return values;
+}
+
+// #region GETNAMEVALUES
 // eslint-disable-next-line max-lines-per-function
-function getValues(tableName) {
+const getNameValues = (tableName) => {
   tableName = parseCamelCase(tableName);
   tableName = parseKebabCase(tableName);
   tableName = tableName.toLowerCase();
@@ -117,7 +129,8 @@ function getValues(tableName) {
     TABLEPATH: path.relative(config.controllers.directory, configPath.TABLEPATH).replace(/\\/g, '/'),
     TABLE_NAME: tableName,
   };
-}
+};
+
 
 const parseCamelCase = (input) => {
   return input.replace(/([a-z0-9])([A-Z])/g, '$1_$2');
@@ -167,6 +180,26 @@ const toTrainCase = (array) => {
 
 const toMacroCase = (array) => {
   return toSnakeCase(array).toUpperCase();
+};
+
+// #endregion
+
+const addMiddlewareValues = (values, options) => {
+  const middleware = getOption('middleware', options);
+  values = values || {};
+  const addToFrontend = ['frontend', 'enable', 'true'].includes(middleware);
+  values.MIDDLEWAREFRONTEND = addToFrontend ? 'Middleware.hasAccess, ' : '';
+  const addToAPI = ['api', 'enable', 'true'].includes(middleware);
+  values.MIDDLEWAREAPI = addToAPI ? 'Middleware.hasAccess, ' : '';
+  return values;
+};
+
+const getOption = (key, options) => {
+  options = options || {};
+  const configOption = config ? config[key] : null;
+  const value = options[key] || configOption || DEFAULT[key];
+  return value.toString().toLowerCase();
+
 };
 
 module.exports = { new: newMVC };
