@@ -4,7 +4,7 @@ const codemaster = require('codemaster');
 
 const Req = codemaster.utils.mocks.express.req;
 const { assert } = require('chai');
-const { thewall, access } = require('../../../../.chainfile');
+const { thewall } = require('../../../../.chainfile');
 const knex = require('../../../../knex');
 const accessToken = require('../../../../models/middleware/accessToken');
 

@@ -8,7 +8,8 @@ let TheWall;
 const errorHandler = new ErrorHandler();
 
 const hasAccess = async (req, res, next) => {
-  if (!req.isAuthenticatedByToken()) return forbidden(req, res);
+  if (!req.isAuthenticatedByToken) console.log('WARNING: req.isAuthenticatedByToken is not a function. Make sure the that middleware.prerouting(app) is called before the routes are defined. Access rejected by default.');
+  if (!req.isAuthenticatedByToken || !req.isAuthenticatedByToken()) return forbidden(req, res);
   let fullUrl = req.baseUrl + req.path;
   if (fullUrl.endsWith('/')) fullUrl = fullUrl.substring(0, fullUrl.length - 1);
   const userId = req.user.id;
