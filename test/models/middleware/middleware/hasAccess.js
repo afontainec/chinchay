@@ -22,6 +22,17 @@ describe('Middleware: hasAccess', () => {
     await knex.seed.run();
   });
 
+  it('req.isAuthenticatedByToken not defined', async () => {
+    const req = Req.generate();
+    const res = Res.generate();
+    let called = false;
+    const next = () => { called = true; };
+    await Middleware.hasAccess(req, res, next);
+    assert.equal(res.statusToSend, 403);
+    assert.equal(res.sendingFile.error, 'Access restricted to this data');
+    assert.equal(called, false);
+  });
+
   it('is not authenticated', async () => {
     const req = Req.generate();
     accessToken.addIsNotAuthenticated(req);

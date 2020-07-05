@@ -16,6 +16,7 @@ describe('Middleware: accessToken: addIsAuthenticated', () => { // eslint-disabl
   // eslint-disable-next-line no-undef
   before(async () => {
     await knex.seed.run();
+    accessToken.unbootstrap();
   });
 
   it('req is undef', async () => { // eslint-disable-line

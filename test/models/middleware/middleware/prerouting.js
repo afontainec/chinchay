@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 const { assert } = require('chai');
 const { Middleware } = require('../../../../');
 
-describe('Middleware: postrouting', () => { // eslint-disable-line
+describe('Middleware: prerouting', () => { // eslint-disable-line
 
 
   it('Happy path: when dev', () => { // eslint-disable-line
@@ -18,6 +18,8 @@ describe('Middleware: postrouting', () => { // eslint-disable-line
     };
     Middleware.prerouting(app);
     assert.equal(uses.length, 2);
+    assert.exists(uses[0]);
+    assert.exists(uses[1]);
     assert.equal(enabled['trust proxy'], true);
   });
 
