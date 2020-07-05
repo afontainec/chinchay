@@ -25,13 +25,14 @@ const decode = async (req, res, next) => {
     if (!hasExpired(decoded)) await addIsAuthenticated(req, decoded);
     return next();
   } catch (error) {
+    if (error.chinchayCode === 'middlewareMissingTheWall') console.log(`WARNING: ${error.message} req.isAuthenticatedByToken() will return false.`);
     return next();
   }
 };
 
 const addIsAuthenticated = async (req, decoded) => {
   if (!req || !decoded) return;
-  if (!TheWall) throw new ChinchayError(new Error('TheWall should be defined in chainfile and middleware bootstraped.'), 'middlewareMissingTheWall');
+  if (!TheWall) throw new ChinchayError(new Error('TheWall should be defined in chainfile and accessToken bootstraped.'), 'middlewareMissingTheWall');
   req.isAuthenticatedByToken = () => {
     return true;
   };

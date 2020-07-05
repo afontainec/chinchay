@@ -33,7 +33,8 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
 
   it('TheWall is not bootstrapped', (done) => { // eslint-disable-line
     const req = Req.generate();
-    req.user_id = 44;
+    const token = jwt.sign({ user: 1, exp: TOMORROW }, secret);
+    req.headers.Authorization = `Bearer ${token}`;
     accessToken.unbootstrap();
     accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
@@ -78,7 +79,7 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
     const req = Req.generate();
     const token = jwt.sign({ user: 1, exp: TOMORROW }, secret);
     req.headers.Authorization = `Bearer ${token}`;
-    delete req.isAuthenticated;
+    delete req.isAuthenticatedByToken;
     accessToken.decode(req, null, () => {
       assert.equal(req.user.id, 1);
       assert.equal(req.user.access.length, 1);
