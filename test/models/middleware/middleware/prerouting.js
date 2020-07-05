@@ -18,6 +18,8 @@ describe('Middleware: postrouting', () => { // eslint-disable-line
     };
     Middleware.prerouting(app);
     assert.equal(uses.length, 2);
+    assert.exists(uses[0]);
+    assert.exists(uses[1]);
     assert.equal(enabled['trust proxy'], true);
   });
 
