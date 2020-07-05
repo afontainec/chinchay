@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 const { assert } = require('chai');
 const { Middleware } = require('../../../../');
 
-describe('Middleware: postrouting', () => { // eslint-disable-line
+describe('Middleware: prerouting', () => { // eslint-disable-line
 
 
   it('Happy path: when dev', () => { // eslint-disable-line

@@ -4,7 +4,7 @@ const codemaster = require('codemaster');
 
 const Req = codemaster.utils.mocks.express.req;
 const { assert } = require('chai');
-const { thewall } = require('../../../../.chainfile');
+const { thewall, access } = require('../../../../.chainfile');
 const knex = require('../../../../knex');
 const accessToken = require('../../../../models/middleware/accessToken');
 
@@ -16,6 +16,7 @@ describe('Middleware: accessToken: addIsAuthenticated', () => { // eslint-disabl
   // eslint-disable-next-line no-undef
   before(async () => {
     await knex.seed.run();
+    accessToken.unbootstrap();
   });
 
   it('req is undef', async () => { // eslint-disable-line
