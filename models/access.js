@@ -1,4 +1,5 @@
 const codemaster = require('codemaster');
+const accessToken = require('./middleware/accessToken');
 
 let TheWall;
 let UNRESTRICTED_ROLES;
@@ -10,6 +11,7 @@ const ADMIN = 'admin';
 const bootstrap = (config, thewall) => {
   TheWall = thewall;
   ({ UNRESTRICTED_ROLES, RESTRICTED_ROLES } = config);
+  accessToken.bootstrap(thewall);
 };
 
 const isAdmin = (user) => {
@@ -96,6 +98,10 @@ const hasAccessTo = (user, to, filterId) => {
   return false;
 };
 
+const generateToken = (user) => {
+  return accessToken.generate(user);
+};
+
 
 const PUBLIC_METHODS = {
   isAdmin,
@@ -105,6 +111,7 @@ const PUBLIC_METHODS = {
   find,
   addAccessibleToSearch,
   hasAccessTo,
+  generateToken,
 };
 
 if (process.env.NODE_ENV === 'test') {
