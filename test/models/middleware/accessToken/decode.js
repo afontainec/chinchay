@@ -67,7 +67,7 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
     const req = Req.generate();
     const token = jwt.sign({ user: 1, exp: YESTERDAY }, secret);
     req.headers.Authorization = `Bearer ${token}`;
-    delete req.isAuthenticated;
+    delete req.isAuthenticatedByToken;
     accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
       assert.isFalse(req.isAuthenticatedByToken());
