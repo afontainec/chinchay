@@ -38,7 +38,7 @@ function prerouting(app) {
   app.enable('trust proxy'); // Trust heroku proxy to know if the request was https
 
   app.use(setHeadersForAccessToken);
-  app.use(AccessToken.decodeToken);
+  app.use(AccessToken.decode);
 }
 
 const setHeadersForAccessToken = (req, res, next) => {
