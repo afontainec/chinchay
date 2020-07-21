@@ -35,7 +35,7 @@ class Table {
   // COUNT
   // ################################################
 
-  count(whereQuery, options) {
+  count(search, options) {
     const f = async (query, groupBy) => {
       const results = await Table.fetchQuery(query);
       if (!groupBy) {
@@ -50,20 +50,20 @@ class Table {
     };
     options = options || {};
     const { groupBy } = options;
-    const query = this.countQuery(whereQuery, options);
+    const query = this.countQuery(search, options);
     if (Table.returnAsQuery(options)) return query;
     return f(query, groupBy);
   }
 
-  countQuery(whereQuery, options) {
-    return this.buildQuery('count', whereQuery, 'all', options);
+  countQuery(search, options) {
+    return this.buildQuery('count', search, 'all', options);
   }
 
   // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
-  countGroupBy(groupBy, whereQuery, columns, options) {
+  countGroupBy(groupBy, search, columns, options) {
     options = options || {};
     options.groupBy = groupBy;
-    return this.count(whereQuery, columns, options);
+    return this.count(search, columns, options);
   }
 
   // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
@@ -104,19 +104,19 @@ class Table {
   // DELETE
   // ################################################
   delete(input, options) {
-    const whereQuery = typeof input === 'object' ? input : { id: input };
-    return this.deleteWhere(whereQuery, options);
+    const search = typeof input === 'object' ? input : { id: input };
+    return this.deleteWhere(search, options);
   }
 
 
-  deleteWhere(whereQuery, options) {
-    const query = this.deleteQuery(whereQuery, options);
+  deleteWhere(search, options) {
+    const query = this.deleteQuery(search, options);
     if (Table.returnAsQuery(options)) return query;
     return Table.fetchQuery(query);
   }
 
-  deleteQuery(whereQuery, options) {
-    return this.buildQuery('delete', whereQuery, 'all', options);
+  deleteQuery(search, options) {
+    return this.buildQuery('delete', search, 'all', options);
   }
 
 
@@ -208,34 +208,34 @@ class Table {
   // ################################################
 
   async update(input, newValues, options) {
-    const whereQuery = typeof input === 'object' ? input : { id: input };
-    const query = this.updateWhere(whereQuery, newValues, options);
+    const search = typeof input === 'object' ? input : { id: input };
+    const query = this.updateWhere(search, newValues, options);
     if (Table.returnAsQuery(options)) return query;
     const result = await Table.fetchQuery(query);
     return result[0];
   }
 
-  updateQuery(whereQuery, values, options) {
+  updateQuery(search, values, options) {
     let query = this.table();
     query = Table.addUpdate(query, values);
-    query = Table.addWhere(query, whereQuery, options);
+    query = Table.addWhere(query, search, options);
     query = Table.addAdvancedOptions(query, options);
     return query;
   }
 
-  updateWhere(whereQuery, newValues, options) {
+  updateWhere(search, newValues, options) {
     const values = Utils.cloneJSON(newValues);
-    const query = this.updateQuery(whereQuery, values, options);
+    const query = this.updateQuery(search, values, options);
     if (Table.returnAsQuery(options)) return query;
-    return this.fetchUpdateQuery(query, newValues, whereQuery);
+    return this.fetchUpdateQuery(query, newValues, search);
   }
 
-  fetchUpdateQuery(query, newValues, whereQuery) {
+  fetchUpdateQuery(query, newValues, search) {
     return new Promise((resolve, reject) => {
-      const idsDefined = whereQuery.id && newValues && newValues.id;
-      const idsDiffer = idsDefined && whereQuery.id !== newValues.id;
+      const idsDefined = search.id && newValues && newValues.id;
+      const idsDiffer = idsDefined && search.id !== newValues.id;
       if (idsDiffer) return reject(Table.IdDifferError());
-      const getUpdatables = this.find(whereQuery);
+      const getUpdatables = this.find(search);
       const filterColumns = this.parseAttributesForUpsert(newValues);
       return Promise.all([getUpdatables, filterColumns]).then(() => {
         return resolve(Table.fetchQuery(query));
@@ -259,25 +259,25 @@ class Table {
     return this.find({}, columns, options);
   }
 
-  find(whereQuery, columns, options) {
+  find(search, columns, options) {
     if (!options && Utils.isJSON(columns)) {
       options = columns;
       columns = 'all';
     }
-    const query = this.findQuery(whereQuery, columns, options);
+    const query = this.findQuery(search, columns, options);
     if (Table.returnAsQuery(options)) return query;
     return Table.fetchQuery(query);
   }
 
-  findQuery(whereQuery, columns, options) {
-    return this.buildQuery('find', whereQuery, columns, options);
+  findQuery(search, columns, options) {
+    return this.buildQuery('find', search, columns, options);
   }
 
   findById(id, columns, options) {
-    const whereQuery = {};
-    whereQuery.id = id;
+    const search = {};
+    search.id = id;
     return new Promise((resolve, reject) => {
-      this.find(whereQuery, columns, options).then((entries) => {
+      this.find(search, columns, options).then((entries) => {
         if (entries.length === 0) {
           const error = new Error('Id solicitado no existe');
           error.code = 'unexistantID';
@@ -383,11 +383,11 @@ class Table {
     return query.del().returning('*');
   }
 
-  static addWhere(query, whereQuery, options) {
+  static addWhere(query, search, options) {
     options = options || {};
-    if ((typeof whereQuery) !== 'object' || whereQuery === null) whereQuery = {};
-    const especialQuery = Table.filterSpecialQuery(whereQuery);
-    query.where(whereQuery);
+    if ((typeof search) !== 'object' || search === null) search = {};
+    const especialQuery = Table.filterSpecialQuery(search);
+    query.where(search);
     for (let i = 0; i < especialQuery.length; i++) {
       query.andWhere(especialQuery[i][0], especialQuery[i][1], especialQuery[i][2]);
     }
@@ -397,9 +397,9 @@ class Table {
     return query;
   }
 
-  buildQuery(selectType, whereQuery, columns, options) {
+  buildQuery(selectType, search, columns, options) {
     let query = this.table();
-    query = Table.makeQuery(query, selectType, whereQuery, columns, options);
+    query = Table.makeQuery(query, selectType, search, columns, options);
     return query;
   }
 
@@ -408,23 +408,23 @@ class Table {
     return this.knex('information_schema.columns').select('column_name').where(query);
   }
 
-  static filterSpecialQuery(whereQuery) {
-    const keys = Object.keys(whereQuery);
+  static filterSpecialQuery(search) {
+    const keys = Object.keys(search);
     const especialQuery = [];
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      const elem = whereQuery[key];
+      const elem = search[key];
       if (Array.isArray(elem)) {
         if (elem.length >= 2) especialQuery.push([key, elem[0], elem[1]]);
-        delete whereQuery[key];
+        delete search[key];
       }
     }
     return especialQuery;
   }
 
-  static makeQuery(query, selectType, whereQuery, columns, options) {
+  static makeQuery(query, selectType, search, columns, options) {
     Table.addSelect(selectType, query, columns, options);
-    query = Table.addWhere(query, whereQuery, options);
+    query = Table.addWhere(query, search, options);
     query = Table.addAdvancedOptions(query, options);
     return query;
   }
