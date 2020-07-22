@@ -208,10 +208,18 @@ class Table {
   // ################################################
 
   async update(input, newValues, options) {
-    const search = typeof input === 'object' ? input : { id: input };
+    if (typeof input !== 'object') return this.updateById(input, newValues, options);
+    const search = input;
     const query = this.updateWhere(search, newValues, options);
     if (Table.returnAsQuery(options)) return query;
     const result = await Table.fetchQuery(query);
+    return result;
+  }
+
+  async updateById(id, newValues, options) {
+    const search = { id };
+    const result = await this.update(search, newValues, options);
+    if (Table.returnAsQuery(options)) return result;
     return result[0];
   }
 
