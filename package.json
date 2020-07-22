@@ -1,6 +1,6 @@
 {
   "name": "chinchay",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Building MVC files for express and knex.",
   "main": "index.js",
   "scripts": {
