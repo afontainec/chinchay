@@ -1,3 +1,4 @@
+/* global it, before, describe */
 // During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 
@@ -10,12 +11,13 @@ const Coffee = require('../../../../models/coffee-example');
 
 
 // Our parent block
-describe('TABLE GATEWAY: update', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
+describe('TABLE GATEWAY: update', () => { // eslint-disable-line max-lines-per-function
+
+  before(async () => {
     await knex.seed.run();
   });
 
-  it('given id differ', (done) => { // eslint-disable-line
+  it('given id differ', (done) => {
     const entry = {};
     entry.id = 2;
     Coffee.update(1, entry).then(() => {
@@ -25,7 +27,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     });
   });
 
-  it('update entry', async () => { // eslint-disable-line
+  it('update entry', async () => {
     const entry = await Coffee.findById(1);
     entry.name = 'updated';
     await Coffee.update(1, Utils.cloneJSON(entry));
@@ -37,7 +39,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     assert.notEqual(entry.updated_at.toString(), updated.updated_at.toString());
   });
 
-  it('update entry', async () => { // eslint-disable-line
+  it('update entry', async () => {
     const entry = await Coffee.findById(1);
     entry.name = 'updated';
     const updated = await Coffee.update(1, Utils.cloneJSON(entry));
@@ -45,7 +47,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
   });
 
 
-  it('update entry, without givin the id', async () => { // eslint-disable-line
+  it('update entry, without givin the id', async () => {
     const entry = {};
     entry.name = 'updated twice';
     await Coffee.update(1, Utils.cloneJSON(entry));
@@ -53,7 +55,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     assert.equal(entry.name, updated.name);
   });
 
-  it('updates updated_at', async () => { // eslint-disable-line
+  it('updates updated_at', async () => {
     const entry = await Coffee.findById(1);
     entry.name = 'updated';
     await Coffee.update(1, Utils.cloneJSON(entry));
@@ -61,7 +63,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     assert.isBelow(new Date(entry.updated_at).getTime(), new Date(updated.updated_at).getTime());
   });
 
-  it('unexistant entry', (done) => { // eslint-disable-line
+  it('unexistant entry', (done) => {
     const entry = {};
     entry.id = -3;
     Coffee.update(-3, entry).then(() => {
@@ -71,7 +73,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     });
   });
 
-  it('update unexistant property', (done) => { // eslint-disable-line
+  it('update unexistant property', (done) => {
     const entry = {};
     entry.other = 'does not exists';
     Coffee.update(1, entry).then(() => {
@@ -81,7 +83,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     });
   });
 
-  it('id is null', (done) => { // eslint-disable-line
+  it('id is null', (done) => {
     const entry = {};
     Coffee.update(null, entry).then(() => {
       done(new Error('Should not get here'));
@@ -90,7 +92,7 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     });
   });
 
-  it('attributes is null', (done) => { // eslint-disable-line
+  it('attributes is null', (done) => {
     const entry = {};
     entry.id = 1;
     Coffee.update(1, null).then(() => {
@@ -98,5 +100,30 @@ describe('TABLE GATEWAY: update', () => { // eslint-disable-line
     }).catch(() => {
       done();
     });
+  });
+
+  it('update several: return array', async () => {
+    const entry = { name: 'update several' };
+    const search = { id: ['in', [1, 2]] };
+    const result = await Coffee.update(search, entry);
+    assert.isArray(result);
+    assert.equal(result.length, 2);
+    assert.equal(result[0].name, 'update several');
+    assert.equal(result[1].name, 'update several');
+  });
+
+  it('update only one: return object', async () => {
+    const entry = { name: 'update one' };
+    const result = await Coffee.update(1, entry);
+    assert.isNotArray(result);
+    assert.equal(result.name, 'update one');
+  });
+
+  it('returnAsQuery is defined', async () => {
+    const entry = { name: 'update several' };
+    const search = { id: ['in', [1, 2]] };
+    const result = Coffee.update(search, entry, { returnAsQuery: true });
+    const query = result.toString();
+    assert.isTrue(query.startsWith('update '), `'${query}' is not a psql query`);
   });
 });

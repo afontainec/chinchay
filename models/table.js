@@ -207,12 +207,21 @@ class Table {
   // UDATE
   // ################################################
 
-  async update(input, newValues, options) {
-    const search = typeof input === 'object' ? input : { id: input };
+  update(input, newValues, options) {
+    if (typeof input !== 'object') return this.updateById(input, newValues, options);
+    const search = input;
     const query = this.updateWhere(search, newValues, options);
     if (Table.returnAsQuery(options)) return query;
-    const result = await Table.fetchQuery(query);
-    return result[0];
+    return this.fetchUpdateQuery(query, newValues, search);
+  }
+
+  updateById(id, newValues, options) {
+    const search = { id };
+    const query = this.update(search, newValues, options);
+    if (Table.returnAsQuery(options)) return query;
+    return new Promise((resolve, reject) => {
+      query.then((results) => { resolve(results[0]); }).catch((err) => { reject(err); });
+    });
   }
 
   updateQuery(search, values, options) {
@@ -226,8 +235,7 @@ class Table {
   updateWhere(search, newValues, options) {
     const values = Utils.cloneJSON(newValues);
     const query = this.updateQuery(search, values, options);
-    if (Table.returnAsQuery(options)) return query;
-    return this.fetchUpdateQuery(query, newValues, search);
+    return query;
   }
 
   fetchUpdateQuery(query, newValues, search) {
