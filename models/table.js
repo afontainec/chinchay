@@ -850,7 +850,7 @@ const ERROR_400_BY_CODE = {
 
 };
 
-const OPTIONS_KEYS = ['startDate', 'endDate', 'groupBy', 'orderBy', 'limit', 'offset', 'rawSelect', 'clearSelect', 'rawWhere'];
+const OPTIONS_KEYS = ['startDate', 'endDate', 'groupBy', 'orderBy', 'limit', 'offset', 'rawSelect', 'clearSelect', 'rawWhere', 'countDistinct'];
 
 
 module.exports = Table;

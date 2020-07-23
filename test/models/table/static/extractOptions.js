@@ -87,4 +87,14 @@ describe('TABLE GATEWAY: extractOptions', () => { // eslint-disable-line
       done();
     });
   });
+
+  it('extract CountDistict ', (done) => { // eslint-disable-line
+    const input = { countDistinct: 'id', other: 'other' };
+    const expected = { countDistinct: 'id' };
+    const extracted = Table.extractOptions(input, true);
+    assert.deepEqual(extracted, expected);
+    assert.equal(Object.keys(input).length, 1);
+    assert.equal(input.other, 'other');
+    done();
+  });
 });
