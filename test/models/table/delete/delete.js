@@ -22,6 +22,21 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
     assert.equal(deleted.id, 1);
   });
 
+  it('With search as object', async () => { // eslint-disable-line
+    await Coffee.save([{ price: 15 }, { price: 10 }]);
+    const all = await Coffee.count();
+    const deleted = await Coffee.delete({ price: ['<', 105] });
+    const results = await Coffee.count();
+    assert.equal(results, all - 3);
+    assert.isArray(deleted);
+    assert.equal(deleted.length, 3);
+  });
+
+  it('returnAsQuery', async () => { // eslint-disable-line
+    const query = Coffee.delete({ id: 1 }, { returnAsQuery: true });
+    assert.equal(query.toString(), 'delete from "coffee" where "id" = 1 returning *');
+  });
+
   describe('Malicious happy path', () => { // eslint-disable-line
     before(async () => { // eslint-disable-line
       await knex.seed.run();
