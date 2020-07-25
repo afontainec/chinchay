@@ -104,15 +104,26 @@ class Table {
   // DELETE
   // ################################################
   delete(input, options) {
-    const search = typeof input === 'object' ? input : { id: input };
-    return this.deleteWhere(search, options);
+    if (typeof input !== 'object') return this.deleteById(input, options);
+    const search = input;
+    const query = this.deleteWhere(search, options);
+    if (Table.returnAsQuery(options)) return query;
+    return Table.fetchQuery(query);
   }
 
 
   deleteWhere(search, options) {
     const query = this.deleteQuery(search, options);
+    return query;
+  }
+
+  deleteById(id, options) {
+    const search = { id };
+    const query = this.delete(search, options);
     if (Table.returnAsQuery(options)) return query;
-    return Table.fetchQuery(query);
+    return new Promise((resolve, reject) => {
+      query.then((results) => { resolve(results[0]); }).catch((err) => { reject(err); });
+    });
   }
 
   deleteQuery(search, options) {
