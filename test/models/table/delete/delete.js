@@ -15,9 +15,11 @@ describe('TABLE GATEWAY: delete', () => { // eslint-disable-line
 
   it('With valid id', async () => { // eslint-disable-line
     const all = await Coffee.count();
-    await Coffee.delete(1);
+    const deleted = await Coffee.delete(1);
     const results = await Coffee.count();
     assert.equal(results, all - 1);
+    assert.isNotArray(deleted);
+    assert.equal(deleted.id, 1);
   });
 
   describe('Malicious happy path', () => { // eslint-disable-line
