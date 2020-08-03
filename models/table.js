@@ -11,7 +11,7 @@ class Table {
     this.table_name = tableName;
     this.knex = givenKnex || knex;
     if (!this.knex) throw new Error('Knex param missing.');
-    this.INSERT_LIMIT_ARRAY = 10000;
+    this.INSERT_LIMIT_ARRAY = 1000;
   }
 
   toString() {
