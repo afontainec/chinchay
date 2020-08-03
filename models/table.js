@@ -11,7 +11,7 @@ class Table {
     this.table_name = tableName;
     this.knex = givenKnex || knex;
     if (!this.knex) throw new Error('Knex param missing.');
-    this.INSERT_LIMIT_ARRAY = 10000;
+    this.INSERT_LIMIT_ARRAY = 1000;
   }
 
   toString() {
@@ -198,7 +198,7 @@ class Table {
     return result;
   }
 
-  saveBunch(array) {
+  async saveBunch(array) {
     const parsed = Table.parseForSaveArray(array);
     const promises = [];
     const iterations = parsed.length / this.INSERT_LIMIT_ARRAY;
@@ -207,7 +207,13 @@ class Table {
       const query = this.saveQuery(subArray);
       promises.push(Table.fetchQuery(query));
     }
-    return Utils.Promise.doAll(promises);
+    const results = await Promise.all(promises);
+    let concatenated = [];
+    for (let i = 0; i < results.length; i++) {
+      concatenated = concatenated.concat(results[i]);
+    }
+    return concatenated;
+
   }
 
   saveQuery(entry) {

@@ -19,7 +19,7 @@ describe('MODEL TABLE: getSubArray unit', () => { // eslint-disable-line
     }
   });
 
-  it('hapry path', async () => { // eslint-disable-line
+  it('happy path', async () => { // eslint-disable-line
     const iterations = len / Coffee.INSERT_LIMIT_ARRAY;
     const subArrayArray = [];
     for (let i = 0; i < iterations; i++) {
