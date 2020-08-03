@@ -23,8 +23,9 @@ describe('TABLE saveBunch: integration', () => { // eslint-disable-line
   });
 
   it('save a array', async () => { // eslint-disable-line
-    await Coffee.saveBunch([...arrayToTest]);
+    const result = await Coffee.saveBunch([...arrayToTest]);
     const saved = await knex('coffee').select('*').orderBy('price');
+    assert.deepEqual(result, saved);
     for (let i = 0; i < saved.length; i++) {
       delete saved[i].id;
     }
