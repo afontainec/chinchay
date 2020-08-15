@@ -636,8 +636,9 @@ class Table {
     return query;
   }
 
-  static extractOptions(query, securityMode) {
+  static extractOptions(query, configuration) {
     const options = {};
+    const securityMode = Table.getSecurityMode(configuration);
     const queryKeys = Object.keys(query);
     for (let i = 0; i < OPTIONS_KEYS.length; i++) {
       const key = OPTIONS_KEYS[i];
@@ -652,6 +653,11 @@ class Table {
     }
     if (securityMode) Table.removeRawOptions(options);
     return options;
+  }
+
+  static getSecurityMode(configuration = {}) {
+    if (configuration.securityMode === false) return false;
+    return true;
   }
 
   static getDefaultKnex() {
