@@ -1,5 +1,6 @@
 
 const path = require('path');
+const { utils } = require('codemaster');
 const fs = require('fs');
 const Printer = require('./printer');
 const Model = require('./model');
@@ -9,6 +10,8 @@ const Router = require('./routes');
 const Migration = require('./migrations');
 let config = require('../.chainfile');
 const configPath = require('./configPath');
+const DEFAULT_CHAINFILE = require('../.defaultchainfile');
+
 
 let knexConfig;
 
@@ -69,10 +72,13 @@ const getFrontendType = (options) => {
 
 function getConfig() {
   const p = path.join(process.cwd(), '.chainfile.js');
+  let defaultConfig = utils.cloneJSON(DEFAULT_CHAINFILE);
   if (fs.existsSync(p)) {
-    return require(p); // eslint-disable-line
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const userConfig = require(p);
+    defaultConfig = Object.assign(defaultConfig, userConfig);
   }
-  return require('../.defaultchainfile'); // eslint-disable-line
+  return defaultConfig;
 }
 
 function getKnexConfig() {
