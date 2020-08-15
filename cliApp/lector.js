@@ -49,7 +49,7 @@ program
 
 program
   .on('--help', () => {
-    console.log('  For help visit https://afontainec.github.io/chinchay/');
+    console.log('  For help visit http://chinchay.accionet.net');
   });
 
 program
