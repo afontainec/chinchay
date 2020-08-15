@@ -3,7 +3,6 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
-const Utils = require('codemaster').utils;
 
 const { Table } = require('../../../..');
 
