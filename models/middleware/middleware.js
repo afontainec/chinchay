@@ -1,4 +1,4 @@
-const { httpResponse } = require('codemaster');
+const httpResponse = require('../httpResponse');
 const ErrorHandler = require('../ErrorHandler');
 const ForbiddenError = require('../ForbiddenError');
 const AccessToken = require('./accessToken');
