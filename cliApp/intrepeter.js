@@ -8,11 +8,11 @@ const Controller = require('./controller');
 const Views = require('./views');
 const Router = require('./routes');
 const Migration = require('./migrations');
-let config = require('../.chainfile');
 const configPath = require('./configPath');
 const DEFAULT_CHAINFILE = require('../.defaultchainfile');
 
 
+let config;
 let knexConfig;
 
 const DEFAULT_FRONTEND = 'ejs';
