@@ -6,6 +6,7 @@ const Access = require('./models/access');
 const ErrorHandler = require('./models/ErrorHandler');
 const ChinchayError = require('./models/chinchayError');
 const ForbiddenError = require('./models/ForbiddenError');
+const httpResponse = require('./models/httpResponse');
 
 let access;
 let thewall;
@@ -41,4 +42,5 @@ module.exports = {
   ForbiddenError,
   ChinchayError,
   Middleware,
+  httpResponse,
 };

@@ -1,6 +1,5 @@
 const path = require('path');
-const { httpResponse } = require('codemaster');
-const { Table, ErrorHandler } = require('chinchay');
+const { Table, ErrorHandler, httpResponse } = require('chinchay');
 const HateoasGenerator = require('chinchay').Hateoas;
 const $MODELNAME$ = require('$CTRL2MODELPATH$');
 
