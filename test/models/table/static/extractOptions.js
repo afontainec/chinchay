@@ -20,15 +20,17 @@ const query = {
   clearSelect: true,
 };
 
+const secureOptions = Utils.cloneJSON(query);
+delete secureOptions.price;
+delete secureOptions.rawSelect;
+
 
 // Our parent block
 describe('TABLE GATEWAY: extractOptions', () => { // eslint-disable-line
-  it('working correctly ', (done) => { // eslint-disable-line
+  it('securityMode is undefined ', (done) => { // eslint-disable-line
     const input = Utils.cloneJSON(query);
-    const expected = Utils.cloneJSON(query);
-    delete expected.price;
     const extracted = Table.extractOptions(input);
-    assert.deepEqual(extracted, expected);
+    assert.deepEqual(extracted, secureOptions);
     assert.equal(Object.keys(input).length, 1);
     assert.equal(input.price, 40);
     done();
@@ -39,7 +41,7 @@ describe('TABLE GATEWAY: extractOptions', () => { // eslint-disable-line
       name: 'some',
       rawWhere: 'price = 60 or price = 40',
     };
-    const extracted = Table.extractOptions(Utils.cloneJSON(q));
+    const extracted = Table.extractOptions(Utils.cloneJSON(q), { securityMode: false });
     assert.equal(Object.keys(extracted).length, 1);
     assert.exists(extracted.rawWhere);
     assert.equal(q.rawWhere, extracted.rawWhere);
@@ -51,7 +53,7 @@ describe('TABLE GATEWAY: extractOptions', () => { // eslint-disable-line
       name: 'some',
       rawWhere: '["price = ? or price = 40", 6]',
     };
-    const extracted = Table.extractOptions(Utils.cloneJSON(q));
+    const extracted = Table.extractOptions(Utils.cloneJSON(q), { securityMode: false });
     assert.equal(Object.keys(extracted).length, 1);
     assert.exists(extracted.rawWhere);
     assert.isArray(extracted.rawWhere);
@@ -86,9 +88,23 @@ describe('TABLE GATEWAY: extractOptions', () => { // eslint-disable-line
       assert.equal(input.price, 40);
       done();
     });
+
+    it('With raw where and raw select, configuration: securityMode:true ', (done) => { // eslint-disable-line
+      const input = Utils.cloneJSON(query);
+      input.rawWhere = 'raw where';
+      const expected = Utils.cloneJSON(input);
+      delete expected.price;
+      delete expected.rawWhere;
+      delete expected.rawSelect;
+      const extracted = Table.extractOptions(input, { securityMode: true });
+      assert.deepEqual(extracted, expected);
+      assert.equal(Object.keys(input).length, 1);
+      assert.equal(input.price, 40);
+      done();
+    });
   });
 
-  it('extract CountDistict ', (done) => { // eslint-disable-line
+  it('extract countDistinct ', (done) => { // eslint-disable-line
     const input = { countDistinct: 'id', other: 'other' };
     const expected = { countDistinct: 'id' };
     const extracted = Table.extractOptions(input, true);
