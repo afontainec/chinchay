@@ -3,7 +3,6 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
-const { utils } = require('codemaster');
 const knex = require('../../../../knex');
 const Coffee = require('../../../../models/coffee-example');
 
