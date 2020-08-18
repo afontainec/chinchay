@@ -163,9 +163,9 @@ class Table {
   //   return f();
   // }
 
-  async save(input) {
+  async save(input, batchSize) {
     const copy = Utils.cloneJSON(input);
-    if (Array.isArray(copy)) return this.saveBunch(copy);
+    if (Array.isArray(copy)) return this.saveBunch(copy, batchSize);
     const parsed = Table.parseForSave(copy);
     const query = this.saveQuery(parsed);
     const [saved] = await Table.fetchQuery(query);
@@ -182,28 +182,20 @@ class Table {
     return parsed;
   }
 
-  // getSubArray(i, array) {
-  //   const copy = [...array];
-  //   const initial = this.INSERT_LIMIT_ARRAY * i;
-  //   // const final = i < iterations - 1 ? initial + this.INSERT_LIMIT_ARRAY : array.length;
-  //   const final = Math.min(initial + this.INSERT_LIMIT_ARRAY, copy.length);
-  //   const result = copy.splice(initial, final);
-  //   return result;
-  // }
 
-  getSubArray(i, iterations, array) {
-    const initial = this.INSERT_LIMIT_ARRAY * i;
-    const final = i < iterations - 1 ? initial + this.INSERT_LIMIT_ARRAY : array.length;
+  static getSubArray(i, iterations, array, batchSize = this.INSERT_LIMIT_ARRAY) {
+    const initial = batchSize * i;
+    const final = i < iterations - 1 ? initial + batchSize : array.length;
     const result = array.slice(initial, final);
     return result;
   }
 
-  async saveBunch(array) {
+  async saveBunch(array, batchSize = this.INSERT_LIMIT_ARRAY) {
     const parsed = Table.parseForSaveArray(array);
     const promises = [];
-    const iterations = parsed.length / this.INSERT_LIMIT_ARRAY;
+    const iterations = parsed.length / batchSize;
     for (let i = 0; i < iterations; i++) {
-      const subArray = this.getSubArray(i, iterations, parsed);
+      const subArray = Table.getSubArray(i, iterations, parsed, batchSize);
       const query = this.saveQuery(subArray);
       promises.push(Table.fetchQuery(query));
     }
@@ -221,7 +213,7 @@ class Table {
   }
 
   // ################################################
-  // UDATE
+  // UPDATE
   // ################################################
 
   update(input, newValues, options) {
@@ -455,7 +447,7 @@ class Table {
   }
 
   // ################################################
-  // MISCELANEOUS
+  // MISCELLANEOUS
   // ################################################
 
   columnsNames() {
