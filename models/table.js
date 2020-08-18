@@ -183,9 +183,9 @@ class Table {
   }
 
 
-  static getSubArray(i, iterations, array, batchSize = this.INSERT_LIMIT_ARRAY) {
+  getSubArray(array, i, batchSize = this.INSERT_LIMIT_ARRAY) {
     const initial = batchSize * i;
-    const final = i < iterations - 1 ? initial + batchSize : array.length;
+    const final = Math.min(array.length, (i + 1) * batchSize);
     const result = array.slice(initial, final);
     return result;
   }
@@ -195,7 +195,7 @@ class Table {
     const promises = [];
     const iterations = parsed.length / batchSize;
     for (let i = 0; i < iterations; i++) {
-      const subArray = Table.getSubArray(i, iterations, parsed, batchSize);
+      const subArray = this.getSubArray(parsed, i, batchSize);
       const query = this.saveQuery(subArray);
       promises.push(Table.fetchQuery(query));
     }
