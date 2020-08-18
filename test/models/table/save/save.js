@@ -27,7 +27,7 @@ describe('TABLE GATEWAY: save', () => { // eslint-disable-line
     assert.instanceOf(fromDB.updated_at, Date);
   });
 
-  it('unexistant property', (done) => { // eslint-disable-line
+  it('non-existant property', (done) => { // eslint-disable-line
     const entry = {
       name: 'name',
       price: 120,
@@ -59,10 +59,25 @@ describe('TABLE save: when a input is an Array', () => { // eslint-disable-line
   });
 
   it('save a array', async () => { // eslint-disable-line
-    await Coffee.saveBunch([...arrayToTest]);
+    await Coffee.save(arrayToTest);
+
     const saved = await knex('coffee').select('*').orderBy('price');
     for (let i = 0; i < saved.length; i++) {
       delete saved[i].id;
+      delete saved[i].created_at;
+      delete saved[i].updated_at;
+    }
+    assert.deepEqual(arrayToTest, saved);
+  });
+
+  it('save a array: with batchSize', async () => { // eslint-disable-line
+    await Coffee.delete({});
+    await Coffee.save(arrayToTest, 400);
+    const saved = await knex('coffee').select('*').orderBy('price');
+    for (let i = 0; i < saved.length; i++) {
+      delete saved[i].id;
+      delete saved[i].created_at;
+      delete saved[i].updated_at;
     }
     assert.deepEqual(arrayToTest, saved);
   });
