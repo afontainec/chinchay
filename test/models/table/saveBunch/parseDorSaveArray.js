@@ -31,7 +31,7 @@ const arrayToTest = [
 // Our parent block
 describe('MODEL TABLE: parseForSaveArray integration test', () => { // eslint-disable-line
 
-  it('hapry path', async () => { // eslint-disable-line
+  it('happy path', async () => { // eslint-disable-line
     const parsed = Table.parseForSaveArray(arrayToTest);
     for (let i = 0; i < parsed.length; i++) {
       assert.isUndefined(parsed[i].id);
