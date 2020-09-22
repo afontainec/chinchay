@@ -11,7 +11,8 @@ const ADMIN = 'admin';
 const bootstrap = (config, thewall) => {
   TheWall = thewall;
   ({ UNRESTRICTED_ROLES, RESTRICTED_ROLES } = config);
-  accessToken.bootstrap(thewall);
+  config.TOKEN_EXPIRATION_WINDOW = 1;
+  accessToken.bootstrap(thewall, config.TOKEN_EXPIRATION_WINDOW);
 };
 
 const isAdmin = (user) => {
