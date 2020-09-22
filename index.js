@@ -32,7 +32,8 @@ function getConfig() {
 }
 
 Table.setDefaultKnex(knex);
-if (access && thewall) Access.bootstrap(access, thewall);
+
+if (access && thewall) Access.bootstrap(access, thewall, chainConfig);
 
 module.exports = {
   Table,
