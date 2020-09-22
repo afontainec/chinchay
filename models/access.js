@@ -8,10 +8,10 @@ let RESTRICTED_ROLES;
 
 const ADMIN = 'admin';
 
-const bootstrap = (config, thewall) => {
+const bootstrap = (config, thewall, chainfile) => {
   TheWall = thewall;
   ({ UNRESTRICTED_ROLES, RESTRICTED_ROLES } = config);
-  accessToken.bootstrap(thewall);
+  accessToken.bootstrap(thewall, chainfile);
 };
 
 const isAdmin = (user) => {

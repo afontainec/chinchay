@@ -4,15 +4,19 @@ const ChinchayError = require('../chinchayError');
 let TheWall;
 
 const ONE_HOUR = 60 * 60;
-const WINDOW = 7 * 24 * ONE_HOUR;
+const DEFAULT_WINDOW = 7 * 24 * ONE_HOUR;
+let WINDOW;
 const secret = process.env.JWT_SECRET || 'JWT_CHINCHAY_SECRET_CODE';
 
-const bootstrap = (thewall) => {
+const bootstrap = (thewall, chainfile) => {
   TheWall = thewall;
+  chainfile = chainfile || {};
+  WINDOW = chainfile.TOKEN_EXPIRATION_WINDOW || DEFAULT_WINDOW;
 };
 
 const unbootstrap = () => {
   TheWall = null;
+  WINDOW = undefined;
 };
 
 const decode = async (req, res, next) => {
