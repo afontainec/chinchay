@@ -8,9 +8,10 @@ const DEFAULT_WINDOW = 7 * 24 * ONE_HOUR;
 let WINDOW;
 const secret = process.env.JWT_SECRET || 'JWT_CHINCHAY_SECRET_CODE';
 
-const bootstrap = (thewall, window) => {
+const bootstrap = (thewall, chainfile) => {
   TheWall = thewall;
-  WINDOW = window || DEFAULT_WINDOW;
+  chainfile = chainfile || {};
+  WINDOW = chainfile.TOKEN_EXPIRATION_WINDOW || DEFAULT_WINDOW;
 };
 
 const unbootstrap = () => {

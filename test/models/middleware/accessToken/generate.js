@@ -30,7 +30,7 @@ describe('Middleware: accessToken: generate', () => { // eslint-disable-line max
   });
 
   it('Bootstrapped with specific window', (done) => {
-    accessToken.bootstrap(TheWall, ONE_HOUR_IN_SECONDS);
+    accessToken.bootstrap(TheWall, { TOKEN_EXPIRATION_WINDOW: ONE_HOUR_IN_SECONDS });
     const result = accessToken.generate({ id: 1234 });
     assert.isDefined(result.expiration);
     assert.isDefined(result.token);
