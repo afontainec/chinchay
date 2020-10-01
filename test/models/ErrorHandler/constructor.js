@@ -27,4 +27,18 @@ describe('Error Handler intialize', () => {
     const expected = { A: 1 };
     assert.deepEqual(handler.ERROR_TRANSLATE, expected);
   });
+
+
+  it('multiple error handlers, redefine default', async () => {
+    const errorTranslate = {
+      unexistantID: {
+        code: 500,
+        message: 'Id solicitado no existe',
+      },
+    };
+    const first = new ErrorHandler(errorTranslate);
+    const second = new ErrorHandler();
+    assert.equal(first.getHTTPCode({ chinchayCode: 'unexistantID' }), 500);
+    assert.equal(second.getHTTPCode({ chinchayCode: 'unexistantID' }), 400);
+  });
 });
