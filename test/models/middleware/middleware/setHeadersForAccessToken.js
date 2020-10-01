@@ -16,6 +16,7 @@ describe('Middleware: setHeadersForAccessToken', () => { // eslint-disable-line
     Middleware.setHeadersForAccessToken(req, res, () => {
       assert.equal(res.getHeader('Access-Control-Allow-Origin'), '*');
       assert.equal(res.getHeader('Access-Control-Allow-Headers'), 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+      assert.equal(res.getHeader('Access-Control-Allow-Methods'), 'PUT, POST, GET, DELETE, OPTIONS, PATCH');
       done();
     });
   });
