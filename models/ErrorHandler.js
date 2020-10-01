@@ -1,5 +1,6 @@
+const { utils } = require('codemaster');
 
-const POSTGRESS_TO_HTTP_ERROR = {
+const POSTGRES_TO_HTTP_ERROR = {
   42703: {
     code: 400,
     message: 'Columna solicitada no existe.',
@@ -49,8 +50,8 @@ class ErrorHandler {
   constructor(errorTranslate, replace) {
     errorTranslate = errorTranslate || {};
     if (replace) this.ERROR_TRANSLATE = errorTranslate;
-    else this.ERROR_TRANSLATE = Object.assign(POSTGRESS_TO_HTTP_ERROR, errorTranslate);
-    this.DEFAULT_ERROR_TRANSLATE = POSTGRESS_TO_HTTP_ERROR;
+    else this.ERROR_TRANSLATE = Object.assign(utils.cloneJSON(POSTGRES_TO_HTTP_ERROR), errorTranslate);
+    this.DEFAULT_ERROR_TRANSLATE = POSTGRES_TO_HTTP_ERROR;
   }
 
   getHTTPCode(error) {
