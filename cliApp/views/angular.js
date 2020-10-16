@@ -30,10 +30,14 @@ const buildService = async (values, APP_PATH) => {
   const command = ngGenerateService(values, APP_PATH);
   const result = execSync(command).toString();
   const [directory, filename] = getServicePath(APP_PATH, result);
+  await fillService(values, directory, filename);
+  return directory;
+};
+
+const fillService = (values, directory, filename) => {
   const sampleService = path.join(SAMPLE_DIR, serviceFile);
   const service = new FileCreator(sampleService, directory, filename);
-  await service.create(values, true);
-  return directory;
+  return service.create(values, true);
 };
 
 const ngGenerateService = (values, APP_PATH) => {
