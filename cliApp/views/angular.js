@@ -31,8 +31,6 @@ const buildService = async (values, APP_PATH) => {
   const command = ngGenerateService(values, APP_PATH);
   const result = execSync(command).toString();
   const [directory, filename, testFilename] = getServicePath(APP_PATH, result);
-  console.log('------------');
-  console.log(filename, testFilename);
   await Promise.all(
     [fillService(values, directory, filename), fillTestService(values, directory, testFilename)],
   );
@@ -98,6 +96,7 @@ const buildComponentURIs = (prefix, values) => {
   const component = {};
   component.sampleCtrl = path.join(prefix, 'ctrl.ts');
   component.sampleHTML = path.join(prefix, 'view.html');
+  component.sampleTest = path.join(prefix, 'spec.ts');
   component.path = buildSchemaPath(KEBAB_CASE, name);
   return component;
 };
@@ -105,26 +104,31 @@ const buildComponentURIs = (prefix, values) => {
 const createComponent = (APP_PATH, values, component) => {
   const command = ngGenerate('component', APP_PATH, component.path);
   const result = execSync(command).toString();
-  const { controller, html } = getComponentPath(APP_PATH, result);
+  const { controller, html, test } = getComponentPath(APP_PATH, result);
   const sampleCtrl = path.join(SAMPLE_DIR, component.sampleCtrl);
   const ctrl = new FileCreator(sampleCtrl, controller[0], controller[1]);
   const sampleHTML = path.join(SAMPLE_DIR, component.sampleHTML);
   const htmlCreator = new FileCreator(sampleHTML, html[0], html[1]);
+  const sampleTest = path.join(SAMPLE_DIR, component.sampleTest);
+  const testCreator = new FileCreator(sampleTest, test[0], test[1]);
   return Promise.all([
     ctrl.create(values, true),
     htmlCreator.create(values, true),
+    testCreator.create(values, true),
   ]);
 };
 
 const getComponentPath = (APP_PATH, result) => {
   const lines = result.split(/\r?\n/);
-  const [tsFile] = getTSFile(lines);
+  const [tsFile, tsTestFile] = getTSFile(lines);
   const controllerPath = path.join(APP_PATH, tsFile);
   const controller = [path.dirname(controllerPath), path.basename(controllerPath)];
+  const testPath = path.join(APP_PATH, tsTestFile);
+  const test = [path.dirname(controllerPath), path.basename(testPath)];
   const htmlFile = getHTMLFile(lines);
   const viewPath = path.join(APP_PATH, htmlFile);
   const html = [path.dirname(viewPath), path.basename(viewPath)];
-  return { controller, html };
+  return { controller, html, test };
 };
 
 
@@ -145,7 +149,7 @@ const getTSFile = (lines) => {
   let tsTestFile;
   for (let i = 0; i < lines.length; i++) {
     const element = lines[i];
-    if (element.includes('.ts')) {
+    if (element.includes('.ts') && element.startsWith('CREATE')) {
       const pieces = element.split(' ');
       if (element.includes('.spec.ts')) [, tsTestFile] = pieces;
       else [, tsFile] = pieces;

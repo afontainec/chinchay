@@ -35,7 +35,7 @@ const newMVC = (tableName, options) => {
   const backend = getBackend(options);
   const values = getValues(tableName, options, config);
   const promises = createFiles(frontendType, backend, tableName, values);
-  Promise.all(promises).then().catch(() => { Printer.error('Error creating files'); });
+  Promise.all(promises).then().catch((e) => { Printer.error(e); });
 };
 
 const createFiles = (frontendType, backend, tableName, values) => {
