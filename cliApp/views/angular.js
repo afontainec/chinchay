@@ -11,8 +11,8 @@ const routerFile = 'router.ts';
 
 const createFile = async (tableName, values, config) => {
   const APP_PATH = getAngularAppPath(config);
-  const directory = await buildService(values, APP_PATH);
-  await buildRouter(values, APP_PATH, directory);
+  await buildModule(values, APP_PATH);
+  await buildService(values, APP_PATH);
   await createNewComponent(values, APP_PATH);
   await createShowComponent(values, APP_PATH);
   await createEditComponent(values, APP_PATH);
@@ -25,6 +25,27 @@ const getAngularAppPath = (config) => {
   return config.views.angular || '.';
 };
 
+// #region MODULE
+const buildModule = async (values, APP_PATH) => {
+  const command = ngGenerateModule(values, APP_PATH);
+  const result = execSync(command).toString();
+  const filename = getRouterPath(APP_PATH, result);
+  await buildRouter(values, APP_PATH, filename);
+};
+
+const ngGenerateModule = (values, APP_PATH) => {
+  const NAME = values.KEBAB_CASE;
+  return ngGenerate('module', APP_PATH, NAME, '--routing');
+};
+
+const getRouterPath = (APP_PATH, result) => {
+  const lines = result.split(/\r?\n/);
+  const [,, routingFile] = getTSFile(lines);
+  return path.join(APP_PATH, routingFile);
+};
+
+
+// #endregion
 
 // #region SERVICE
 const buildService = async (values, APP_PATH) => {
@@ -139,23 +160,25 @@ const buildSchemaPath = (first, second, third) => {
 };
 
 
-const ngGenerate = (schema, APP_PATH, schemaPath) => {
-  const command = `cd '${APP_PATH}' && ng generate ${schema} '${schemaPath}'`;
+const ngGenerate = (schema, APP_PATH, schemaPath, flags = '') => {
+  const command = `cd '${APP_PATH}' && ng generate ${schema} '${schemaPath}' ${flags}`;
   return command;
 };
 
 const getTSFile = (lines) => {
   let tsFile;
   let tsTestFile;
+  let routingFile;
   for (let i = 0; i < lines.length; i++) {
     const element = lines[i];
     if (element.includes('.ts') && element.startsWith('CREATE')) {
       const pieces = element.split(' ');
       if (element.includes('.spec.ts')) [, tsTestFile] = pieces;
+      else if (element.includes('-routing.module.ts')) [, routingFile] = pieces;
       else [, tsFile] = pieces;
     }
   }
-  return [tsFile, tsTestFile];
+  return [tsFile, tsTestFile, routingFile];
 };
 
 const getHTMLFile = (lines) => {
@@ -169,10 +192,11 @@ const getHTMLFile = (lines) => {
   throw new Error(`Could not create angular: missing TS FILE in ${lines}`);
 };
 
-const buildRouter = (values, APP_PATH, directory) => {
-  directory = path.dirname(directory);
+const buildRouter = (values, APP_PATH, routerPath) => {
+  const directory = path.dirname(routerPath);
+  const filename = path.basename(routerPath);
   const sample = path.join(SAMPLE_DIR, routerFile);
-  const service = new FileCreator(sample, directory, 'router.ts');
+  const service = new FileCreator(sample, directory, filename);
   return service.create(values, true);
 };
 
