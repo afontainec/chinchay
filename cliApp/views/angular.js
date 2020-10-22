@@ -6,6 +6,7 @@ const FileCreator = require('../fileCreator');
 const SAMPLE_DIR = path.join(__dirname, '..', '..', 'example', 'views', 'angular');
 // const files = ['service.ts'];
 const serviceFile = 'service.ts';
+const moduleFile = 'module.ts';
 const serviceTestFile = 'service.spec.ts';
 const routerFile = 'router.ts';
 
@@ -29,8 +30,13 @@ const getAngularAppPath = (config) => {
 const buildModule = async (values, APP_PATH) => {
   const command = ngGenerateModule(values, APP_PATH);
   const result = execSync(command).toString();
-  const filename = getRouterPath(APP_PATH, result);
-  await buildRouter(values, APP_PATH, filename);
+  const [modulePath, routerPath] = getModulePath(APP_PATH, result);
+  console.log(modulePath);
+  console.log('----');
+  console.log(routerPath);
+  await Promise.all([
+    fillModule(values, modulePath),
+    buildRouter(values, routerPath)]);
 };
 
 const ngGenerateModule = (values, APP_PATH) => {
@@ -38,10 +44,18 @@ const ngGenerateModule = (values, APP_PATH) => {
   return ngGenerate('module', APP_PATH, NAME, '--routing');
 };
 
-const getRouterPath = (APP_PATH, result) => {
+const getModulePath = (APP_PATH, result) => {
   const lines = result.split(/\r?\n/);
-  const [,, routingFile] = getTSFile(lines);
-  return path.join(APP_PATH, routingFile);
+  const [moduleFilename,, routingFile] = getTSFile(lines);
+  return [path.join(APP_PATH, moduleFilename), path.join(APP_PATH, routingFile)];
+};
+
+const fillModule = (values, modulePath) => {
+  const directory = path.dirname(modulePath);
+  const filename = path.basename(modulePath);
+  const sampleModule = path.join(SAMPLE_DIR, moduleFile);
+  const module = new FileCreator(sampleModule, directory, filename);
+  return module.create(values, true);
 };
 
 
@@ -192,7 +206,7 @@ const getHTMLFile = (lines) => {
   throw new Error(`Could not create angular: missing TS FILE in ${lines}`);
 };
 
-const buildRouter = (values, APP_PATH, routerPath) => {
+const buildRouter = (values, routerPath) => {
   const directory = path.dirname(routerPath);
   const filename = path.basename(routerPath);
   const sample = path.join(SAMPLE_DIR, routerFile);
