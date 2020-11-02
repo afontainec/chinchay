@@ -31,9 +31,6 @@ const buildModule = async (values, APP_PATH) => {
   const command = ngGenerateModule(values, APP_PATH);
   const result = execSync(command).toString();
   const [modulePath, routerPath] = getModulePath(APP_PATH, result);
-  console.log(modulePath);
-  console.log('----');
-  console.log(routerPath);
   await Promise.all([
     fillModule(values, modulePath),
     buildRouter(values, routerPath)]);
