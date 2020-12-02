@@ -172,7 +172,6 @@ const buildSchemaPath = (first, second, third) => {
 
 
 const ngGenerate = (schema, APP_PATH, schemaPath, flags = '') => {
-  // const completePath = path.join(APP_PATH, schemaPath);
   // const command = `cd '${APP_PATH}' && ng generate ${schema} '${schemaPath}' ${flags}`;
   const command = `ng generate ${schema} '${schemaPath}' ${flags}`;
   return command;
