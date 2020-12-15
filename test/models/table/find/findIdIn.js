@@ -43,9 +43,7 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
   it('Malicious: array of string', (done) => { // eslint-disable-line
     Coffee.findIdIn(['does not exist']).then(() => {
       done('SHOULD NOT GET HERE');
-    }).catch((err) => {
-      assert.equal(err.code, 400);
-      assert.equal(err.fullMessage.routine, 'pg_atoi');
+    }).catch(() => {
       done();
     });
   });
@@ -53,9 +51,7 @@ describe('TABLE GATEWAY: FIND ID IN', () => { // eslint-disable-line
   it('Malicious: not valid id', (done) => { // eslint-disable-line
     Coffee.findIdIn('wabalaba').then(() => {
       done('SHOULD NOT GET HERE');
-    }).catch((err) => {
-      assert.equal(err.code, 400);
-      assert.equal(err.fullMessage.routine, 'pg_atoi');
+    }).catch(() => {
       done();
     });
   });
