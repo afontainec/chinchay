@@ -295,11 +295,7 @@ class Table {
     search.id = id;
     return new Promise((resolve, reject) => {
       this.find(search, columns, options).then((entries) => {
-        if (entries.length === 0) {
-          const error = new Error('Id solicitado no existe');
-          error.code = 'unexistantID';
-          return reject(Table.makeError(error));
-        }
+        if (entries.length === 0) return reject(new ChinchayError('id solicitado no existe', 'no_entry_for_id'));
         return resolve(entries[0]);
       }).catch((err) => {
         reject(err);

@@ -23,8 +23,9 @@ describe('TABLE GATEWAY: FIND BY ID', () => { // eslint-disable-line
     coffee.findById(-1).then(() => {
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
-      assert.equal(err.code, 500);
-      assert.equal(err.fullMessage.chinchayCode, 'unexistantID');
+      console.log(err);
+      assert.equal(err.chinchayMessage, 'id solicitado no existe');
+      assert.equal(err.chinchayCode, 'no_entry_for_id');
       done();
     });
   });
