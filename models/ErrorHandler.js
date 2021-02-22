@@ -41,6 +41,10 @@ const POSTGRES_TO_HTTP_ERROR = {
     code: 403,
     message: 'Access restricted to this data',
   },
+  no_entry_for_id: {
+    code: 404,
+    message: 'No se encontró una entrada para el id solicitado',
+  },
 };
 
 
