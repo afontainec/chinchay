@@ -343,7 +343,7 @@ class Table {
     if (options.offset) {
       query = this.addOffset(query, options.offset);
     }
-    query = this.addTimeInterval(query, options.startDate, options.endDate);
+    query = this.addTimeInterval(query, options);
     return query;
   }
 
@@ -713,7 +713,10 @@ class Table {
     return query;
   }
 
-  static addTimeInterval(query, startDate, endDate) {
+  static addTimeInterval(query, options, endDate) {
+    options = options || {};
+    const startDate = typeof options === 'object' && !(options instanceof Date) ? options.startDate : options;
+    endDate = options && options.endDate ? options.endDate : endDate;
     if (endDate) {
       query.andWhere('created_at', '<', endDate);
     }
