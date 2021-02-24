@@ -334,16 +334,16 @@ class Table {
   static addAdvancedOptions(query, options) {
     if ((typeof options) !== 'object') return query;
     if (options.groupBy) {
-      query = Table.addGroupBy(query, options.groupBy);
+      query = this.addGroupBy(query, options.groupBy);
     }
-    query = Table.addOrderByArray(query, options.orderBy);
+    query = this.addOrderByArray(query, options.orderBy);
     if (options.limit) {
-      query = Table.addLimit(query, options.limit);
+      query = this.addLimit(query, options.limit);
     }
     if (options.offset) {
-      query = Table.addOffset(query, options.offset);
+      query = this.addOffset(query, options.offset);
     }
-    query = Table.addTimeInterval(query, options.startDate, options.endDate);
+    query = this.addTimeInterval(query, options.startDate, options.endDate);
     return query;
   }
 
@@ -412,7 +412,7 @@ class Table {
 
   buildQuery(selectType, search, columns, options) {
     let query = this.table();
-    query = Table.makeQuery(query, selectType, search, columns, options);
+    query = this.constructor.makeQuery(query, selectType, search, columns, options);
     return query;
   }
 
@@ -436,9 +436,9 @@ class Table {
   }
 
   static makeQuery(query, selectType, search, columns, options) {
-    Table.addSelect(selectType, query, columns, options);
-    query = Table.addWhere(query, search, options);
-    query = Table.addAdvancedOptions(query, options);
+    this.addSelect(selectType, query, columns, options);
+    query = this.addWhere(query, search, options);
+    query = this.addAdvancedOptions(query, options);
     return query;
   }
 
