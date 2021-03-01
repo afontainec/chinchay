@@ -59,14 +59,12 @@ class Table {
     return this.buildQuery('count', search, 'all', options);
   }
 
-  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
-  countGroupBy(groupBy, search, columns, options) {
+  countGroupBy(groupBy, search, options) {
     options = options || {};
     options.groupBy = groupBy;
-    return this.count(search, columns, options);
+    return this.count(search, options);
   }
 
-  // // TODO: USE ADD WHERE AND ADD ADVANCE TO DO THIS QUERY
   countIn(target, validOptions, query, options) {
     query = query || {};
     if (Array.isArray(validOptions)) query[target] = ['in', validOptions];
