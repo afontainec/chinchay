@@ -30,11 +30,11 @@ describe('Tablegateway: add Select', () => { // eslint-disable-line no-undef, ma
     done();
   });
 
-  it('type is sum', (done) => { // eslint-disable-line no-undef
+  it('type is aggregate', (done) => { // eslint-disable-line no-undef
     const query = knex('coffee');
     const columns = 'all';
-    const options = {};
-    Table.addSelect('sum', query, columns, options);
+    const options = { aggregation: 'sum' };
+    Table.addSelect('aggregate', query, columns, options);
     const expected = 'select sum("all") from "coffee"';
     assert.equal(query.toString(), expected);
     done();
