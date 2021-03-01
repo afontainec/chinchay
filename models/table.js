@@ -432,7 +432,7 @@ class Table {
 
   static isComposed(value) {
     const composingOptions = ['and', 'or'];
-    return Array.isArray(value) && composingOptions.includes(value[1]) && value.length === 3;
+    return Array.isArray(value) && value.length === 3 && composingOptions.includes(value[1]);
   }
 
   static isSpecial(value) {
