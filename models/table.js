@@ -77,16 +77,22 @@ class Table {
   }
 
   // ################################################
-  // SUM
+  // AGGREGATION FUNCTIONS
   // ################################################
 
   sum(column, search, options) {
-    const query = this.sumQuery(column, search, options);
-    if (Table.returnAsQuery(options)) return query;
-    return Table.parseSumResult(query);
+    return this.aggregateQuery('sum', column, search, options);
   }
 
-  static async parseSumResult(query) {
+  min(column, search, options) {
+    return this.aggregateQuery('min', column, search, options);
+  }
+
+  max(column, search, options) {
+    return this.aggregateQuery('max', column, search, options);
+  }
+
+  static async parseAggregationResult(query) {
     const result = await Table.fetchQuery(query);
     const nonGroupedBy = result.length === 1 && Object.keys(result[0]).length === 1;
     if (nonGroupedBy) {
@@ -96,8 +102,12 @@ class Table {
     return result;
   }
 
-  sumQuery(column, search, options) {
-    return this.buildQuery('sum', search, column, options);
+  aggregateQuery(aggregation, column, search, options) {
+    options = options || {};
+    options.aggregation = aggregation;
+    const query = this.buildQuery('aggregate', search, column, options);
+    if (Table.returnAsQuery(options)) return query;
+    return Table.parseAggregationResult(query);
   }
 
   // ################################################
@@ -353,8 +363,8 @@ class Table {
         return Table.addFindSelect(query, columns, options);
       case 'count':
         return Table.addCountSelect(query, options);
-      case 'sum':
-        return Table.addSumSelect(query, columns, options);
+      case 'aggregate':
+        return Table.addAggregateSelect(query, columns, options);
       case 'delete':
         return Table.addDelete(query, options);
       default:
@@ -383,13 +393,14 @@ class Table {
     return query.count();
   }
 
-  static addSumSelect(query, column, options) {
+  static addAggregateSelect(query, column, options) {
     options = options || {};
     if (options.rawSelect) {
       query = Table.addRawSelect(query, options.rawSelect);
     }
-    if (!column) throw new Error('A column should be given to sum over');
-    return query.sum(column);
+    if (!column) throw new Error('A column should be given to aggregate over');
+    if (!options.aggregation) throw new Error('Aggregation option missing');
+    return query[options.aggregation](column);
   }
 
   static addDelete(query) {
