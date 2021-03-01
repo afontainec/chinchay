@@ -67,7 +67,7 @@ describe('Malicious', () => { // eslint-disable-line
   });
 
   // is ignored
-  it('Query has less than 2 elements in array', async () => { // eslint-disable-line
+  it('Query has less than 2 elements in array, is ignored', async () => { // eslint-disable-line
     const q = {};
     q.id = ['<>'];
     const results = await Coffee.find(q);

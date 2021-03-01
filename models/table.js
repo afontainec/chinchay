@@ -399,10 +399,11 @@ class Table {
   static addWhere(query, search, options) {
     options = options || {};
     if ((typeof search) !== 'object' || search === null) search = {};
-    const especialQuery = Table.filterSpecialQuery(search);
-    query.where(search);
-    for (let i = 0; i < especialQuery.length; i++) {
-      query.andWhere(especialQuery[i][0], especialQuery[i][1], especialQuery[i][2]);
+    const keys = Object.keys(search);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = search[key];
+      Table.insertWhere(query, key, value);
     }
     if (options.rawWhere) {
       query = Table.addRawWhere(query, options.rawWhere);
@@ -421,18 +422,38 @@ class Table {
     return this.knex('information_schema.columns').select('column_name').where(query);
   }
 
-  static filterSpecialQuery(search) {
-    const keys = Object.keys(search);
-    const especialQuery = [];
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const elem = search[key];
-      if (Array.isArray(elem)) {
-        if (elem.length >= 2) especialQuery.push([key, elem[0], elem[1]]);
-        delete search[key];
-      }
+  static insertWhere(query, key, value, operator) {
+    if (Table.isComposed(value)) Table.insertComposed(query, key, value);
+    else {
+      if (!Array.isArray(value)) value = ['=', value];
+      if (Table.isSpecial(value)) Table.insertSpecial(query, key, value, operator);
     }
-    return especialQuery;
+  }
+
+  static isComposed(value) {
+    const composingOptions = ['and', 'or'];
+    return Array.isArray(value) && composingOptions.includes(value[1]) && value.length === 3;
+  }
+
+  static isSpecial(value) {
+    return Array.isArray(value) && value.length >= 2;
+  }
+
+  static insertSpecial(query, key, value, operator) {
+    if (operator === 'or') query.orWhere(key, value[0], value[1]);
+    else query.andWhere(key, value[0], value[1]);
+  }
+
+  static insertComposed(query, key, value) {
+    const [first, operator, second] = value;
+    const firstSearch = {};
+    firstSearch[key] = first;
+    const secondSearch = {};
+    secondSearch[key] = second;
+    query.andWhere(function addComposeSearch() {
+      Table.insertWhere(this, key, first);
+      Table.insertWhere(this, key, second, operator);
+    });
   }
 
   static makeQuery(query, selectType, search, columns, options) {
