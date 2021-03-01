@@ -15,7 +15,7 @@ const options = {
 };
 
 // Our parent block
-describe('TABLE GATEWAY: SumQuery', () => { // eslint-disable-line no-undef, max-lines-per-function
+describe('TABLE GATEWAY: parseAggregationResult', () => { // eslint-disable-line no-undef, max-lines-per-function
 
   before(async () => { // eslint-disable-line
     await knex.seed.run();
@@ -26,7 +26,7 @@ describe('TABLE GATEWAY: SumQuery', () => { // eslint-disable-line no-undef, max
     const search = {};
 
     const query = Coffee.sum(column, search, options);
-    const result = await Table.parseSumResult(query);
+    const result = await Table.parseAggregationResult(query);
     const expected = [{
       price: 100,
       sum: '200',
@@ -41,7 +41,7 @@ describe('TABLE GATEWAY: SumQuery', () => { // eslint-disable-line no-undef, max
     const column = 'price';
     const search = {};
     const query = Coffee.sum(column, search, { returnAsQuery: true });
-    const result = await Table.parseSumResult(query);
+    const result = await Table.parseAggregationResult(query);
     const expected = 310;
     assert.deepEqual(result, expected);
   });
@@ -50,7 +50,7 @@ describe('TABLE GATEWAY: SumQuery', () => { // eslint-disable-line no-undef, max
     const column = 'price';
     const search = { price: -988766543 };
     const query = Coffee.sum(column, search, { returnAsQuery: true });
-    const result = await Table.parseSumResult(query);
+    const result = await Table.parseAggregationResult(query);
     const expected = 0;
     assert.deepEqual(result, expected);
   });

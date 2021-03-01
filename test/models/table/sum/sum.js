@@ -8,7 +8,7 @@ const Coffee = require('../../../../models/coffee-example');
 
 
 // Our parent block
-describe('TABLE GATEWAY: SumQuery', () => { // eslint-disable-line no-undef, max-lines-per-function
+describe('TABLE GATEWAY: sum', () => { // eslint-disable-line no-undef, max-lines-per-function
 
   before(async () => { // eslint-disable-line
     await knex.seed.run();
