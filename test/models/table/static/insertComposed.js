@@ -8,7 +8,7 @@ const { Table } = require('../../../..');
 
 
 // Our parent block
-describe('TABLE GATEWAY: isComposed', () => { // eslint-disable-line max-lines-per-function
+describe('TABLE GATEWAY: insertComposed', () => { // eslint-disable-line max-lines-per-function
 
   it('happy path', (done) => {
     const query = knex('test').select('column').where('first', 'c');

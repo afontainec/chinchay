@@ -8,11 +8,11 @@ const { Table } = require('../../../..');
 
 
 // Our parent block
-describe('TABLE GATEWAY: isComposed', () => { // eslint-disable-line max-lines-per-function
+describe('TABLE GATEWAY: isSpecial', () => { // eslint-disable-line max-lines-per-function
 
   it('happy path', (done) => {
     const query = knex('test').select('column').where('first', 'c');
-    Table.insertSpecial(query, 'key', 'b');
+    Table.insertSpecial(query, 'key', ['=', 'b']);
     const expected = 'select "column" from "test" where "first" = \'c\' and "key" = \'b\'';
     assert.equal(query.toString(), expected);
     done();
@@ -20,7 +20,7 @@ describe('TABLE GATEWAY: isComposed', () => { // eslint-disable-line max-lines-p
 
   it('operator is or', (done) => {
     const query = knex('test').select('column').where('first', 'c');
-    Table.insertSpecial(query, 'key', 'b', 'or');
+    Table.insertSpecial(query, 'key', ['=', 'b'], 'or');
     const expected = 'select "column" from "test" where "first" = \'c\' or "key" = \'b\'';
     assert.equal(query.toString(), expected);
     done();
