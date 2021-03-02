@@ -23,7 +23,6 @@ describe('TABLE GATEWAY: FIND BY ID', () => { // eslint-disable-line
     coffee.findById(-1).then(() => {
       done('SHOULD NOT GET HERE');
     }).catch((err) => {
-      console.log(err);
       assert.equal(err.chinchayMessage, 'id solicitado no existe');
       assert.equal(err.chinchayCode, 'no_entry_for_id');
       done();
@@ -32,6 +31,14 @@ describe('TABLE GATEWAY: FIND BY ID', () => { // eslint-disable-line
 
   it('Not valid id ', (done) => { // eslint-disable-line
     coffee.findById('what is this').then(() => {
+      done('SHOULD NOT GET HERE');
+    }).catch(() => {
+      done();
+    });
+  });
+
+  it('id is undefined ', (done) => { // eslint-disable-line
+    coffee.findById().then(() => {
       done('SHOULD NOT GET HERE');
     }).catch(() => {
       done();

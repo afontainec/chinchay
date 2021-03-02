@@ -439,7 +439,6 @@ class Table {
   static insertWhere(query, key, value, operator) {
     if (Table.isComposed(value)) Table.insertComposed(query, key, value);
     else {
-      if (value === undefined) return;
       if (value === null) value = ['is', null];
       else if (!Array.isArray(value)) value = ['=', value];
       if (Table.isSpecial(value)) Table.insertSpecial(query, key, value, operator);
