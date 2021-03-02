@@ -1,4 +1,4 @@
-// During the test the env variable is set to test
+/* global describe, before, it */
 process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
@@ -8,12 +8,12 @@ const Coffee = require('../../../../models/coffee-example');
 
 
 // Our parent block
-describe('TABLE GATEWAY: deleteById', () => { // eslint-disable-line
-  before(async () => { // eslint-disable-line
+describe('TABLE GATEWAY: deleteById', () => { // eslint-disable-line max-lines-per-function
+  before(async () => {
     await knex.seed.run();
   });
 
-  it('With valid id', async () => { // eslint-disable-line
+  it('With valid id', async () => {
     const all = await Coffee.count();
     const deleted = await Coffee.deleteById(1);
     const results = await Coffee.count();
@@ -21,22 +21,39 @@ describe('TABLE GATEWAY: deleteById', () => { // eslint-disable-line
     assert.isNotArray(deleted);
     assert.equal(deleted.id, 1);
   });
-  it('returnAsQuery', async () => { // eslint-disable-line
+  it('returnAsQuery', async () => {
     const query = Coffee.deleteById(1, { returnAsQuery: true });
     assert.equal(query.toString(), 'delete from "coffee" where "id" = 1 returning *');
   });
 
-  describe('Malicious happy path', () => { // eslint-disable-line
-    before(async () => { // eslint-disable-line
+  describe('Malicious happy path', () => { // eslint-disable-line max-lines-per-function
+    before(async () => {
       await knex.seed.run();
     });
 
-    it('Invalid type', (done) => { // eslint-disable-line
+    it('Invalid type', (done) => {
       Coffee.deleteById('invalid type').then(() => {
         done('SHOULD NOT GET HERE');
       }).catch(() => {
         done();
       });
+    });
+
+    it('id not provided', (done) => {
+      Coffee.deleteById().then(() => {
+        done('SHOULD NOT GET HERE');
+      }).catch(() => {
+        done();
+      });
+    });
+
+    it('id not provided, and asked to returnAsQuery', (done) => {
+      try {
+        Coffee.deleteById(null, { returnAsQuery: true });
+        done('SHOULD NOT GET HERE');
+      } catch (error) {
+        done();
+      }
     });
   });
 });
