@@ -126,6 +126,11 @@ class Table {
   }
 
   deleteById(id, options) {
+    if (!id) {
+      const err = new ChinchayError(new Error('Provide an id to delete'), 'delete_by_id_no_id', 'Method delete by Id needs an id as input');
+      if (options && options.returnAsQuery) throw err;
+      return Promise.reject(err);
+    }
     const search = { id };
     const query = this.delete(search, options);
     if (Table.returnAsQuery(options)) return query;
@@ -434,7 +439,9 @@ class Table {
   static insertWhere(query, key, value, operator) {
     if (Table.isComposed(value)) Table.insertComposed(query, key, value);
     else {
-      if (!Array.isArray(value)) value = ['=', value];
+      if (value === undefined) return;
+      if (value === null) value = ['is', null];
+      else if (!Array.isArray(value)) value = ['=', value];
       if (Table.isSpecial(value)) Table.insertSpecial(query, key, value, operator);
     }
   }

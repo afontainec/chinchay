@@ -34,4 +34,20 @@ describe('TABLE GATEWAY: insertWhere', () => { // eslint-disable-line max-lines-
     done();
   });
 
+  it('The value is null', (done) => {
+    const query = knex('test').select('column').where('first', 'c');
+    Table.insertWhere(query, 'key', null);
+    const expected = 'select "column" from "test" where "first" = \'c\' and "key" is null';
+    assert.equal(query.toString(), expected);
+    done();
+  });
+
+  it('The value is undefined', (done) => {
+    const query = knex('test').select('column').where('first', 'c');
+    Table.insertWhere(query, 'key');
+    const expected = 'select "column" from "test" where "first" = \'c\'';
+    assert.equal(query.toString(), expected);
+    done();
+  });
+
 });
