@@ -46,6 +46,14 @@ const POSTGRES_TO_HTTP_ERROR = {
     code: 404,
     message: 'No se encontró una entrada para el id solicitado',
   },
+  no_bearer_token: {
+    code: 403,
+    message: 'Authorization header should be as follows: Bearer TOKEN',
+  },
+  token_not_decoded: {
+    code: 403,
+    message: 'Either token expired or is invalid',
+  },
 };
 
 

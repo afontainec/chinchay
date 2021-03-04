@@ -23,10 +23,15 @@ const decode = async (req, res, next) => {
   try {
     delete req.user_id;
     addIsNotAuthenticated(req);
+    req.chinchayAuthorization = {};
     const authorizationHeader = req.get('Authorization');
+    req.chinchayAuthorization.hasHeader = true;
     const token = extractToken(authorizationHeader);
+    req.chinchayAuthorization.hasToken = true;
     const decoded = decryptToken(token);
+    req.chinchayAuthorization.decodedToken = true;
     await addIsAuthenticated(req, decoded);
+    req.chinchayAuthorization.decodedToken = true;
     return next();
   } catch (error) {
     if (error.chinchayCode === 'middlewareMissingTheWall') console.log(`WARNING: ${error.message} req.isAuthenticatedByToken() will return false.`);
