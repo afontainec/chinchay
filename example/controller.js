@@ -83,10 +83,7 @@ const create = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const code = errorHandler.getHTTPCode(error);
-    const message = errorHandler.getHTTPMessage(error);
-    const json = httpResponse.error(message, error, code);
-    return res.status(code).send(json);
+   errorHandler.sendError(error, res);
   });
 };
 
@@ -98,10 +95,7 @@ const template = (req, res) => {
     const json = httpResponse.success('Elemento de template', 'data', result);
     return res.status(200).send(json);
   }).catch((error) => {
-    const code = errorHandler.getHTTPCode(error);
-    const message = errorHandler.getHTTPMessage(error);
-    const json = httpResponse.error(message, error, code);
-    return res.status(code).send(json);
+    errorHandler.sendError(error, res);
   });
 };
 
@@ -112,10 +106,7 @@ const update = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const code = errorHandler.getHTTPCode(error);
-    const message = errorHandler.getHTTPMessage(error);
-    const json = httpResponse.error(message, error, code);
-    return res.status(code).send(json);
+    errorHandler.sendError(error, res);
   });
 };
 
@@ -125,10 +116,7 @@ const del = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const code = errorHandler.getHTTPCode(error);
-    const message = errorHandler.getHTTPMessage(error);
-    const json = httpResponse.error(message, error, code);
-    return res.status(code).send(json);
+    errorHandler.sendError(error, res);
   });
 };
 
@@ -144,10 +132,7 @@ const find = (req, res) => {
     }
     return res.status(200).send(json);
   }).catch((error) => {
-    const code = errorHandler.getHTTPCode(error);
-    const message = errorHandler.getHTTPMessage(error);
-    const json = httpResponse.error(message, error, code);
-    return res.status(code).send(json);
+    errorHandler.sendError(error, res);
   });
 };
 
@@ -159,10 +144,7 @@ const findById = (req, res) => {
     json.data.links = HATEOAS.get(results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const code = errorHandler.getHTTPCode(error);
-    const message = errorHandler.getHTTPMessage(error);
-    const json = httpResponse.error(message, error, code);
-    return res.status(code).send(json);
+    errorHandler.sendError(error, res);
   });
 };
 
@@ -173,10 +155,7 @@ const count = (req, res) => {
     const json = httpResponse.success('Busqueda encontrada exitosamente', 'data', results);
     return res.status(200).send(json);
   }).catch((error) => {
-    const code = errorHandler.getHTTPCode(error);
-    const message = errorHandler.getHTTPMessage(error);
-    const json = httpResponse.error(message, error, code);
-    return res.status(code).send(json);
+    errorHandler.sendError(error, res);
   });
 };
 
