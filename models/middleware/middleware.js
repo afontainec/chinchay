@@ -110,6 +110,7 @@ if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.errSplashPage = errSplashPage;
   PUBLIC_METHODS.setHeadersForAccessToken = setHeadersForAccessToken;
   PUBLIC_METHODS.isAuthenticated = isAuthenticated;
+  PUBLIC_METHODS.getForbiddenError = getForbiddenError;
 }
 
 module.exports = (thewall) => {
