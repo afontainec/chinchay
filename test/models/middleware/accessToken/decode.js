@@ -36,8 +36,14 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
     const token = jwt.sign({ user: 1, exp: TOMORROW }, secret);
     req.headers.Authorization = `Bearer ${token}`;
     accessToken.unbootstrap();
+    const expected = {
+      hasHeader: true,
+      hasToken: true,
+      decodedToken: true,
+    };
     accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
+      assert.deepEqual(req.chinchayAuthorization, expected);
       done();
     });
   });
@@ -56,9 +62,11 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
   it('no token present', (done) => { // eslint-disable-line
     const req = Req.generate();
     delete req.isAuthenticated;
+    const expected = { hasHeader: true };
     accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
       assert.isFalse(req.isAuthenticatedByToken());
+      assert.deepEqual(req.chinchayAuthorization, expected);
       done();
     });
   });
@@ -67,10 +75,12 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
     const req = Req.generate();
     const token = jwt.sign({ user: 1, exp: YESTERDAY }, secret);
     req.headers.Authorization = `Bearer ${token}`;
+    const expected = { hasHeader: true, hasToken: true };
     delete req.isAuthenticatedByToken;
     accessToken.decode(req, null, () => {
       assert.isUndefined(req.user);
       assert.isFalse(req.isAuthenticatedByToken());
+      assert.deepEqual(req.chinchayAuthorization, expected);
       done();
     });
   });
@@ -80,11 +90,13 @@ describe('Middleware: accessToken: decode', () => { // eslint-disable-line
     const token = jwt.sign({ user: 1, exp: TOMORROW }, secret);
     req.headers.Authorization = `Bearer ${token}`;
     delete req.isAuthenticatedByToken;
+    const expected = { hasHeader: true, hasToken: true, decodedToken: true };
     accessToken.decode(req, null, () => {
       assert.equal(req.user.id, 1);
       assert.equal(req.user.access.length, 1);
       assert.equal(req.user.access[0].role, 'admin');
       assert.isTrue(req.isAuthenticatedByToken());
+      assert.deepEqual(req.chinchayAuthorization, expected);
       done();
     });
   });
