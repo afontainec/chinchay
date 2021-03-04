@@ -2,6 +2,7 @@ const httpResponse = require('../httpResponse');
 const ErrorHandler = require('../ErrorHandler');
 const ForbiddenError = require('../ForbiddenError');
 const AccessToken = require('./accessToken');
+const ChinchayError = require('../chinchayError');
 
 let TheWall;
 
@@ -9,7 +10,7 @@ const errorHandler = new ErrorHandler();
 
 const hasAccess = async (req, res, next) => {
   if (!req.isAuthenticatedByToken) console.log('WARNING: req.isAuthenticatedByToken is not a function. Make sure the that middleware.prerouting(app) is called before the routes are defined. Access rejected by default.');
-  if (!req.isAuthenticatedByToken || !req.isAuthenticatedByToken()) return forbidden(req, res);
+  if (!isAuthenticated(req)) return forbidden(req, res);
   let fullUrl = req.baseUrl + req.path;
   if (fullUrl.endsWith('/')) fullUrl = fullUrl.substring(0, fullUrl.length - 1);
   const userId = req.user.id;
@@ -18,17 +19,22 @@ const hasAccess = async (req, res, next) => {
 };
 
 
-// function logout(req, res) {
-//   // if they aren't redirect them to the home page
-//   if (req) req.logout();
-//   if (res) res.redirect('/');
-// }
+function isAuthenticated(req) {
+  return req && req.isAuthenticatedByToken && req.isAuthenticatedByToken();
+}
 
 function forbidden(req, res) {
-  const error = new ForbiddenError();
+  const error = getForbiddenError(req);
   const { code, message } = errorHandler.getHTTPCodeAndMessage(error);
   const json = httpResponse.error(message, error, code);
   return res.status(code).send(json);
+}
+
+function getForbiddenError(req) {
+  if (isAuthenticated(req) || !req || !req.chinchayAuthorization) return new ForbiddenError();
+  if (req.chinchayAuthorization.hasToken) return new ChinchayError(new Error(), 'token_not_decoded', 'could not decode token');
+  if (req.chinchayAuthorization.hasHeader) return new ChinchayError(new Error(), 'no_bearer_token', 'could not extract token from header');
+  return new ForbiddenError();
 }
 
 // ////////////////////////////
@@ -103,6 +109,8 @@ if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.errorSplashWithError = errorSplashWithError;
   PUBLIC_METHODS.errSplashPage = errSplashPage;
   PUBLIC_METHODS.setHeadersForAccessToken = setHeadersForAccessToken;
+  PUBLIC_METHODS.isAuthenticated = isAuthenticated;
+  PUBLIC_METHODS.getForbiddenError = getForbiddenError;
 }
 
 module.exports = (thewall) => {
