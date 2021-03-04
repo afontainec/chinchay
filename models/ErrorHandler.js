@@ -1,4 +1,5 @@
-const { utils } = require('codemaster');
+const { utils, alert } = require('codemaster');
+const httpResponse = require('./httpResponse');
 
 const POSTGRES_TO_HTTP_ERROR = {
   42703: {
@@ -51,11 +52,12 @@ const POSTGRES_TO_HTTP_ERROR = {
 class ErrorHandler {
 
 
-  constructor(errorTranslate, replace) {
+  constructor(errorTranslate, replace, logger) {
     errorTranslate = errorTranslate || {};
     if (replace) this.ERROR_TRANSLATE = errorTranslate;
     else this.ERROR_TRANSLATE = Object.assign(utils.cloneJSON(POSTGRES_TO_HTTP_ERROR), errorTranslate);
     this.DEFAULT_ERROR_TRANSLATE = POSTGRES_TO_HTTP_ERROR;
+    this.logger = logger || alert.print;
   }
 
   getHTTPCode(error) {
@@ -75,6 +77,20 @@ class ErrorHandler {
     return { code: this.getHTTPCode(error), message: this.getHTTPMessage(error) };
   }
 
+  sendError(error, res, logConfiguration) {
+    const { code, message } = this.getHTTPCodeAndMessage(error);
+    this.logError(logConfiguration, code, error);
+    const json = httpResponse.error(message, error, code);
+    return res.status(code).send(json);
+  }
+
+  logError(configuration, code, error) {
+    if (!this.logger || !configuration || !configuration[code]) return;
+    if (configuration[code]) {
+      const text = configuration[code].text || configuration[code];
+      this.logger(text, code, error);
+    }
+  }
 }
 
 
