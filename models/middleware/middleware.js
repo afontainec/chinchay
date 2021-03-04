@@ -20,7 +20,7 @@ const hasAccess = async (req, res, next) => {
 
 
 function isAuthenticated(req) {
-  return req.isAuthenticatedByToken && req.isAuthenticatedByToken();
+  return req && req.isAuthenticatedByToken && req.isAuthenticatedByToken();
 }
 
 function forbidden(req, res) {
@@ -109,6 +109,7 @@ if (process.env.NODE_ENV === 'test') {
   PUBLIC_METHODS.errorSplashWithError = errorSplashWithError;
   PUBLIC_METHODS.errSplashPage = errSplashPage;
   PUBLIC_METHODS.setHeadersForAccessToken = setHeadersForAccessToken;
+  PUBLIC_METHODS.isAuthenticated = isAuthenticated;
 }
 
 module.exports = (thewall) => {
