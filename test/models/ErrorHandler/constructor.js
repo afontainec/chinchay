@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 
 // Require the dev-dependencies
 const { assert } = require('chai');
+const { alert } = require('codemaster');
 const { ErrorHandler } = require('../../../');
 
 
@@ -40,5 +41,16 @@ describe('Error Handler intialize', () => {
     const second = new ErrorHandler();
     assert.equal(first.getHTTPCode({ chinchayCode: 'unexistantID' }), 500);
     assert.equal(second.getHTTPCode({ chinchayCode: 'unexistantID' }), 400);
+  });
+
+  it('no logger given', async () => {
+    const handler = new ErrorHandler();
+    assert.deepEqual(handler.logger, alert.print);
+  });
+
+  it('logger given', async () => {
+    const logger = () => {};
+    const handler = new ErrorHandler(null, null, logger);
+    assert.deepEqual(handler.logger, logger);
   });
 });
