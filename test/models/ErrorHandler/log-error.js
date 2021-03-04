@@ -40,7 +40,7 @@ describe('Error Handler sendError', () => {
     let loggedParameters;
     const logger = (...params) => { loggedParameters = params; };
     const handler = new ErrorHandler(null, null, logger);
-    handler.logError({ 400: 'test' }, 500, error);
+    handler.logError({ 500: 'test' }, 500, error);
     assert.deepEqual(loggedParameters, ['test', 500, error]);
   });
 
@@ -49,7 +49,7 @@ describe('Error Handler sendError', () => {
     let loggedParameters;
     const logger = (...params) => { loggedParameters = params; };
     const handler = new ErrorHandler(null, null, logger);
-    handler.logError({ 400: { text: 'test text' } }, 500, error);
+    handler.logError({ 500: { text: 'test text' } }, 500, error);
     assert.deepEqual(loggedParameters, ['test text', 500, error]);
   });
 });
