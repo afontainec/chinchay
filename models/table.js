@@ -56,7 +56,16 @@ class Table {
   }
 
   countQuery(search, options) {
+    if (options && options.countDistinct) return this.countDistinctQuery(search, options);
     return this.buildQuery('count', search, 'all', options);
+  }
+
+  countDistinctQuery(search, options) {
+    if (!options || !options.countDistinct) throw new ChinchayError('options.countDistinct is not defined', 'missing_count_distinct');
+    options.distinct = options.countDistinct;
+    const subQuery = this.buildQuery('select', search, 'all', options).as('foo');
+    const query = this.knex.count('*').from(subQuery);
+    return query;
   }
 
   countGroupBy(groupBy, search, options) {
@@ -377,8 +386,10 @@ class Table {
 
   static addFindSelect(query, columns, options) {
     options = options || {};
-    if (options.rawSelect) {
-      query = Table.addRawSelect(query, options.rawSelect);
+    if (options.rawSelect) query = Table.addRawSelect(query, options.rawSelect);
+    if (options.distinct) {
+      query.distinct(options.distinct);
+      options.clearSelect = true;
     }
     if (options.clearSelect || (!Array.isArray(columns) && columns !== 'all')) return query;
     if (!Array.isArray(columns)) columns = '*';
