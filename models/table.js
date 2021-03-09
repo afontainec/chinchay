@@ -56,7 +56,8 @@ class Table {
   }
 
   countQuery(search, options) {
-    if (options && options.countDistinct) return this.countDistinctQuery(search, options);
+    const shouldCountAsDistinct = options && options.countDistinct && !options.groupBy;
+    if (shouldCountAsDistinct) return this.countDistinctQuery(search, options);
     return this.buildQuery('count', search, 'all', options);
   }
 
