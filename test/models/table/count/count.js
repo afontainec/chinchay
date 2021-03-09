@@ -218,6 +218,19 @@ describe('with advance settings: countDistinct', () => { // eslint-disable-line
     assert.equal(results, 3);
   });
 
+  it('With countDistinct and group by', async () => { // eslint-disable-line
+    await Coffee.save({ price: 110, name: 'expensive' });
+    const results = await Coffee.count({}, {
+      countDistinct: 'name',
+      groupBy: 'price',
+      orderBy: 'price',
+    });
+    const expected = [{ price: 100, count: 2 },
+      { price: 110, count: 1 },
+      { price: null, count: 1 }];
+    assert.deepEqual(results, expected);
+  });
+
   it('With invalid countDistinct', (done) => { // eslint-disable-line
     Coffee.count({}, {
       countDistinct: 'not a valid column',
