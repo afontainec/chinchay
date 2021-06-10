@@ -242,6 +242,7 @@ class Table {
     options = options || {};
     const query = this.table().insert(entry).returning('*');
     const { onConflict } = options;
+    if (onConflict && !onConflict.columns) throw new ChinchayError(new Error('onConflict requires columns attribute'), 'onConflictColumns', 'options.onConflict must have a "columns" property.');
     if (onConflict && onConflict.merge) {
       query.onConflict(onConflict.columns).merge(onConflict.merge);
     } else if (onConflict && onConflict.ignore) {
