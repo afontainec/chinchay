@@ -186,13 +186,20 @@ class Table {
   //   return f();
   // }
 
-  async save(input, batchSize) {
+  async save(input, options) {
+    const batchSize = this.extractBatchSize(options);
     const copy = Utils.cloneJSON(input);
-    if (Array.isArray(copy)) return this.saveBunch(copy, batchSize);
+    if (Array.isArray(copy)) return this.saveBunch(copy, batchSize, options);
     const parsed = Table.parseForSave(copy);
-    const query = this.saveQuery(parsed);
+    const query = this.saveQuery(parsed, options);
     const [saved] = await Table.fetchQuery(query);
     return saved;
+  }
+
+  extractBatchSize(input) {
+    if (typeof input === 'number') return input;
+    if (input) return input.batchSize;
+    return input;
   }
 
   static parseForSaveArray(array) {
@@ -213,13 +220,13 @@ class Table {
     return result;
   }
 
-  async saveBunch(array, batchSize = this.INSERT_LIMIT_ARRAY) {
+  async saveBunch(array, batchSize = this.INSERT_LIMIT_ARRAY, options) {
     const parsed = Table.parseForSaveArray(array);
     const promises = [];
     const iterations = parsed.length / batchSize;
     for (let i = 0; i < iterations; i++) {
       const subArray = this.getSubArray(parsed, i, batchSize);
-      const query = this.saveQuery(subArray);
+      const query = this.saveQuery(subArray, options);
       promises.push(Table.fetchQuery(query));
     }
     const results = await Promise.all(promises);
@@ -231,8 +238,17 @@ class Table {
 
   }
 
-  saveQuery(entry) {
-    return this.table().insert(entry).returning('*');
+  saveQuery(entry, options) {
+    options = options || {};
+    const query = this.table().insert(entry).returning('*');
+    const { onConflict } = options;
+    if (onConflict && !onConflict.columns) throw new ChinchayError(new Error('onConflict requires columns attribute'), 'onConflictColumns', 'options.onConflict must have a "columns" property.');
+    if (onConflict && onConflict.merge) {
+      query.onConflict(onConflict.columns).merge(onConflict.merge);
+    } else if (onConflict && onConflict.ignore) {
+      query.onConflict(onConflict.columns).ignore();
+    }
+    return query;
   }
 
   // ################################################
