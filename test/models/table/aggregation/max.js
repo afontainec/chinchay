@@ -21,4 +21,11 @@ describe('TABLE GATEWAY: max', () => { // eslint-disable-line max-lines-per-func
     const result = await Coffee.max(column, search, options);
     assert.equal(result, 110);
   });
+
+  it('type is not number', async () => {
+    const column = 'created_at';
+    const options = { };
+    const result = await Coffee.max(column, {}, options);
+    assert.isNotNaN(result);
+  });
 });
