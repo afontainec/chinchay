@@ -849,8 +849,8 @@ class Table {
 
   static error500(err) {
     Table.setCode(err, 500);
-    err.message = 'Internal Error';
     err.fullMessage = Table.cloneError(err);
+    err.message = 'Internal Error';
     return err;
   }
 
