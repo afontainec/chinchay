@@ -421,6 +421,7 @@ class Table {
       query.distinct(options.distinct);
       options.clearSelect = true;
     }
+    if (options.distinctOn) query.distinctOn(options.distinctOn);
     if (options.clearSelect || (!Array.isArray(columns) && columns !== 'all')) return query;
     if (!Array.isArray(columns)) columns = '*';
     return query.select(columns);
