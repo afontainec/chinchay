@@ -47,6 +47,18 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
       assert.equal(keys.length, 5);
     }
   });
+
+
+  it('With distinctOn', async () => { // eslint-disable-line no-undef
+    await Coffee.save({ name: 'other', price: 99 });
+    const results = await Coffee.find({}, ['name', 'price'], { distinctOn: 'name', orderBy: ['name', 'price'] });
+    const expected = [
+      { name: 'expensive', price: 110 },
+      { name: 'other', price: 99 },
+      { name: 'this is the name', price: 100 },
+    ];
+    assert.deepEqual(results, expected);
+  });
 });
 
 describe('Malicious happy path', () => { // eslint-disable-line
