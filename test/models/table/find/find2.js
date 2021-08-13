@@ -51,7 +51,7 @@ describe('TABLE GATEWAY: FIND', () => { // eslint-disable-line
 
   it('With distinctOn', async () => { // eslint-disable-line no-undef
     await Coffee.save({ name: 'other', price: 99 });
-    const results = await Coffee.find({}, ['name', 'price'], { distinctOn: 'name', orderBy: ['name', 'price'] });
+    const results = await Coffee.find({}, ['name', 'price'], { distinctOn: 'name', orderBy: ['name', ['price', 'asc']] });
     const expected = [
       { name: 'expensive', price: 110 },
       { name: 'other', price: 99 },
