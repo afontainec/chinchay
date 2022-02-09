@@ -72,15 +72,18 @@ const hasExpired = (data) => {
   return !data || !data.exp || data.exp < new Date().getTime() / 1000;
 };
 
-const generate = (user) => {
+const generate = (user, customWindow) => {
   if (!user) throw new Error('No User defined');
-  const expirationDate = new Date(new Date().getTime() + WINDOW * 1000);
+  let actualWindow;
+  if (!customWindow) actualWindow = WINDOW;
+  else actualWindow = customWindow;
+  const expirationDate = new Date(new Date().getTime() + actualWindow * 1000);
   const token = jwt.sign(
     {
       user: user.id,
     },
     secret,
-    { expiresIn: WINDOW },
+    { expiresIn: actualWindow },
   );
   return {
     token,
