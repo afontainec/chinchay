@@ -51,5 +51,14 @@ describe('Middleware: accessToken: generate', () => { // eslint-disable-line max
     done();
   });
 
+  it('bootstrapped with temporal custom window', (done) => {
+    const result = accessToken.generate({ id: 1234 }, ONE_HOUR_IN_SECONDS * 60);
+    assert.isDefined(result.expiration);
+    assert.isDefined(result.token);
+    const decoded = jwt.verify(result.token, secret);
+    assert.closeTo(result.expiration.getTime() - now, ONE_HOUR_IN_SECONDS * 60 * 1000, 1000);
+    assert.equal(decoded.user, 1234);
+    done();
+  });
 
 });
