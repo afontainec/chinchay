@@ -74,7 +74,7 @@ const hasExpired = (data) => {
 
 const generate = (user, expirationWindow) => {
   if (!user) throw new Error('No User defined');
-  expirationWindow = expirationWindow || DEFAULT_WINDOW;
+  expirationWindow = expirationWindow || WINDOW;
   const expirationDate = new Date(new Date().getTime() + expirationWindow * 1000);
   const token = jwt.sign(
     {
