@@ -98,8 +98,8 @@ const hasAccessTo = (user, to, filterId) => {
   return false;
 };
 
-const generateToken = (user) => {
-  return accessToken.generate(user);
+const generateToken = (user, expirationWindow) => {
+  return accessToken.generate(user, expirationWindow);
 };
 
 
